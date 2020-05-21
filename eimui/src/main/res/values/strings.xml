@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="cant_empty_text">The content cannot be empty.</string>
+    <string name="cant_record_audio">Cant record audio.</string>
+    <string name="chat_up_move_cancel">Slide up to cancel</string>
+    <string name="chat_up_cancel">Release to cancel</string>
+    <string name="chat_press_talk">Hold to talk</string>
+
+    <string name="chat_picture_message">Image</string>
+    <string name="chat_voice_message">Voice</string>
+    <string name="chat_video_message">Video</string>
+    <string name="chat_attach_message">Attachment</string>
+</resources>

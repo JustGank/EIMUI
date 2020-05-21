@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ChatUIDemo</string>
+
+    <string name="chat_pick_pic">Photo</string>
+    <string name="chat_take_photo">Camera</string>
+    <string name="chat_file">Attachment</string>
+    <string name="chat_take_video">Record video</string>
+    <string name="chat_location">Location</string>
+
+</resources>
