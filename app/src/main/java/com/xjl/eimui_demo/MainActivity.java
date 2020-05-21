@@ -1,8 +1,9 @@
 package com.xjl.eimui_demo;
 
+import android.Manifest;
+import android.os.Build;
 import android.os.Bundle;
 
-import com.xjl.eimui_demo.operation.LocationOperation;
 import com.xjl.eimui.inputbar.InputBar;
 import com.xjl.eimui.inputbar.moreoperateion.adapter.InputBarMoreDefaultAdapter;
 import com.xjl.eimui.inputbar.moreoperateion.bean.ChatMoreBean;
@@ -14,6 +15,7 @@ import com.xjl.eimui.inputbar.recordstate.AudioRecordStateView;
 import com.xjl.eimui.inputbar.recordstate.RecordStateListener;
 import com.xjl.eimui.inputbar.recordstate.RecordTouchListener;
 import com.xjl.eimui.util.ToastUtils;
+import com.xjl.eimui_demo.operation.LocationOperation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        String[] permissions = {
+                Manifest.permission.CAMERA,
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(permissions, 1001);
+        }
+
         initView();
     }
 

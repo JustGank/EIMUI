@@ -24,6 +24,8 @@
     <com.xjl.eimui.inputbar.recordstate.AudioRecordStateView
         android:id="@+id/recordstate_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        />
 
 </RelativeLayout>
