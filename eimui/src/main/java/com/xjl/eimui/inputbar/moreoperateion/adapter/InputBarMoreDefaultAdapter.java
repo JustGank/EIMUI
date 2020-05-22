@@ -8,13 +8,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.xjl.eimui.R;
 import com.xjl.eimui.inputbar.moreoperateion.bean.ChatMoreBean;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class InputBarMoreDefaultAdapter extends RecyclerView.Adapter<InputBarMoreDefaultAdapter.ViewHolder> {
 
@@ -39,6 +40,11 @@ public class InputBarMoreDefaultAdapter extends RecyclerView.Adapter<InputBarMor
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ChatMoreBean chatMoreBean = list.get(position);
+
+        Glide.with(activity)
+                .load(chatMoreBean.resId)
+                .centerCrop().into(holder.img);
+
         holder.img.setImageResource(chatMoreBean.resId);
         holder.title.setText(chatMoreBean.title);
         holder.container.setOnClickListener(v -> {

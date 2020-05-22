@@ -4,6 +4,10 @@ import android.Manifest;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.xjl.eimui.inputbar.InputBar;
 import com.xjl.eimui.inputbar.moreoperateion.adapter.InputBarMoreDefaultAdapter;
 import com.xjl.eimui.inputbar.moreoperateion.bean.ChatMoreBean;
@@ -19,10 +23,6 @@ import com.xjl.eimui_demo.operation.LocationOperation;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        recycler = (RecyclerView) findViewById(R.id.recycler);
-        inputbar = (InputBar) findViewById(R.id.inputbar);
+        recycler = findViewById(R.id.recycler);
+        inputbar = findViewById(R.id.inputbar);
         recordstate_view = findViewById(R.id.recordstate_view);
 
         //设置长按说话的动画 和回调监听者
@@ -105,5 +105,7 @@ public class MainActivity extends AppCompatActivity {
             ToastUtils.showMessage(MainActivity.this, "您点击了发送");
         }
     };
+
+
 
 }

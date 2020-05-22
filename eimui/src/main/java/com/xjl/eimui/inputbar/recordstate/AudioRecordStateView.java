@@ -56,10 +56,10 @@ public class AudioRecordStateView extends RelativeLayout implements RecordStateV
 
     @Override
     public void cancelRecord() {
-        if (CURRENT_STATE == STATE_NORMAL) {
+        if (CURRENT_STATE == STATE_CANCEL) {
             return;
         }
-        CURRENT_STATE = STATE_NORMAL;
+        CURRENT_STATE = STATE_CANCEL;
         chat_record_state_text.setText(getResources().getString(R.string.chat_up_cancel));
     }
 
