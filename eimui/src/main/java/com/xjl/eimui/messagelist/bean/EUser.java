@@ -13,12 +13,12 @@ public interface EUser {
      * Display name of user
      * @return display name
      */
-    String getDisplayName();
+    String getNickname();
 
     /**
      * Get user avatar file path.
      * @return avatar file path
      */
-    String getAvatarFilePath();
+    String getAvatarPath();
 
 }

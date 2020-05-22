@@ -11,4 +11,9 @@
     <string name="chat_voice_message">Voice</string>
     <string name="chat_video_message">Video</string>
     <string name="chat_attach_message">Attachment</string>
+
+    <string name="chat_resend">Resend</string>
+    <string name="invalid_file">Invalid file</string>
+    <string name="chat_request_download_url">Requesting the URL for downloading...</string>
+
 </resources>

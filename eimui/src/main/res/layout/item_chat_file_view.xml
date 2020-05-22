@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/file_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/chat_file"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+         android:layout_centerVertical="true"
+        android:layout_margin="7dp"
+        android:background="@mipmap/chat_file" />
+
+    <TextView
+        android:id="@+id/filename"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/sender_text_color"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="22dp"
+        android:maxLength="25"
+        android:lines="1"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/chat_file"
+        />
+
+
+</RelativeLayout>

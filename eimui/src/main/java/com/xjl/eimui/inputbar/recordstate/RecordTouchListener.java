@@ -22,6 +22,10 @@ public class RecordTouchListener implements View.OnTouchListener {
     private long touchDownTime = 0;
 
     private long touchUpTime = 0;
+    //手势上下滑动改变录音状态的距离
+    private int stateChangeDistance=200;
+    //频繁点击的时间间隙
+    private int frequenceClickInterval=700;
 
     private Context context;
 
@@ -44,7 +48,7 @@ public class RecordTouchListener implements View.OnTouchListener {
                     return true;
                 }
                 //最后一次落下和上一次抬起是否间隔大一1秒
-                if (touchUpTime == 0 || touchDownTime - touchUpTime > 700) {
+                if (touchUpTime == 0 || touchDownTime - touchUpTime > frequenceClickInterval) {
                     downY = (int) event.getY();
                     Log.e(TAG, "ACTION_DOWN downY=" + downY);
 
@@ -60,7 +64,7 @@ public class RecordTouchListener implements View.OnTouchListener {
                 break;
             case MotionEvent.ACTION_MOVE:
                 movedY = (int) event.getY();
-                if (movedY < -200) {
+                if (movedY < -stateChangeDistance) {
                     recordState.normalRecord();
                 } else {
                     recordState.cancelRecord();
@@ -71,11 +75,28 @@ public class RecordTouchListener implements View.OnTouchListener {
                 touchUpTime = System.currentTimeMillis();
                 upY = (int) event.getY();
                 if (null != recordStateListener) {
-                    recordStateListener.onRecordStateChange(upY < -200 ? 2 : 3);
+                    recordStateListener.onRecordStateChange(upY < -stateChangeDistance ? 2 : 3);
                 }
                 recordState.dismiss();
                 break;
         }
         return true;
     }
+
+    public int getStateChangeDistance() {
+        return stateChangeDistance;
+    }
+
+    public void setStateChangeDistance(int stateChangeDistance) {
+        this.stateChangeDistance = stateChangeDistance;
+    }
+
+    public int getFrequenceClickInterval() {
+        return frequenceClickInterval;
+    }
+
+    public void setFrequenceClickInterval(int frequenceClickInterval) {
+        this.frequenceClickInterval = frequenceClickInterval;
+    }
+
 }

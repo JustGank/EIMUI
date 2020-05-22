@@ -27,7 +27,7 @@ public interface EMessage {
      * Type of message
      * @return integer
      */
-    int getType();
+    int getViewType();
 
     /**
      * Status of message, enum.
@@ -59,4 +59,13 @@ public interface EMessage {
      * @return {@link HashMap<>}
      */
     HashMap<String, String> getExtras();
+
+    public boolean isChecked();
+
+    public boolean isPlaying();
+
+    public MessageStatus getMessageSendStaus();
+
+
+
 }

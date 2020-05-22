@@ -5,4 +5,6 @@
 
     <color name="white">#ffffff</color>
 
+    <color name="sender_text_color">#000000</color>
+
 </resources>

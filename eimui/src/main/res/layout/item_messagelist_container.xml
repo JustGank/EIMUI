@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#a2a2a2"
+        android:textSize="10sp" />
+
+    <RelativeLayout
+        android:id="@+id/chat_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="3dp">
+
+        <RelativeLayout
+            android:id="@+id/accepter_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="50dp">
+
+
+            <ImageView
+                android:id="@+id/accepter_avater"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:background="#5887f9"
+                android:visibility="gone" />
+
+
+            <TextView
+                android:id="@+id/accepter_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/accepter_avater"
+                android:textColor="#bcc5dc"
+                android:visibility="gone" />
+            `
+
+            <RelativeLayout
+                android:id="@+id/accepter_content_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/accepter_name"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@+id/accepter_avater"
+                android:background="@drawable/chat_gray_left_bg"
+                android:padding="5dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/sender_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp">
+
+
+            <ImageView
+                android:id="@+id/sender_avater"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:background="#5887f9"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/sender_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/sender_avater"
+                android:textColor="#bcc5dc"
+                android:visibility="gone"
+                />
+            `
+
+            <RelativeLayout
+                android:id="@+id/sender_content_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/sender_name"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/sender_avater"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/chat_blue_right_bg"
+                android:padding="5dp" />
+
+            <com.xjl.eimui.messagelist.widget.SendStateView
+                android:id="@+id/state_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/sender_name"
+                android:layout_marginLeft="10dp"
+                android:layout_toLeftOf="@+id/sender_content_container"
+                />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

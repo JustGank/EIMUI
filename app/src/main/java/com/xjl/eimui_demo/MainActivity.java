@@ -3,12 +3,10 @@ package com.xjl.eimui_demo;
 import android.Manifest;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.widget.ImageView;
 
 import com.xjl.eimui.inputbar.InputBar;
+import com.xjl.eimui.inputbar.builder.InputBarBuilder;
 import com.xjl.eimui.inputbar.moreoperateion.adapter.InputBarMoreDefaultAdapter;
 import com.xjl.eimui.inputbar.moreoperateion.bean.ChatMoreBean;
 import com.xjl.eimui.inputbar.moreoperateion.impl.PickFileOperation;
@@ -23,6 +21,10 @@ import com.xjl.eimui_demo.operation.LocationOperation;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
         inputbar.getMorePanel().setLayoutManager(new GridLayoutManager(this, 4));
         inputbar.getMorePanel().setAdapter(inputBarMoreDefaultAdapter);
 
-        //设置InputBar 子控件监听
+        //设置InputBar 子控件监听 增加一个自定义控件
+        inputbar.setInputBarBuilder(InputBarBuilder.getNewInstance().setRight_img2_res(R.mipmap.chat_inputbar_template));
         inputbar.setOnItemClickListener(onItemClickListener);
     }
 
@@ -93,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onFrequenceClick(long downTime, long upTime) {
-
+            ToastUtils.showMessage(MainActivity.this, "您的点击过快");
         }
     };
 
@@ -103,9 +106,16 @@ public class MainActivity extends AppCompatActivity {
         public void onSendClicked(String content) {
             super.onSendClicked(content);
             ToastUtils.showMessage(MainActivity.this, "您点击了发送");
+            inputbar.getEdittext().setText("");
+        }
+
+        @Override
+        public void onRightImg2Clicked(ImageView img) {
+            super.onRightImg2Clicked(img);
+            ToastUtils.showMessage(MainActivity.this, "为您自动装载聊天实例");
+
         }
     };
-
 
 
 }

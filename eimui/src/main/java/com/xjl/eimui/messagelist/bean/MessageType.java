@@ -1,28 +1,26 @@
 package com.xjl.eimui.messagelist.bean;
 
-public enum MessageType {
-    EVENT,
-    SEND_TEXT,
-    RECEIVE_TEXT,
+public interface MessageType {
 
-    SEND_IMAGE,
-    RECEIVE_IMAGE,
+    int SEND_TEXT = 1;
+    int RECEIVE_TEXT = 2;
 
-    SEND_VOICE,
-    RECEIVE_VOICE,
+    int SEND_IMAGE = 3;
+    int RECEIVE_IMAGEv = 4;
 
-    SEND_VIDEO,
-    RECEIVE_VIDEO,
+    int SEND_VOICE = 5;
+    int RECEIVE_VOICE = 6;
 
-    SEND_LOCATION,
-    RECEIVE_LOCATION,
+    int SEND_VIDEO = 7;
+    int RECEIVE_VIDEO =8 ;
 
-    SEND_FILE,
-    RECEIVE_FILE,
+    int SEND_FILE = 9;
+    int RECEIVE_FILE = 10;
 
-    SEND_CUSTOM,
-    RECEIVE_CUSTOM;
+    int SEND_LOCATION = 11;
+    int RECEIVE_LOCATION = 12;
 
-    MessageType() {
-    }
+
+
+
 }
