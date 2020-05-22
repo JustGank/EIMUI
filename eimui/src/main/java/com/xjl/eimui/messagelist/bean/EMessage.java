@@ -17,6 +17,8 @@ public interface EMessage {
      */
     EUser getFromUser();
 
+    EUser getMine();
+
     /**
      * Time string that display in message list.
      * @return Time string
