@@ -1,6 +1,7 @@
 package com.xjl.eimui_demo;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -16,19 +17,24 @@ import com.xjl.eimui.inputbar.moreoperateion.impl.TakeVideoOperation;
 import com.xjl.eimui.inputbar.recordstate.AudioRecordStateView;
 import com.xjl.eimui.inputbar.recordstate.RecordStateListener;
 import com.xjl.eimui.inputbar.recordstate.RecordTouchListener;
+import com.xjl.eimui.messagelist.adapter.EMessageAdapter;
 import com.xjl.eimui.util.ToastUtils;
 import com.xjl.eimui_demo.operation.LocationOperation;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recycler;
+    private EMessageAdapter adapter;
+
     private InputBar inputbar;
     private AudioRecordStateView recordstate_view;
     private RecordTouchListener recordTouchListener;
@@ -48,11 +54,22 @@ public class MainActivity extends AppCompatActivity {
             requestPermissions(permissions, 1001);
         }
 
-        initView();
+        initMessageRecycler();
+        initInputBar();
     }
 
-    private void initView() {
+
+    private void initMessageRecycler() {
         recycler = findViewById(R.id.recycler);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setReverseLayout(true);
+        recycler.setLayoutManager(linearLayoutManager);
+
+
+    }
+
+
+    private void initInputBar() {
         inputbar = findViewById(R.id.inputbar);
         recordstate_view = findViewById(R.id.recordstate_view);
 
@@ -117,5 +134,8 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }
