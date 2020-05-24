@@ -23,4 +23,15 @@ public interface MessageType {
     int SEND_LOCATION = 11;
     int RECEIVE_LOCATION = 12;
 
+    /**
+     * 根据设定单数类型 为发送出去的信息
+     */
+    static boolean isReceivedMessage(int type) {
+        boolean isReceived = true;
+        if (type % 2 == 1) {
+            isReceived = false;
+        }
+        return isReceived;
+
+    }
 }

@@ -5,11 +5,14 @@ import java.util.HashMap;
 
 public interface EMessage {
 
-
     String getMsgId();
 
+    void setMine(EUser user);
+
     EUser getMine();
-    
+
+    void setOther(EUser user);
+
     EUser getOther();
 
     String getTimeString();
@@ -17,6 +20,8 @@ public interface EMessage {
     int getMessageType();
 
     MessageStatus getMessageStatus();
+
+    void setMessageStatus(MessageStatus status);
 
     String getContent();
 
@@ -28,10 +33,10 @@ public interface EMessage {
 
     HashMap<String, String> getExtras();
 
-    public boolean isChecked();
+    boolean isChecked();
 
-    public boolean isPlaying();
+    boolean isPlaying();
 
-    public MessageStatus getMessageSendStaus();
+    MessageStatus getMessageSendStaus();
 
 }

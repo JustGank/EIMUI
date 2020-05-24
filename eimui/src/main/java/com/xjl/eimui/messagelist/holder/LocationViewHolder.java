@@ -9,6 +9,7 @@ import com.xjl.eimui.messagelist.bean.EMessage;
 import androidx.annotation.NonNull;
 
 public class LocationViewHolder<MESSAGE extends EMessage> extends BaseViewHolder {
+
     public LocationViewHolder(Context context, @NonNull View itemView) {
         super(context, itemView);
     }
@@ -17,4 +18,5 @@ public class LocationViewHolder<MESSAGE extends EMessage> extends BaseViewHolder
     public void bindDateToChild(EMessage data, ViewGroup mineContainer, ViewGroup otherContainer) {
 
     }
+
 }

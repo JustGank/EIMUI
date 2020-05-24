@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xjl.eimui_demo">
 
-
+    <uses-permission android:name="android.permission.INTERNET" />
 
 
     <application

@@ -12,6 +12,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xjl.eimui.R;
 import com.xjl.eimui.messagelist.bean.EMessage;
+import com.xjl.eimui.messagelist.bean.EUser;
+import com.xjl.eimui.messagelist.bean.MessageStatus;
+import com.xjl.eimui.messagelist.bean.MessageType;
 import com.xjl.eimui.messagelist.widget.SendStateView;
 
 import androidx.annotation.NonNull;
@@ -55,26 +58,30 @@ public abstract class BaseViewHolder<MESSAGE extends EMessage> extends RecyclerV
     }
 
 
-    public void bindData(MESSAGE data) {
-
+    public void bindData(MESSAGE data, boolean mIsSelected, EUser mine, EUser other) {
+        this.mIsSelected = mIsSelected;
         //初始化头部分 一般用于显示时间或者提示性信息
         setHeader(data);
         //在选择模式下是否被选中
         setmIsSelected(data);
         //初始化聊天人员信息
-        if (data.getMine() != null) {
-            this.mine_container.setVisibility(View.VISIBLE);
-            this.other_container.setVisibility(View.GONE);
-            setMineInfo(data);
-        } else {
+        if (MessageType.isReceivedMessage(data.getMessageType())) {
             this.mine_container.setVisibility(View.GONE);
             this.other_container.setVisibility(View.VISIBLE);
-            setOtheInfo(data);
+            this.state_view.setVisibility(View.GONE);
+            setOtheInfo(other);
+        } else {
+            this.mine_container.setVisibility(View.VISIBLE);
+            this.other_container.setVisibility(View.GONE);
+            setMessageStatus(data.getMessageStatus());
+            setMineInfo(mine);
         }
         //将容器交给子类实现
         this.mine_content_container.removeAllViews();
         this.other_content_container.removeAllViews();
         bindDateToChild(data, this.mine_content_container, this.other_content_container);
+
+
     }
 
 
@@ -86,50 +93,61 @@ public abstract class BaseViewHolder<MESSAGE extends EMessage> extends RecyclerV
         is_select.setBackgroundResource(data.isChecked() ? R.mipmap.item_checked : R.mipmap.item_uncheck);
     }
 
-    public void setMineInfo(MESSAGE data) {
-        if (data.getMine() == null) {
+    public void setMineInfo(EUser user) {
+        if (user == null) {
             this.mine_avater.setVisibility(View.GONE);
             this.mine_name.setVisibility(View.GONE);
         } else {
-            if (TextUtils.isEmpty(data.getMine().getAvatarPath())) {
+            if (TextUtils.isEmpty(user.getAvatarPath())) {
                 this.mine_avater.setVisibility(View.GONE);
             } else {
                 this.mine_avater.setVisibility(View.VISIBLE);
                 Glide.with(this.mine_avater.getContext())
-                        .load(data.getMine().getAvatarPath())
+                        .load(user.getAvatarPath())
                         .into(this.mine_avater);
             }
-            if (TextUtils.isEmpty(data.getMine().getNickname())) {
+            if (TextUtils.isEmpty(user.getNickname())) {
                 this.mine_name.setVisibility(View.GONE);
             } else {
                 this.mine_name.setVisibility(View.VISIBLE);
-                this.mine_name.setText(data.getMine().getNickname());
+                this.mine_name.setText(user.getNickname());
             }
         }
     }
 
-    public void setOtheInfo(MESSAGE data) {
-        if (data.getOther() == null) {
+    public void setOtheInfo(EUser user) {
+        if (user == null) {
             this.other_avater.setVisibility(View.GONE);
             this.other_name.setVisibility(View.GONE);
         } else {
-            if (TextUtils.isEmpty(data.getOther().getAvatarPath())) {
+            if (TextUtils.isEmpty(user.getAvatarPath())) {
                 this.other_avater.setVisibility(View.GONE);
             } else {
                 this.other_avater.setVisibility(View.VISIBLE);
                 Glide.with(this.other_avater.getContext())
-                        .load(data.getMine().getAvatarPath())
+                        .load(user.getAvatarPath())
                         .into(this.other_avater);
             }
 
-            if (TextUtils.isEmpty(data.getMine().getNickname())) {
+            if (TextUtils.isEmpty(user.getNickname())) {
                 this.other_name.setVisibility(View.GONE);
             } else {
                 this.other_name.setVisibility(View.VISIBLE);
-                this.other_name.setText(data.getMine().getNickname());
+                this.other_name.setText(user.getNickname());
             }
         }
     }
+
+    public void setMessageStatus(MessageStatus status) {
+        if (status == MessageStatus.SEND_SUCCEED) {
+            this.state_view.setVisibility(View.GONE);
+        } else if (status == MessageStatus.SEND_GOING) {
+            this.state_view.setVisibility(View.VISIBLE);
+            this.state_view.setCurrentState(1);
+        }
+
+    }
+
 
     public abstract void bindDateToChild(MESSAGE data, ViewGroup mineContainer, ViewGroup otherContainer);
 

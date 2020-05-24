@@ -26,34 +26,71 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="15dp"
             android:background="@mipmap/item_uncheck"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
         <RelativeLayout
-            android:id="@+id/mine_container"
+            android:id="@+id/other_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="50dp"
             android:layout_toStartOf="@+id/is_select">
 
             <ImageView
-                android:id="@+id/mine_avater"
+                android:id="@+id/other_avater"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="10dp"
-                android:background="#5887f9"
                 android:visibility="gone" />
 
+            <TextView
+                android:id="@+id/other_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toRightOf="@+id/other_avater"
+                android:textColor="#bcc5dc"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/other_content_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/other_name"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_toEndOf="@+id/other_avater"
+                android:background="@drawable/chat_gray_left_bg"
+                android:padding="5dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/mine_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_toStartOf="@+id/is_select">
+
+            <ImageView
+                android:id="@+id/mine_avater"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:background="#5887f9"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/mine_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
-                android:layout_toRightOf="@+id/mine_avater"
+                android:layout_toLeftOf="@+id/mine_avater"
                 android:textColor="#bcc5dc"
                 android:visibility="gone" />
+
 
             <RelativeLayout
                 android:id="@+id/mine_content_container"
@@ -62,49 +99,7 @@
                 android:layout_below="@+id/mine_name"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_toRightOf="@+id/mine_avater"
-                android:background="@drawable/chat_gray_left_bg"
-                android:padding="5dp" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/other_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_toStartOf="@+id/is_select">
-
-
-            <ImageView
-                android:id="@+id/other_avater"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:background="#5887f9"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/other_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp"
-                android:layout_toLeftOf="@+id/other_avater"
-                android:textColor="#bcc5dc"
-                android:visibility="gone" />
-            `
-
-            <RelativeLayout
-                android:id="@+id/other_content_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/other_name"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@+id/other_avater"
+                android:layout_toStartOf="@+id/mine_avater"
                 android:background="@drawable/chat_blue_right_bg"
                 android:padding="5dp" />
 
@@ -112,9 +107,9 @@
                 android:id="@+id/state_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/other_name"
+                android:layout_below="@+id/mine_name"
                 android:layout_marginLeft="10dp"
-                android:layout_toLeftOf="@+id/other_content_container" />
+                android:layout_toLeftOf="@+id/mine_content_container" />
 
         </RelativeLayout>
 
