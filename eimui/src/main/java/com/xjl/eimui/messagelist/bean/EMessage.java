@@ -15,28 +15,28 @@ public interface EMessage {
 
     EUser getOther();
 
-    String getTimeString();
-
     int getMessageType();
 
-    MessageStatus getMessageStatus();
-
-    void setMessageStatus(MessageStatus status);
+    String getHeaderString();
 
     String getContent();
+
+    String getSubContent();
 
     String getMediaFilePath();
 
     long getDuration();
 
-    String getProgress();
+    int getProgress();
 
-    HashMap<String, String> getExtras();
+    MessageStatus getMessageStatus();
 
-    boolean isChecked();
+    void setMessageStatus(MessageStatus status);
+
+    boolean isSelected();
 
     boolean isPlaying();
 
-    MessageStatus getMessageSendStaus();
+    HashMap<String, String> getExtras();
 
 }

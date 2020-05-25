@@ -17,27 +17,28 @@ import androidx.annotation.NonNull;
 
 public class ImageViewHolder<MESSAGE extends EMessage> extends BaseViewHolder {
 
-    private int imageWidth,imageHeight;
+    private int imageWidth, imageHeight;
 
     public ImageViewHolder(Context context, @NonNull View itemView) {
         super(context, itemView);
-        imageWidth=ScreenUtils.dp2px(context,180);
-        imageHeight=ScreenUtils.dp2px(context,270);
+        imageWidth = ScreenUtils.dp2px(context, 120);
+        imageHeight = ScreenUtils.dp2px(context, 180);
     }
 
     @Override
     public void bindDateToChild(EMessage data, ViewGroup mineContainer, ViewGroup otherContainer) {
 
         ImageView imageView = (ImageView) LayoutInflater.from(context).inflate(R.layout.view_chat_imgae, null);
-        Glide.with(imageView.getContext()).load(data.getMediaFilePath()).centerCrop().into(imageView);
-
-
+        Glide.with(context)
+                .load(data.getMediaFilePath())
+                .centerCrop()
+                .into(imageView);
 
         if (MessageType.isReceivedMessage(data.getMessageType())) {
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(imageHeight,imageWidth);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(imageWidth, imageHeight);
             otherContainer.addView(imageView, layoutParams);
         } else {
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(imageWidth,imageHeight);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(imageHeight, imageWidth);
             mineContainer.addView(imageView, layoutParams);
         }
     }

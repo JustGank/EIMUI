@@ -4,7 +4,11 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.xjl.eimui.R;
 import com.xjl.eimui.messagelist.bean.EMessage;
+import com.xjl.eimui.messagelist.bean.MessageType;
+import com.xjl.eimui.messagelist.widget.ChatAudioView;
+import com.xjl.eimui.util.ScreenUtils;
 
 import androidx.annotation.NonNull;
 
@@ -16,6 +20,18 @@ public class VoiceViewHolder<MESSAGE extends EMessage> extends BaseViewHolder {
 
     @Override
     public void bindDateToChild(EMessage data, ViewGroup mineContainer, ViewGroup otherContainer) {
+        boolean isReceived = MessageType.isReceivedMessage(data.getMessageType());
+        ChatAudioView chatAudioView = new ChatAudioView(context, !isReceived);
+        chatAudioView.setTime((int) data.getDuration());
+        int padding = ScreenUtils.getDefaultMessagePadding(context);
+        chatAudioView.setPadding(padding, padding, padding, padding);
 
+        if (isReceived) {
+            chatAudioView.setBackgroundResource(R.drawable.chat_gray_left_bg);
+            otherContainer.addView(chatAudioView);
+        } else {
+            chatAudioView.setBackgroundResource(R.drawable.chat_blue_right_bg);
+            mineContainer.addView(chatAudioView);
+        }
     }
 }

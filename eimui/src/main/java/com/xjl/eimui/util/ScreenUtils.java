@@ -20,6 +20,11 @@ public class ScreenUtils {
         throw new UnsupportedOperationException("cannot be instantiated");
     }
 
+
+    public static int getDefaultMessagePadding(Context context) {
+        return dp2px(context, 5);
+    }
+
     /**
      * 获得屏幕高度
      *

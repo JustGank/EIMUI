@@ -53,8 +53,8 @@ public class ChatAudioView extends RelativeLayout {
         initView(this.isRight);
     }
 
-    private void initView(boolean isRight) {
-        if(isRight)
+    private void initView(boolean mine) {
+        if(mine)
         {
             LayoutInflater.from(getContext()).inflate(R.layout.view_chat_audio_sender, this);
         }else

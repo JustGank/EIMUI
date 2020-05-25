@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -31,7 +32,7 @@ public abstract class BaseViewHolder<MESSAGE extends EMessage> extends RecyclerV
     public ImageView mine_avater;
     public TextView mine_name;
     public RelativeLayout mine_content_container;
-    public RelativeLayout mine_container;
+    public LinearLayout mine_container;
     public SendStateView state_view;
     public ImageView other_avater;
     public TextView other_name;
@@ -47,7 +48,7 @@ public abstract class BaseViewHolder<MESSAGE extends EMessage> extends RecyclerV
         this.mine_avater = (ImageView) itemView.findViewById(R.id.mine_avater);
         this.mine_name = (TextView) itemView.findViewById(R.id.mine_name);
         this.mine_content_container = (RelativeLayout) itemView.findViewById(R.id.mine_content_container);
-        this.mine_container = (RelativeLayout) itemView.findViewById(R.id.mine_container);
+        this.mine_container = (LinearLayout) itemView.findViewById(R.id.mine_container);
         this.state_view = (SendStateView) itemView.findViewById(R.id.state_view);
         this.other_avater = (ImageView) itemView.findViewById(R.id.other_avater);
         this.other_name = (TextView) itemView.findViewById(R.id.other_name);
@@ -56,7 +57,6 @@ public abstract class BaseViewHolder<MESSAGE extends EMessage> extends RecyclerV
         this.other_container = (RelativeLayout) itemView.findViewById(R.id.other_container);
         this.chat_container = (RelativeLayout) itemView.findViewById(R.id.chat_container);
     }
-
 
     public void bindData(MESSAGE data, boolean mIsSelected, EUser mine, EUser other) {
         this.mIsSelected = mIsSelected;
@@ -79,18 +79,18 @@ public abstract class BaseViewHolder<MESSAGE extends EMessage> extends RecyclerV
         //将容器交给子类实现
         this.mine_content_container.removeAllViews();
         this.other_content_container.removeAllViews();
-        bindDateToChild(data, this.mine_content_container, this.other_content_container);
 
+        bindDateToChild(data, this.mine_content_container, this.other_content_container);
 
     }
 
 
     public void setHeader(MESSAGE data) {
-        this.header.setText(data.getTimeString());
+        this.header.setText(data.getHeaderString());
     }
 
     public void setmIsSelected(MESSAGE data) {
-        is_select.setBackgroundResource(data.isChecked() ? R.mipmap.item_checked : R.mipmap.item_uncheck);
+        is_select.setBackgroundResource(data.isSelected() ? R.mipmap.item_checked : R.mipmap.item_uncheck);
     }
 
     public void setMineInfo(EUser user) {
@@ -104,6 +104,7 @@ public abstract class BaseViewHolder<MESSAGE extends EMessage> extends RecyclerV
                 this.mine_avater.setVisibility(View.VISIBLE);
                 Glide.with(this.mine_avater.getContext())
                         .load(user.getAvatarPath())
+                        .error(R.mipmap.avatar_spiderman)
                         .into(this.mine_avater);
             }
             if (TextUtils.isEmpty(user.getNickname())) {
@@ -126,6 +127,7 @@ public abstract class BaseViewHolder<MESSAGE extends EMessage> extends RecyclerV
                 this.other_avater.setVisibility(View.VISIBLE);
                 Glide.with(this.other_avater.getContext())
                         .load(user.getAvatarPath())
+                        .error(R.mipmap.avatar_superman)
                         .into(this.other_avater);
             }
 
@@ -144,8 +146,9 @@ public abstract class BaseViewHolder<MESSAGE extends EMessage> extends RecyclerV
         } else if (status == MessageStatus.SEND_GOING) {
             this.state_view.setVisibility(View.VISIBLE);
             this.state_view.setCurrentState(1);
+        } else if (status == MessageStatus.SEND_FAILED) {
+            this.state_view.setCurrentState(2);
         }
-
     }
 
 

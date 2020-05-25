@@ -22,8 +22,10 @@ public class TextViewHolder extends BaseViewHolder {
         TextView textView = (TextView) getView(R.layout.view_chat_text);
         textView.setText(data.getContent());
         if (data.getMessageType() == MessageType.SEND_TEXT) {
+            textView.setBackgroundResource(R.drawable.chat_gray_left_bg);
             mineContainer.addView(textView);
         } else {
+            textView.setBackgroundResource(R.drawable.chat_blue_right_bg);
             otherContainer.addView(textView);
         }
     }

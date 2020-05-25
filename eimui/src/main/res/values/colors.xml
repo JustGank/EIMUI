@@ -5,6 +5,12 @@
 
     <color name="white">#ffffff</color>
 
-    <color name="sender_text_color">#000000</color>
+    <color name="message_text_clor">#000000</color>
+
+    <color name="message_title_color">#000000</color>
+
+    <color name="message_subtitle_color">#b2b2b2</color>
+
+    <color name="message_file_title_color">#ffffff</color>
 
 </resources>

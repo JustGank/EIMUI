@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="5dp"
-        android:textColor="@color/sender_text_color"
+        android:textColor="@color/message_text_clor"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/voice_icon"
         android:textSize="22dp" />
