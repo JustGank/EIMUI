@@ -12,13 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.xjl.eimui_demo.MainActivity">
+        <activity android:name="com.xjl.eimui_demo.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activity.ChatActivity" />
+
+        <activity android:name=".activity.InputTestActivity" />
 
     </application>
 

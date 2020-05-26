@@ -65,6 +65,11 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
         holder.bindData(list.get(position), isSelectedMode, mine, other, position);
     }
 
+    public void setList(List<EMessage> list) {
+        this.list = list;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemViewType(int position) {
         return list.get(position).getMessageType();
