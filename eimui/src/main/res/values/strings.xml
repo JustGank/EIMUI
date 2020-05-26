@@ -14,6 +14,7 @@
 
     <string name="chat_resend">Resend</string>
     <string name="invalid_file">Invalid file</string>
+    <string name="redownload_file">Redownload file</string>
     <string name="chat_request_download_url">Requesting the URL for downloading...</string>
 
 </resources>

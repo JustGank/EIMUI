@@ -33,7 +33,7 @@ public class AudioRecordStateView extends RelativeLayout implements RecordStateV
 
 
     private void initView() {
-        LayoutInflater.from(getContext()).inflate(R.layout.view_chat_voice_record_state, this);
+        LayoutInflater.from(getContext()).inflate(R.layout.view_voice_record_state, this);
         wave_view = findViewById(R.id.wave_view);
         wave_view.setColor("#717cfd");
         chat_record_state_text = findViewById(R.id.chat_record_state_text);

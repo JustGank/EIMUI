@@ -2,7 +2,6 @@ package com.xjl.eimui.messagelist.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -19,8 +18,6 @@ import com.xjl.eimui.R;
  */
 
 public class SendStateView extends RelativeLayout {
-
-    private final String TAG = SendStateView.class.getSimpleName();
 
     private ImageView error_img;
     private TextView error_text;
@@ -40,9 +37,9 @@ public class SendStateView extends RelativeLayout {
     }
 
     private void initView() {
-        LayoutInflater.from(getContext()).inflate(R.layout.view_chat_send_state, this);
+        LayoutInflater.from(getContext()).inflate(R.layout.view_message_send_state, this);
         error_img = (ImageView) findViewById(R.id.error_img);
-        error_text = (TextView) findViewById(R.id.error_text);
+        error_text = (TextView) findViewById(R.id.item_chat_error_text);
         progress_bar = (ProgressBar) findViewById(R.id.progress_bar);
     }
 
@@ -55,7 +52,6 @@ public class SendStateView extends RelativeLayout {
     }
 
     public void showError() {
-        Log.e(TAG, "SendStateView showError()");
         currentState = 2;
         this.setVisibility(VISIBLE);
         this.error_text.setVisibility(VISIBLE);

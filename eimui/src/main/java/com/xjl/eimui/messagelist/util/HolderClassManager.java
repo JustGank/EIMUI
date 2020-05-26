@@ -4,7 +4,8 @@ import android.util.Log;
 
 import com.xjl.eimui.messagelist.bean.MessageType;
 import com.xjl.eimui.messagelist.holder.BaseViewHolder;
-import com.xjl.eimui.messagelist.holder.ErrorViewHolder;
+import com.xjl.eimui.messagelist.holder.RedownLoadViewHolder;
+import com.xjl.eimui.messagelist.holder.SendErrorViewHolder;
 import com.xjl.eimui.messagelist.holder.FileViewHolder;
 import com.xjl.eimui.messagelist.holder.ImageViewHolder;
 import com.xjl.eimui.messagelist.holder.LocationViewHolder;
@@ -42,6 +43,9 @@ public enum HolderClassManager implements MessageType {
 
         classMap.put(SEND_LOCATION, LocationViewHolder.class);
         classMap.put(RECEIVE_LOCATION, LocationViewHolder.class);
+
+        classMap.put(SEND_FAIL_MESSAGE, SendErrorViewHolder.class);
+        classMap.put(RECEIVE_REDOWNLOAD, RedownLoadViewHolder.class);
     }
 
     public HashMap<Integer, Class<? extends BaseViewHolder>> getClassMap() {
@@ -52,7 +56,7 @@ public enum HolderClassManager implements MessageType {
         Class<? extends BaseViewHolder> holderClass = classMap.get(messageType);
         if (holderClass == null) {
             Log.e(TAG, "getViewHolderClass is null");
-            holderClass = ErrorViewHolder.class;
+            holderClass = SendErrorViewHolder.class;
         }
         return holderClass;
     }

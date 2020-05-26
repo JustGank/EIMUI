@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide;
 import com.xjl.eimui.R;
 import com.xjl.eimui.messagelist.bean.EMessage;
 import com.xjl.eimui.messagelist.bean.MessageType;
-import com.xjl.eimui.util.ScreenUtils;
+import com.xjl.emedia.utils.ScreenUtil;
 
 import androidx.annotation.NonNull;
 
@@ -21,19 +21,19 @@ public class ImageViewHolder<MESSAGE extends EMessage> extends BaseViewHolder {
 
     public ImageViewHolder(Context context, @NonNull View itemView) {
         super(context, itemView);
-        imageWidth = ScreenUtils.dp2px(context, 120);
-        imageHeight = ScreenUtils.dp2px(context, 180);
+        imageWidth = ScreenUtil.dip2px(context, 120);
+        imageHeight = ScreenUtil.dip2px(context, 180);
     }
 
     @Override
     public void bindDateToChild(EMessage data, ViewGroup mineContainer, ViewGroup otherContainer) {
-
-        ImageView imageView = (ImageView) LayoutInflater.from(context).inflate(R.layout.view_chat_imgae, null);
+        ImageView imageView = (ImageView) LayoutInflater.from(context).inflate(R.layout.view_message_image, null);
         Glide.with(context)
                 .load(data.getMediaFilePath())
                 .centerCrop()
                 .into(imageView);
-
+        imageView.setOnClickListener(this);
+        imageView.setOnLongClickListener(this);
         if (MessageType.isReceivedMessage(data.getMessageType())) {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(imageWidth, imageHeight);
             otherContainer.addView(imageView, layoutParams);

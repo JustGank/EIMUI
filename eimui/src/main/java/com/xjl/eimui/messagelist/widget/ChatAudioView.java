@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xjl.eimui.R;
-import com.xjl.eimui.util.ScreenUtils;
+import com.xjl.emedia.utils.ScreenUtil;
 
 ;
 
@@ -40,26 +40,26 @@ public class ChatAudioView extends RelativeLayout {
     public ChatAudioView(Context context)
     {
         super(context);
-        minLength = ScreenUtils.dp2px(getContext(), minLengthDP);
-        maxLength = ScreenUtils.dp2px(getContext(), maxLengthDP);
+        minLength = ScreenUtil.dip2px(getContext(), minLengthDP);
+        maxLength = ScreenUtil.dip2px(getContext(), maxLengthDP);
         initView(isRight);
     }
 
     public ChatAudioView(Context context, boolean isRight) {
         super(context);
         this.isRight = isRight;
-        minLength = ScreenUtils.dp2px(getContext(), minLengthDP);
-        maxLength = ScreenUtils.dp2px(getContext(), maxLengthDP);
+        minLength = ScreenUtil.dip2px(getContext(), minLengthDP);
+        maxLength = ScreenUtil.dip2px(getContext(), maxLengthDP);
         initView(this.isRight);
     }
 
     private void initView(boolean mine) {
         if(mine)
         {
-            LayoutInflater.from(getContext()).inflate(R.layout.view_chat_audio_sender, this);
+            LayoutInflater.from(getContext()).inflate(R.layout.view_message_audio_sender, this);
         }else
         {
-            LayoutInflater.from(getContext()).inflate(R.layout.view_chat_audio_recepter, this);
+            LayoutInflater.from(getContext()).inflate(R.layout.view_message_audio_recepter, this);
         }
 
         audio_container = (RelativeLayout) this.findViewById(R.id.audio_container);

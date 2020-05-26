@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/file_redown_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:padding="10dp"
+    android:background="@drawable/chat_blue_right_bg"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/item_chat_error_imageview"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@mipmap/warning" />
+
+    <TextView
+        android:id="@+id/item_chat_error_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="@string/invalid_file"
+        android:textColor="@color/subject_text_color"
+        android:textSize="20sp" />
+
+</LinearLayout>
+

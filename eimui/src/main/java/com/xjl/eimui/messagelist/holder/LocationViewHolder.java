@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 import com.xjl.eimui.R;
 import com.xjl.eimui.messagelist.bean.EMessage;
 import com.xjl.eimui.messagelist.bean.MessageType;
-import com.xjl.eimui.util.ScreenUtils;
+import com.xjl.emedia.utils.ScreenUtil;
 
 import androidx.annotation.NonNull;
 
@@ -32,7 +32,7 @@ public class LocationViewHolder<MESSAGE extends EMessage> extends BaseViewHolder
 
     @Override
     public void bindDateToChild(EMessage data, ViewGroup mineContainer, ViewGroup otherContainer) {
-        LinearLayout container = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.view_chat_location, null);
+        LinearLayout container = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.view_message_location, null);
         this.title = container.findViewById(R.id.title);
         this.title.setText(data.getContent());
 
@@ -47,7 +47,10 @@ public class LocationViewHolder<MESSAGE extends EMessage> extends BaseViewHolder
         this.cover = container.findViewById(R.id.cover);
         Glide.with(context).load(data.getMediaFilePath()).centerCrop().into(this.cover);
 
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ScreenUtils.dp2px(context, 220), RelativeLayout.LayoutParams.WRAP_CONTENT);
+        container.setOnClickListener(this);
+        container.setOnLongClickListener(this);
+
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ScreenUtil.dip2px(context, 220), RelativeLayout.LayoutParams.WRAP_CONTENT);
 
         if (MessageType.isReceivedMessage(data.getMessageType())) {
             otherContainer.addView(container,layoutParams);

@@ -1,4 +1,4 @@
-package com.xjl.eimui_demo;
+package com.xjl.eimui_demo.activity;
 
 import android.Manifest;
 import android.content.Context;
@@ -28,6 +28,7 @@ import com.xjl.eimui.messagelist.bean.MessageStatus;
 import com.xjl.eimui.messagelist.bean.MessageType;
 import com.xjl.eimui.messagelist.listener.OperationListener;
 import com.xjl.eimui.util.ToastUtils;
+import com.xjl.eimui_demo.R;
 import com.xjl.eimui_demo.bean.IMessage;
 import com.xjl.eimui_demo.bean.IUser;
 import com.xjl.eimui_demo.operation.LocationOperation;
@@ -42,7 +43,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
-public class MainActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
@@ -128,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
 //        imageMessage2.setMediaFilePath(testImgUrl2);
 //        imageMessage2.setMessageStatus(MessageStatus.SEND_FAILED);
 //        messages.add(imageMessage2);
-//
-//        //短视频短信实例
+
+        //短视频短信实例
 //        IMessage videoMessage1 = new IMessage(String.valueOf(++messageId), mine, other, MessageType.RECEIVE_VIDEO);
 //        videoMessage1.setMediaFilePath(testImgUrl1);
 //        messages.add(videoMessage1);
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
 //        voiceMessage2.setDuration(60);
 //        voiceMessage2.setMessageStatus(MessageStatus.SEND_SUCCEED);
 //        messages.add(voiceMessage2);
-//        IMessage voiceMessage3 = new IMessage(String.valueOf(++messageId), mine, other, MessageType.SEND_VOICE);
+//        IMessage voiceMessage3= new IMessage(String.valueOf(++messageId), mine, other, MessageType.SEND_VOICE);
 //        voiceMessage3.setDuration(60);
 //        voiceMessage3.setMessageStatus(MessageStatus.SEND_FAILED);
 //        messages.add(voiceMessage3);
@@ -164,25 +165,16 @@ public class MainActivity extends AppCompatActivity {
 //        messages.add(locationMessage2);
 
         //文件短信实例
-//        IMessage fileMessage1 = new IMessage(String.valueOf(++messageId), mine, other, MessageType.RECEIVE_FILE);
-//        fileMessage1.setContent("Hello World.java");
-//        messages.add(fileMessage1);
-//
-//        IMessage fileMessage2 = new IMessage(String.valueOf(++messageId), mine, other, MessageType.SEND_FILE);
-//        fileMessage2.setContent("Hello World.pptx");
-//        fileMessage2.setProgress(30);
-//        fileMessage2.setMessageStatus(MessageStatus.SEND_FAILED);
-//        messages.add(fileMessage2);
+        IMessage fileMessage1 = new IMessage(String.valueOf(++messageId), mine, other, MessageType.RECEIVE_FILE);
+        fileMessage1.setContent("Hello World.java");
+        messages.add(fileMessage1);
 
-        //错误信息实例
-        IMessage errorMessage1= new IMessage(String.valueOf(++messageId), mine, other, MessageType.RECEIVE_REDOWNLOAD);
-        messages.add(errorMessage1);
+        IMessage fileMessage2 = new IMessage(String.valueOf(++messageId), mine, other, MessageType.SEND_FILE);
+        fileMessage2.setContent("Hello World.pptx");
+        fileMessage2.setMessageStatus(MessageStatus.SEND_FAILED);
+        messages.add(fileMessage2);
 
-        IMessage errorMessage2= new IMessage(String.valueOf(++messageId), mine, other, MessageType.SEND_FAIL_MESSAGE);
-        errorMessage2.setMessageStatus(MessageStatus.SEND_SUCCEED);
-        messages.add(errorMessage2);
-
-        adapter = new EMessageAdapter(MainActivity.this, messages, mine, other);
+        adapter = new EMessageAdapter(ChatActivity.this, messages, mine, other);
         adapter.setOperationListener(operationListener);
         recycler.setAdapter(adapter);
 
@@ -192,82 +184,13 @@ public class MainActivity extends AppCompatActivity {
     OperationListener<IMessage> operationListener = new OperationListener<IMessage>() {
 
         @Override
-        public void onHeaderClickListener(int position, View v, IMessage data) {
-            Log.e(TAG, "onHeaderClickListener position=" + position + " data=" + data.getMessageType());
-        }
-
-        @Override
-        public void onHeaderLongClickListener(int position, View v, IMessage data) {
-            Log.e(TAG, "onHeaderLongClickListener position=" + position + " data=" + data.getMessageType());
-        }
-
-        @Override
-        public void onOtherInfoClickListener(int position, View v, IMessage data) {
-            Log.e(TAG, "onOtherInfoClickListener position=" + position + " data=" + data.getMessageType());
-        }
-
-        @Override
-        public void onOtherInfoLongClickListener(int position, View v, IMessage data) {
-            Log.e(TAG, "onOtherInfoLongClickListener position=" + position + " data=" + data.getMessageType());
-        }
-
-        @Override
-        public void onMineInfoClickListener(int position, View v, IMessage data) {
-            Log.e(TAG, "onMineInfoClickListener position=" + position + " data=" + data.getMessageType());
-        }
-
-        @Override
-        public void onMineInfoLongClickListener(int position, View v, IMessage data) {
-            Log.e(TAG, "onMineInfoClickListener position=" + position + " data=" + data.getMessageType());
-        }
-
-        @Override
         public void onItemClickListener(int position, View v, IMessage data) {
-
-            switch (data.getMessageType()) {
-                case MessageType.RECEIVE_TEXT:
-                case MessageType.SEND_TEXT:
-                    Log.e(TAG, "onItemClickListener position=" + position + " data=" + data.getContent());
-                    break;
-                case MessageType.RECEIVE_IMAGE:
-                case MessageType.SEND_IMAGE:
-                    Log.e(TAG, "onItemClickListener position=" + position + " data=" + data.getMediaFilePath());
-                    break;
-
-                case MessageType.RECEIVE_VIDEO:
-                case MessageType.SEND_VIDEO:
-                    Log.e(TAG, "onItemClickListener position=" + position + " data=" + data.getMessageType());
-                    break;
-                case MessageType.RECEIVE_VOICE:
-                case MessageType.SEND_VOICE:
-                    Log.e(TAG, "onItemClickListener position=" + position + " data=" + data.getDuration());
-                    break;
-                case MessageType.RECEIVE_LOCATION:
-                case MessageType.SEND_LOCATION:
-                    Log.e(TAG, "onItemClickListener position=" + position + " data=" + data.getContent());
-                    break;
-                case MessageType.RECEIVE_FILE:
-                case MessageType.SEND_FILE:
-                    if (v.getId() == R.id.item_chat_file_download) {
-                        adapter.getItem(position).setProgress(5 + adapter.getItem(position).getProgress());
-                        adapter.notifyItemChanged(position);
-                    } else if (v.getId() == R.id.item_chat_file_container) {
-                        Log.e(TAG, "onItemClickListener position=" + position + " current Progress=" + data.getProgress());
-                    }
-                    break;
-            }
-
+            Log.e(TAG, "onItemClickListener position=" + position + " data=" + data.getMessageType());
         }
 
         @Override
         public void onItemLongClickListener(int position, View v, IMessage data) {
             Log.e(TAG, "onItemLongClickListener position=" + position + " data=" + data.getMessageType());
-        }
-
-        @Override
-        public void onStateViewClickListener(int position, View v, IMessage data) {
-            Log.e(TAG, "onStateViewClickListener position=" + position + " data=" + data.getMessageStatus());
-
         }
     };
 
@@ -316,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onFrequenceClick(long downTime, long upTime) {
-            ToastUtils.showMessage(MainActivity.this, "您的点击过快");
+            ToastUtils.showMessage(ChatActivity.this, "您的点击过快");
         }
     };
 
@@ -325,14 +248,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onSendClicked(String content) {
             super.onSendClicked(content);
-            ToastUtils.showMessage(MainActivity.this, "您点击了发送");
+            ToastUtils.showMessage(ChatActivity.this, "您点击了发送");
             inputbar.getEdittext().setText("");
         }
 
         @Override
         public void onRightImg2Clicked(ImageView img) {
             super.onRightImg2Clicked(img);
-            ToastUtils.showMessage(MainActivity.this, "为您自动装载聊天实例");
+            ToastUtils.showMessage(ChatActivity.this, "为您自动装载聊天实例");
 
         }
     };
@@ -349,5 +272,6 @@ public class MainActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
 
 }

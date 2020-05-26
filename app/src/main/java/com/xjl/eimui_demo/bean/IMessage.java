@@ -24,7 +24,7 @@ public class IMessage implements EMessage {
 
     private long duration = 0;
 
-    private int process = 0;
+    private int progress = 0;
 
     private MessageStatus status;
 
@@ -134,11 +134,18 @@ public class IMessage implements EMessage {
 
     @Override
     public int getProgress() {
-        return process > 0 ? process : 1;
+        if (progress < 0) {
+            return progress = 0;
+        } else if (progress < 100) {
+            return progress;
+        } else {
+            return 100;
+        }
     }
 
-    public void setProcess(int process) {
-        this.process = process;
+    @Override
+    public void setProgress(int progress) {
+        this.progress = progress;
     }
 
     @Override

@@ -19,8 +19,10 @@ public class TextViewHolder extends BaseViewHolder {
 
     @Override
     public void bindDateToChild(EMessage data, ViewGroup mineContainer, ViewGroup otherContainer) {
-        TextView textView = (TextView) getView(R.layout.view_chat_text);
+        TextView textView = (TextView) getView(R.layout.view_message_text);
         textView.setText(data.getContent());
+        textView.setOnClickListener(this);
+        textView.setOnLongClickListener(this);
         if (data.getMessageType() == MessageType.SEND_TEXT) {
             textView.setBackgroundResource(R.drawable.chat_gray_left_bg);
             mineContainer.addView(textView);

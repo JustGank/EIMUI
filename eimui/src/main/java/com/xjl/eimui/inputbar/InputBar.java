@@ -43,7 +43,7 @@ public class InputBar extends LinearLayout implements View.OnClickListener {
     }
 
     private void initView() {
-        LayoutInflater.from(getContext()).inflate(R.layout.view_chat_inputbar, this);
+        LayoutInflater.from(getContext()).inflate(R.layout.view_message_inputbar, this);
         left_img1 = (ImageView) this.findViewById(R.id.left_img1);
         left_img1.setOnClickListener(this);
 

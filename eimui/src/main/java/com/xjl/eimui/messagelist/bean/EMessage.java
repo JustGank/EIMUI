@@ -29,6 +29,8 @@ public interface EMessage {
 
     int getProgress();
 
+    void setProgress(int progress);
+
     MessageStatus getMessageStatus();
 
     void setMessageStatus(MessageStatus status);

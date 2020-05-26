@@ -8,7 +8,7 @@ import com.xjl.eimui.R;
 import com.xjl.eimui.messagelist.bean.EMessage;
 import com.xjl.eimui.messagelist.bean.MessageType;
 import com.xjl.eimui.messagelist.widget.ChatAudioView;
-import com.xjl.eimui.util.ScreenUtils;
+import com.xjl.eimui.util.DefaluLayoutParams;
 
 import androidx.annotation.NonNull;
 
@@ -23,8 +23,11 @@ public class VoiceViewHolder<MESSAGE extends EMessage> extends BaseViewHolder {
         boolean isReceived = MessageType.isReceivedMessage(data.getMessageType());
         ChatAudioView chatAudioView = new ChatAudioView(context, !isReceived);
         chatAudioView.setTime((int) data.getDuration());
-        int padding = ScreenUtils.getDefaultMessagePadding(context);
+        int padding = DefaluLayoutParams.getDefaultMessagePadding(context);
         chatAudioView.setPadding(padding, padding, padding, padding);
+
+        chatAudioView.setOnClickListener(this);
+        chatAudioView.setOnLongClickListener(this);
 
         if (isReceived) {
             chatAudioView.setBackgroundResource(R.drawable.chat_gray_left_bg);

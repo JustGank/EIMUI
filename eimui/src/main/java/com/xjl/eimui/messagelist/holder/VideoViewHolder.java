@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide;
 import com.xjl.eimui.R;
 import com.xjl.eimui.messagelist.bean.EMessage;
 import com.xjl.eimui.messagelist.bean.MessageType;
-import com.xjl.eimui.util.ScreenUtils;
+import com.xjl.emedia.utils.ScreenUtil;
 
 import androidx.annotation.NonNull;
 
@@ -25,17 +25,23 @@ public class VideoViewHolder<MESSAGE extends EMessage> extends BaseViewHolder {
     public VideoViewHolder(Context context, @NonNull View itemView) {
         super(context, itemView);
 
-        imageWidth = ScreenUtils.dp2px(context, 120);
-        imageHeight = ScreenUtils.dp2px(context, 180);
+        imageWidth = ScreenUtil.dip2px(context, 120);
+        imageHeight = ScreenUtil.dip2px(context, 180);
 
     }
 
     @Override
     public void bindDateToChild(EMessage data, ViewGroup mineContainer, ViewGroup otherContainer) {
-        RelativeLayout relativeLayout = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.view_chat_video, null);
+        RelativeLayout relativeLayout = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.view_message_video, null);
         item_chat_video_cover = (ImageView) relativeLayout.findViewById(R.id.item_chat_video_cover);
         Glide.with(context).load(data.getMediaFilePath()).centerCrop().into(item_chat_video_cover);
         item_chat_video_player = (ImageView) relativeLayout.findViewById(R.id.item_chat_video_player);
+
+        item_chat_video_cover.setOnClickListener(this);
+        item_chat_video_cover.setOnLongClickListener(this);
+
+        item_chat_video_player.setOnClickListener(this);
+        item_chat_video_player.setOnLongClickListener(this);
 
         if (MessageType.isReceivedMessage(data.getMessageType())) {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(imageWidth, imageHeight);

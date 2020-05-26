@@ -23,6 +23,9 @@ public interface MessageType {
     int SEND_LOCATION = 11;
     int RECEIVE_LOCATION = 12;
 
+    int SEND_FAIL_MESSAGE = 13;
+    int RECEIVE_REDOWNLOAD = 14;
+
     /**
      * 根据设定单数类型 为发送出去的信息
      */

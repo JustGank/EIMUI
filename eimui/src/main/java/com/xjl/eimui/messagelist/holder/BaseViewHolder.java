@@ -16,12 +16,13 @@ import com.xjl.eimui.messagelist.bean.EMessage;
 import com.xjl.eimui.messagelist.bean.EUser;
 import com.xjl.eimui.messagelist.bean.MessageStatus;
 import com.xjl.eimui.messagelist.bean.MessageType;
+import com.xjl.eimui.messagelist.listener.OperationListener;
 import com.xjl.eimui.messagelist.widget.SendStateView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public abstract class BaseViewHolder<MESSAGE extends EMessage> extends RecyclerView.ViewHolder {
+public abstract class BaseViewHolder<MESSAGE extends EMessage> extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
     Context context;
     //是否被选中
@@ -39,27 +40,88 @@ public abstract class BaseViewHolder<MESSAGE extends EMessage> extends RecyclerV
     public RelativeLayout other_content_container;
     public RelativeLayout other_container;
     public RelativeLayout chat_container;
+    public OperationListener<MESSAGE> operationListener;
+    public MESSAGE data;
+    public int position;
 
     public BaseViewHolder(Context context, @NonNull View itemView) {
         super(itemView);
         this.context = context;
         this.header = (TextView) itemView.findViewById(R.id.header);
+        this.header.setOnClickListener(this);
+        this.header.setOnLongClickListener(this);
         this.is_select = (ImageView) itemView.findViewById(R.id.is_select);
+        this.is_select.setOnClickListener(this);
+        this.is_select.setOnLongClickListener(this);
         this.mine_avater = (ImageView) itemView.findViewById(R.id.mine_avater);
+        this.mine_avater.setOnClickListener(this);
+        this.mine_avater.setOnLongClickListener(this);
         this.mine_name = (TextView) itemView.findViewById(R.id.mine_name);
+        this.mine_name.setOnClickListener(this);
+        this.mine_name.setOnLongClickListener(this);
         this.mine_content_container = (RelativeLayout) itemView.findViewById(R.id.mine_content_container);
         this.mine_container = (LinearLayout) itemView.findViewById(R.id.mine_container);
         this.state_view = (SendStateView) itemView.findViewById(R.id.state_view);
+        this.state_view.setOnClickListener(this);
+        this.state_view.setOnLongClickListener(this);
         this.other_avater = (ImageView) itemView.findViewById(R.id.other_avater);
+        this.other_avater.setOnClickListener(this);
+        this.other_avater.setOnLongClickListener(this);
         this.other_name = (TextView) itemView.findViewById(R.id.other_name);
+        this.other_name.setOnClickListener(this);
+        this.other_name.setOnLongClickListener(this);
         this.other_content_container = (RelativeLayout) itemView.findViewById(R.id.other_content_container);
-
         this.other_container = (RelativeLayout) itemView.findViewById(R.id.other_container);
         this.chat_container = (RelativeLayout) itemView.findViewById(R.id.chat_container);
+
     }
 
-    public void bindData(MESSAGE data, boolean mIsSelected, EUser mine, EUser other) {
+    public void setOperationListener(OperationListener<MESSAGE> operationListener) {
+        this.operationListener = operationListener;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (operationListener == null) {
+            return;
+        }
+        int viewId = v.getId();
+        if (viewId == R.id.header) {
+            operationListener.onHeaderClickListener(position, v, data);
+        } else if (viewId == R.id.mine_avater || viewId == R.id.mine_name) {
+            operationListener.onMineInfoClickListener(position, v, data);
+        } else if (viewId == R.id.other_avater || viewId == R.id.other_name) {
+            operationListener.onOtherInfoClickListener(position, v, data);
+        } else if (viewId == R.id.state_view) {
+            operationListener.onStateViewClickListener(position, v, data);
+        } else {
+            operationListener.onItemClickListener(position, v, data);
+        }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        if (operationListener == null) {
+            return false;
+        }
+
+        int viewId = v.getId();
+        if (viewId == R.id.header) {
+            operationListener.onHeaderLongClickListener(position, v, data);
+        } else if (viewId == R.id.mine_avater || viewId == R.id.mine_name) {
+            operationListener.onMineInfoLongClickListener(position, v, data);
+        } else if (viewId == R.id.other_avater || viewId == R.id.other_name) {
+            operationListener.onOtherInfoLongClickListener(position, v, data);
+        } else {
+            operationListener.onItemLongClickListener(position, v, data);
+        }
+        return true;
+    }
+
+    public void bindData(MESSAGE data, boolean mIsSelected, EUser mine, EUser other, int position) {
         this.mIsSelected = mIsSelected;
+        this.data = data;
+        this.position = position;
         //初始化头部分 一般用于显示时间或者提示性信息
         setHeader(data);
         //在选择模式下是否被选中
@@ -161,4 +223,5 @@ public abstract class BaseViewHolder<MESSAGE extends EMessage> extends RecyclerV
         }
         return view;
     }
+
 }
