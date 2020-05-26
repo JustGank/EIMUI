@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import com.xjl.eimui.R;
 import com.xjl.eimui.messagelist.bean.EMessage;
 import com.xjl.eimui.messagelist.bean.EUser;
-import com.xjl.eimui.messagelist.holder.BaseViewHolder;
-import com.xjl.eimui.messagelist.holder.SendErrorViewHolder;
+import com.xjl.eimui.messagelist.holder.MessageViewHolderBase;
+import com.xjl.eimui.messagelist.holder.ViewHolderSendErrorMessage;
 import com.xjl.eimui.messagelist.listener.OperationListener;
 import com.xjl.eimui.messagelist.util.HolderClassManager;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adapter<BaseViewHolder> {
+public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adapter<MessageViewHolderBase> {
 
     private static final String TAG = "MessageAdapter";
 
@@ -52,8 +52,8 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
 
     @NonNull
     @Override
-    public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        BaseViewHolder holder = getHolder(parent, HolderClassManager.INSTANCE.getViewHolderClass(viewType));
+    public MessageViewHolderBase onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        MessageViewHolderBase holder = getHolder(parent, HolderClassManager.INSTANCE.getViewHolderClass(viewType));
         Log.e(TAG, "holder class" + holder.getClass());
         if (this.operationListener != null)
             holder.setOperationListener(this.operationListener);
@@ -61,7 +61,7 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MessageViewHolderBase holder, int position) {
         holder.bindData(list.get(position), isSelectedMode, mine, other, position);
     }
 
@@ -79,9 +79,9 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
         return list.get(position);
     }
 
-    public <HOLDER extends BaseViewHolder> BaseViewHolder getHolder(ViewGroup parent, Class<HOLDER> holderClass) {
+    public <HOLDER extends MessageViewHolderBase> MessageViewHolderBase getHolder(ViewGroup parent, Class<HOLDER> holderClass) {
         View view = inflater.inflate(R.layout.item_messagelist_container, parent, false);
-        BaseViewHolder holder = null;
+        MessageViewHolderBase holder = null;
         try {
             Constructor<HOLDER> constructor = holderClass.getDeclaredConstructor(Context.class, View.class);
             holder = constructor.newInstance(context, view);
@@ -91,7 +91,7 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
 
         }
         if (holder == null) {
-            holder = new SendErrorViewHolder(context, view);
+            holder = new ViewHolderSendErrorMessage(context, view);
         }
 
         return holder;

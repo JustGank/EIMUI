@@ -18,7 +18,7 @@ import com.xjl.emedia.utils.ScreenUtil;
 
 import androidx.annotation.NonNull;
 
-public class LocationViewHolder<MESSAGE extends EMessage> extends BaseViewHolder {
+public class ViewHolderLocationMessage<MESSAGE extends EMessage> extends MessageViewHolderBase {
 
     private TextView title;
 
@@ -26,7 +26,7 @@ public class LocationViewHolder<MESSAGE extends EMessage> extends BaseViewHolder
 
     private ImageView cover;
 
-    public LocationViewHolder(Context context, @NonNull View itemView) {
+    public ViewHolderLocationMessage(Context context, @NonNull View itemView) {
         super(context, itemView);
     }
 

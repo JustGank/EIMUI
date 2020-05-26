@@ -11,9 +11,9 @@ import com.xjl.eimui.messagelist.bean.MessageType;
 
 import androidx.annotation.NonNull;
 
-public class TextViewHolder extends BaseViewHolder {
+public class ViewHolderTextMessage extends MessageViewHolderBase {
 
-    public TextViewHolder(Context context, @NonNull View itemView) {
+    public ViewHolderTextMessage(Context context, @NonNull View itemView) {
         super(context, itemView);
     }
 

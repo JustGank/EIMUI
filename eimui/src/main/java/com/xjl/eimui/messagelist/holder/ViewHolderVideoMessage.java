@@ -15,14 +15,14 @@ import com.xjl.emedia.utils.ScreenUtil;
 
 import androidx.annotation.NonNull;
 
-public class VideoViewHolder<MESSAGE extends EMessage> extends BaseViewHolder {
+public class ViewHolderVideoMessage<MESSAGE extends EMessage> extends MessageViewHolderBase {
 
     public ImageView item_chat_video_cover;
     public ImageView item_chat_video_player;
 
     private int imageWidth, imageHeight;
 
-    public VideoViewHolder(Context context, @NonNull View itemView) {
+    public ViewHolderVideoMessage(Context context, @NonNull View itemView) {
         super(context, itemView);
 
         imageWidth = ScreenUtil.dip2px(context, 120);

@@ -12,26 +12,26 @@ import com.xjl.eimui.messagelist.bean.EMessage;
 
 import androidx.annotation.NonNull;
 
-public class RedownLoadViewHolder extends BaseViewHolder {
+public class ViewHolderSendErrorMessage<MESSAGE extends EMessage> extends MessageViewHolderBase {
 
-    private ImageView item_redown_error_imageview;
+    private ImageView item_chat_error_imageview;
 
-    private TextView item_redown_error_text;
+    private TextView item_chat_error_text;
 
-    public RedownLoadViewHolder(Context context, @NonNull View itemView) {
+    public ViewHolderSendErrorMessage(Context context, @NonNull View itemView) {
         super(context, itemView);
     }
 
     @Override
     public void bindDateToChild(EMessage data, ViewGroup mineContainer, ViewGroup otherContainer) {
-        LinearLayout contianer = (LinearLayout) getView(R.layout.view_message_redownload);
-        item_redown_error_imageview = contianer.findViewById(R.id.item_redown_error_imageview);
-        item_redown_error_text = contianer.findViewById(R.id.item_redown_error_text);
+        LinearLayout contianer = (LinearLayout) getView(R.layout.view_message_error);
+        item_chat_error_imageview = contianer.findViewById(R.id.item_chat_error_imageview);
+        item_chat_error_text = contianer.findViewById(R.id.item_chat_error_text);
 
         contianer.setOnClickListener(this);
         contianer.setOnLongClickListener(this);
 
-        otherContainer.addView(contianer);
-    }
+        mineContainer.addView(contianer);
 
+    }
 }

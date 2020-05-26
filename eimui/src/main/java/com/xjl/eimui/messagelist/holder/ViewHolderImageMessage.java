@@ -15,11 +15,11 @@ import com.xjl.emedia.utils.ScreenUtil;
 
 import androidx.annotation.NonNull;
 
-public class ImageViewHolder<MESSAGE extends EMessage> extends BaseViewHolder {
+public class ViewHolderImageMessage<MESSAGE extends EMessage> extends MessageViewHolderBase {
 
     private int imageWidth, imageHeight;
 
-    public ImageViewHolder(Context context, @NonNull View itemView) {
+    public ViewHolderImageMessage(Context context, @NonNull View itemView) {
         super(context, itemView);
         imageWidth = ScreenUtil.dip2px(context, 120);
         imageHeight = ScreenUtil.dip2px(context, 180);

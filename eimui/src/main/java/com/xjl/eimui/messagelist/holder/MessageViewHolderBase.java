@@ -22,7 +22,7 @@ import com.xjl.eimui.messagelist.widget.SendStateView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public abstract class BaseViewHolder<MESSAGE extends EMessage> extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
     Context context;
     //是否被选中
@@ -44,7 +44,7 @@ public abstract class BaseViewHolder<MESSAGE extends EMessage> extends RecyclerV
     public MESSAGE data;
     public int position;
 
-    public BaseViewHolder(Context context, @NonNull View itemView) {
+    public MessageViewHolderBase(Context context, @NonNull View itemView) {
         super(itemView);
         this.context = context;
         this.header = (TextView) itemView.findViewById(R.id.header);

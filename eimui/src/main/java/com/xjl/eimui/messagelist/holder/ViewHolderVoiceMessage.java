@@ -12,9 +12,9 @@ import com.xjl.eimui.util.DefaluLayoutParams;
 
 import androidx.annotation.NonNull;
 
-public class VoiceViewHolder<MESSAGE extends EMessage> extends BaseViewHolder {
+public class ViewHolderVoiceMessage<MESSAGE extends EMessage> extends MessageViewHolderBase {
 
-    public VoiceViewHolder(Context context, @NonNull View itemView) {
+    public ViewHolderVoiceMessage(Context context, @NonNull View itemView) {
         super(context, itemView);
     }
 
