@@ -1,3 +1,2 @@
-include ':chatinput', ':messagelist'
 include ':app'
 include ':eimui'
