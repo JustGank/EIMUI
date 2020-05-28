@@ -6,7 +6,7 @@
     <string name="chat_file">Attachment</string>
     <string name="chat_take_video">Record video</string>
     <string name="chat_location">Location</string>
-
+    <string name="short_time">Message too short</string>
 
 
 

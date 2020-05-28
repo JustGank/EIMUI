@@ -94,7 +94,7 @@ public class MuiltMessageFragment extends BaseMessageFragment {
         messages.add(locationMessage2);
 
         adapter.setList(messages);
-
+        adapter.setSelectedMode(true);
     }
 
 

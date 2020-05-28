@@ -2,11 +2,16 @@ package com.xjl.eimui_demo.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
+import com.xjl.eimui.EIMUI;
 import com.xjl.eimui.inputbar.InputBar;
 import com.xjl.eimui.inputbar.builder.InputBarBuilder;
 import com.xjl.eimui.inputbar.moreoperateion.adapter.InputBarMoreDefaultAdapter;
@@ -18,85 +23,118 @@ import com.xjl.eimui.inputbar.moreoperateion.impl.TakeVideoOperation;
 import com.xjl.eimui.inputbar.recordstate.AudioRecordStateView;
 import com.xjl.eimui.inputbar.recordstate.RecordStateListener;
 import com.xjl.eimui.inputbar.recordstate.RecordTouchListener;
+import com.xjl.eimui.messagelist.adapter.EMessageAdapter;
+import com.xjl.eimui.messagelist.bean.MessageStatus;
+import com.xjl.eimui.messagelist.bean.MessageType;
+import com.xjl.eimui.messagelist.listener.OperationListener;
 import com.xjl.eimui.util.ToastUtils;
-import com.xjl.eimui_demo.Fragment.ErrorMessageFragment;
-import com.xjl.eimui_demo.Fragment.FileMessageFragment;
-import com.xjl.eimui_demo.Fragment.ImageMessageFragment;
-import com.xjl.eimui_demo.Fragment.LocationMessageFragment;
-import com.xjl.eimui_demo.Fragment.MuiltMessageFragment;
-import com.xjl.eimui_demo.Fragment.TextMessageFragment;
-import com.xjl.eimui_demo.Fragment.VideoMessageFragment;
-import com.xjl.eimui_demo.Fragment.VoiceMessageFragment;
 import com.xjl.eimui_demo.R;
+import com.xjl.eimui_demo.bean.IMessage;
+import com.xjl.eimui_demo.bean.TestDataFactory;
 import com.xjl.eimui_demo.operation.LocationOperation;
+import com.xjl.emp3recorder.mp3record.MP3Recorder;
+import com.xjl.emp3recorder.utils.MediaPlayerHepler;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 public class ChatActivity extends AppCompatActivity {
 
-    private static final String TAG = "ChatActivity";
+    private static final String TAG = "InputTestActivity";
+
+    private RecyclerView recycler;
+    public EMessageAdapter adapter;
     private InputBar inputbar;
     private AudioRecordStateView recordstate_view;
     private RecordTouchListener recordTouchListener;
     private InputBarMoreDefaultAdapter inputBarMoreDefaultAdapter;
 
+    private MP3Recorder mp3Recorder;
+    private MediaPlayerHepler mediaPlayerHepler;
+    private File currentAudioFile = null;
+
+    public int messageId = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
-        switchFragment(getIntent().getIntExtra("index", 1));
+        setContentView(R.layout.activity_input);
+
+        initRecycler();
         initInputBar();
+        adapter.setList(TestDataFactory.getTestData(getIntent().getIntExtra("index",1)));
+
+        mp3Recorder = new MP3Recorder(currentAudioFile);
+        mp3Recorder.setOnRecordListener(onRecordListener);
+        mediaPlayerHepler = new MediaPlayerHepler(ChatActivity.this);
+        mediaPlayerHepler.setOnCompleteListener(completionListener);
     }
 
-    private void switchFragment(int index) {
-        Fragment fragment = null;
-        switch (index) {
-            case 0:
-                fragment = new MuiltMessageFragment();
-                break;
-            case 1:
-                fragment = new TextMessageFragment();
-                break;
-            case 2:
-                fragment = new ImageMessageFragment();
-                break;
-            case 3:
-                fragment = new VideoMessageFragment();
-                break;
-            case 4:
-                fragment = new VoiceMessageFragment();
-                break;
-            case 5:
-                fragment = new LocationMessageFragment();
-                break;
-            case 6:
-                fragment = new FileMessageFragment();
-                break;
-            case 7:
-                fragment = new ErrorMessageFragment();
-                break;
-            case 8:
-                startActivity(new Intent(this, InputTestActivity.class));
-                break;
-        }
 
-        if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.frame_layout, fragment);
-            transaction.commitAllowingStateLoss();
-        }
+
+    private void initRecycler() {
+        recycler = (RecyclerView) findViewById(R.id.recycler);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
+        linearLayoutManager.setReverseLayout(true);
+        recycler.setLayoutManager(linearLayoutManager);
+        ((SimpleItemAnimator) recycler.getItemAnimator()).setSupportsChangeAnimations(false);
+        adapter = new EMessageAdapter(ChatActivity.this, new ArrayList<>(), TestDataFactory.mine, TestDataFactory.other);
+        recycler.setAdapter(adapter);
+        adapter.setOperationListener(operationListener);
     }
 
+    OperationListener<IMessage> operationListener = new OperationListener<IMessage>() {
+        @Override
+        public void onItemClickListener(int position, View v, IMessage data) {
+            switch (data.getMessageType()) {
+                case MessageType.RECEIVE_TEXT:
+                case MessageType.SEND_TEXT:
+                    Log.e(TAG, "onItemClickListener position=" + position + " data=" + data.getContent());
+                    break;
+                case MessageType.RECEIVE_IMAGE:
+                case MessageType.SEND_IMAGE:
+                    Log.e(TAG, "onItemClickListener position=" + position + " data=" + data.getMediaFilePath());
+                    break;
+
+                case MessageType.RECEIVE_VIDEO:
+                case MessageType.SEND_VIDEO:
+                    Log.e(TAG, "onItemClickListener position=" + position + " data=" + data.getMessageType());
+                    break;
+                case MessageType.RECEIVE_VOICE:
+                case MessageType.SEND_VOICE:
+                    Log.e(TAG, "onItemClickListener position=" + position + " data=" + data.getDuration());
+                    break;
+                case MessageType.RECEIVE_LOCATION:
+                case MessageType.SEND_LOCATION:
+                    Log.e(TAG, "onItemClickListener position=" + position + " data=" + data.getContent());
+                    break;
+                case MessageType.RECEIVE_FILE:
+                case MessageType.SEND_FILE:
+                    if (v.getId() == R.id.item_chat_file_download) {
+                        adapter.getItem(position).setProgress(5 + adapter.getItem(position).getProgress());
+                        adapter.notifyItemChanged(position);
+                    } else if (v.getId() == R.id.item_chat_file_container) {
+                        Log.e(TAG, "onItemClickListener position=" + position + " current Progress=" + data.getProgress());
+                    }
+                    break;
+            }
+        }
+
+        @Override
+        public void onStateViewClickListener(int position, View v, IMessage data) {
+            Log.e(TAG, "onStateViewClickListener position=" + position + " data=" + data.getMessageStatus());
+
+        }
+    };
 
     private void initInputBar() {
         inputbar = findViewById(R.id.inputbar);
@@ -127,15 +165,46 @@ public class ChatActivity extends AppCompatActivity {
         inputbar.setOnItemClickListener(onItemClickListener);
     }
 
+
+    InputBar.OnItemClickListener onItemClickListener = new InputBar.OnItemClickListener() {
+        @Override
+        public void onSendClicked(String content) {
+            super.onSendClicked(content);
+            IMessage iMessage = new IMessage(String.valueOf(++messageId), TestDataFactory.mine, TestDataFactory.other, MessageType.SEND_TEXT);
+            iMessage.setContent(content);
+            iMessage.setMessageStatus(MessageStatus.SEND_GOING);
+            adapter.addItem(iMessage);
+            inputbar.getEdittext().setText("");
+        }
+
+        @Override
+        public void onRightImg2Clicked(ImageView img) {
+            super.onRightImg2Clicked(img);
+            ToastUtils.showMessage(ChatActivity.this, "您点击了自定义控件按钮");
+        }
+    };
+
+    private boolean isCancelRecord = false;
+    private int lastPlayPosition = -1;
     RecordStateListener recordStateListener = new RecordStateListener() {
         @Override
-        public void onRecordStateChange(int currentState) {
+        public void onRecordStateChange(int currentState) throws IOException {
             switch (currentState) {
                 case RecordStateListener.START_RECORD:
+                    isCancelRecord = false;
+                    currentAudioFile = new File(EIMUI.INSTANCE.getRecordVoicePath() + File.separator + System.currentTimeMillis() + ".mp3");
+                    mp3Recorder.setFile(currentAudioFile);
+                    mp3Recorder.start(60 * 1000);
                     break;
                 case RecordStateListener.CANCEL_RECORD:
+                    isCancelRecord = true;
+                    mp3Recorder.stop();
                     break;
                 case RecordStateListener.RECORD_FINISH:
+                    isCancelRecord = false;
+                    mp3Recorder.stop();
+
+
                     break;
             }
         }
@@ -147,21 +216,62 @@ public class ChatActivity extends AppCompatActivity {
     };
 
 
-    InputBar.OnItemClickListener onItemClickListener = new InputBar.OnItemClickListener() {
+    /**
+     * 音频组件回调
+     */
+    private final int HANDLER_RESET_RECORD_VIEW = 107;
+    private Handler handler = new Handler() {
         @Override
-        public void onSendClicked(String content) {
-            super.onSendClicked(content);
-            ToastUtils.showMessage(ChatActivity.this, "您点击了发送");
-            inputbar.getEdittext().setText("");
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case HANDLER_RESET_RECORD_VIEW:
+                    inputbar.clearFocus();
+                    recordstate_view.dismiss();
+                    break;
+            }
+        }
+    };
+
+    /**
+     * 音频组件回调
+     */
+    MP3Recorder.OnRecordListener onRecordListener = new MP3Recorder.OnRecordListener() {
+        @Override
+        public void onStart() {
         }
 
         @Override
-        public void onRightImg2Clicked(ImageView img) {
-            super.onRightImg2Clicked(img);
-            ToastUtils.showMessage(ChatActivity.this, "为您自动装载聊天实例");
+        public void onStop(File file, long l) {
+            handler.sendEmptyMessage(HANDLER_RESET_RECORD_VIEW);
+            if (isCancelRecord) {
+                file.delete();
+            } else {
+                if (l < 1000 || file.length() < 1536) {
+                    ToastUtils.showMessage(ChatActivity.this, getResources().getString(R.string.short_time));
+                    file.delete();
+                } else {
+                    IMessage iMessage = new IMessage(String.valueOf(++messageId), TestDataFactory.mine, TestDataFactory.other, MessageType.SEND_VOICE);
+                    iMessage.setMediaFilePath(file.getPath());
+                    iMessage.setDuration(l);
+                    iMessage.setMessageStatus(MessageStatus.SEND_GOING);
+                    adapter.addItem(iMessage);
+                }
+            }
+        }
+    };
+
+
+    MediaPlayer.OnCompletionListener completionListener = new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer mp) {
+            if (mediaPlayerHepler != null) {
+                mediaPlayerHepler.stop();
+            }
 
         }
     };
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -175,5 +285,6 @@ public class ChatActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
 
 }

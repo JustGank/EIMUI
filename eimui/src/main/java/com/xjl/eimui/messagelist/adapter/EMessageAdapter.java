@@ -70,6 +70,16 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
         notifyDataSetChanged();
     }
 
+    public void addItem(MESSAGE message) {
+        this.list.add(message);
+        notifyDataSetChanged();
+    }
+
+    public void setSelectedMode(boolean isSelectedMode) {
+        this.isSelectedMode = isSelectedMode;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemViewType(int position) {
         return list.get(position).getMessageType();
@@ -101,6 +111,4 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
 
         return holder;
     }
-
-
 }

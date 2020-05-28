@@ -8,7 +8,7 @@ public enum EIMUI {
 
     INSTANCE;
 
-    private String saveFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+    private String saveFilePath = Environment.getExternalStorageDirectory().getPath();
 
     //图片缓存的位置
     private String takePhotoSavePath = saveFilePath + File.separator + "Images";
@@ -20,6 +20,15 @@ public enum EIMUI {
     private String cacheDirPathCompress = saveFilePath + File.separator + "CompressedImages";
     //文件的位置
     private String cacheDirPathFile = saveFilePath + File.separator + "Files";
+
+    public void setSaveFolderPath(String path) {
+        this.saveFilePath = path;
+        new File(takePhotoSavePath).mkdirs();
+        new File(takePhotoSavePath).mkdirs();
+        new File(cacheDirPathAudio).mkdirs();
+        new File(cacheDirPathCompress).mkdirs();
+        new File(cacheDirPathFile).mkdirs();
+    }
 
     public EIMUI setTakePhotoSavePath(String path) {
         this.takePhotoSavePath = path;
@@ -33,6 +42,10 @@ public enum EIMUI {
     public EIMUI setTakeVideoSavePath(String path) {
         this.takeVideoSavePath = path;
         return INSTANCE;
+    }
+
+    public String getRecordVoicePath() {
+        return cacheDirPathAudio;
     }
 
     public String getTakeVideoSavePath() {

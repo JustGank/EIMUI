@@ -21,9 +21,6 @@
         </activity>
 
         <activity android:name=".activity.ChatActivity" />
-
-        <activity android:name=".activity.InputTestActivity" />
-
     </application>
 
 </manifest>

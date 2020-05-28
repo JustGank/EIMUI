@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xjl.eimui.R;
-import com.xjl.eimui.widget.WaterWaveView;
+import com.xjl.eimui.inputbar.widget.WaterWaveView;
 
 public class AudioRecordStateView extends RelativeLayout implements RecordStateView {
 

@@ -1,4 +1,4 @@
-package com.xjl.eimui.widget;
+package com.xjl.eimui.inputbar.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.xjl.eimui.EIMUI;
 import com.xjl.eimui_demo.R;
 import com.xjl.eimui_demo.adapter.MainAdapter;
 
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
             requestPermissions(permissions, 1001);
         }
 
+        EIMUI.INSTANCE.setSaveFolderPath("EIMUI");
 
         recyclerView = findViewById(R.id.recycler);
 
@@ -58,9 +60,11 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
         adapter.setClickListener((v, position) -> {
+
             Intent intent = new Intent(MainActivity.this, ChatActivity.class);
             intent.putExtra("index", position);
             startActivity(intent);
+
         });
 
     }

@@ -24,10 +24,8 @@ public class ViewHolderVideoMessage<MESSAGE extends EMessage> extends MessageVie
 
     public ViewHolderVideoMessage(Context context, @NonNull View itemView) {
         super(context, itemView);
-
         imageWidth = ScreenUtil.dip2px(context, 120);
         imageHeight = ScreenUtil.dip2px(context, 180);
-
     }
 
     @Override

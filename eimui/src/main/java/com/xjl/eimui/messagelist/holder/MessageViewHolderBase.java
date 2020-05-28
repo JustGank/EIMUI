@@ -125,7 +125,7 @@ public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends Re
         //初始化头部分 一般用于显示时间或者提示性信息
         setHeader(data);
         //在选择模式下是否被选中
-        setmIsSelected(data);
+        setmIsSelected(data,mIsSelected);
         //初始化聊天人员信息
         if (MessageType.isReceivedMessage(data.getMessageType())) {
             this.mine_container.setVisibility(View.GONE);
@@ -151,7 +151,8 @@ public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends Re
         this.header.setText(data.getHeaderString());
     }
 
-    public void setmIsSelected(MESSAGE data) {
+    public void setmIsSelected(MESSAGE data,boolean mIsSelected) {
+        is_select.setVisibility(mIsSelected?View.VISIBLE:View.GONE);
         is_select.setBackgroundResource(data.isSelected() ? R.mipmap.item_checked : R.mipmap.item_uncheck);
     }
 

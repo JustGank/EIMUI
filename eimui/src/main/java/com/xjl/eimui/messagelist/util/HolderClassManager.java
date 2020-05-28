@@ -60,6 +60,4 @@ public enum HolderClassManager implements MessageType {
         }
         return holderClass;
     }
-
-
 }
