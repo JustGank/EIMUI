@@ -2,6 +2,7 @@ package com.xjl.eimui_demo.bean;
 
 import com.xjl.eimui.messagelist.bean.EMessage;
 import com.xjl.eimui.messagelist.bean.EUser;
+import com.xjl.eimui.util.DadaFormatUtil;
 
 import java.util.HashMap;
 
@@ -13,7 +14,7 @@ public class IMessage implements EMessage {
 
     private int messageType;
 
-    private String header = "2020-05-05 18:18:18";
+    private String header  ;
 
     private String content;
 
@@ -40,6 +41,7 @@ public class IMessage implements EMessage {
         this.other = other;
         this.messageType = messageType;
         this.extras = new HashMap<>();
+        this.header=String.valueOf(System.currentTimeMillis());
     }
 
     @Override
@@ -78,7 +80,7 @@ public class IMessage implements EMessage {
 
     @Override
     public String getHeaderString() {
-        return header;
+        return DadaFormatUtil.getTimeInterval(header);
     }
 
     public void setHeaderString(String header) {
@@ -159,6 +161,11 @@ public class IMessage implements EMessage {
     @Override
     public boolean isPlaying() {
         return isPlaying;
+    }
+
+    @Override
+    public void setIsPlaying(boolean b) {
+        this.isPlaying=b;
     }
 
     public void setPlaying(boolean isPlaying) {

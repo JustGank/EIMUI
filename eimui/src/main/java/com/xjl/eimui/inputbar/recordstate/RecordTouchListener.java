@@ -38,8 +38,6 @@ public class RecordTouchListener implements View.OnTouchListener {
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 
-        Log.e(TAG, "MotionEvent=" + event.getAction());
-
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 touchDownTime = System.currentTimeMillis();
@@ -50,7 +48,6 @@ public class RecordTouchListener implements View.OnTouchListener {
                 //最后一次落下和上一次抬起是否间隔大一1秒
                 if (touchUpTime == 0 || touchDownTime - touchUpTime > frequenceClickInterval) {
                     downY = (int) event.getY();
-                    Log.e(TAG, "ACTION_DOWN downY=" + downY);
 
                     recordState.Show();
                     recordState.normalRecord();

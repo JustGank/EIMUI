@@ -38,14 +38,6 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
         this.inflater = LayoutInflater.from(context);
     }
 
-    public EMessageAdapter(Context context, List<MESSAGE> list, EUser mine, EUser other) {
-        this.context = context;
-        this.list = list;
-        this.inflater = LayoutInflater.from(context);
-        this.mine = mine;
-        this.other = other;
-    }
-
     public void setOperationListener(OperationListener<EMessage> operationListener) {
         this.operationListener = operationListener;
     }
@@ -62,33 +54,32 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolderBase holder, int position) {
-        MESSAGE data= list.get(position);
+        MESSAGE data = list.get(position);
         //由于头部信息和上下两条数据可能有关系
-        if(position==0){
-            if(getItemCount()>1){
-                holder.setHeader(data,null,list.get(1));
-            }else
-            {
-                holder.setHeader(data,null,null);
+        if (position == 0) {
+            if (getItemCount() > 1) {
+                holder.setHeader(data, null, list.get(1));
+            } else {
+                holder.setHeader(data, null, null);
             }
-        }else
-        {
-            if(getItemCount()>2){
-                holder.setHeader(data,list.get(position-1),null);
-            }else
-            {
-                if(list.get(position+1)!=null){
-                    holder.setHeader(data,list.get(position-1),list.get(position+1));
-                }else
-                {
-                    holder.setHeader(data,list.get(position-1),null);
+        } else {
+            if (getItemCount() < 3) {
+                holder.setHeader(data, list.get(position - 1), null);
+            } else {
+                if (position + 1 < list.size() && list.get(position + 1) != null) {
+                    holder.setHeader(data, list.get(position - 1), list.get(position + 1));
+                } else {
+                    holder.setHeader(data, list.get(position - 1), null);
                 }
             }
         }
 
-        holder.bindData(list.get(position), isSelectedMode, mine, other, position);
+        holder.bindData(list.get(position), isSelectedMode, position);
     }
 
+    /**
+     * 数据操作相关方法
+     */
     public void setList(List<MESSAGE> list) {
         this.list = list;
         notifyDataSetChanged();
@@ -99,13 +90,57 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
         notifyDataSetChanged();
     }
 
-    public void insertItem(MESSAGE message){
-
+    public void insertItem(MESSAGE message) {
+        list.add(0, message);
+        notifyDataSetChanged();
     }
 
+    public String getMessageId(int position) {
+        return list.get(position).getMsgId();
+    }
+
+    public void deleteItem(int position) {
+        this.list.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void updataProgress(String msgId, int progress) {
+        for (int i = 0; i < list.size(); i++) {
+            MESSAGE message = list.get(i);
+            if (message.getMsgId().equals(msgId)) {
+                message.setProgress(progress);
+                notifyItemChanged(i);
+                break;
+            }
+        }
+    }
+
+    /**
+     * 更改模式
+     */
     public void setSelectedMode(boolean isSelectedMode) {
         this.isSelectedMode = isSelectedMode;
         notifyDataSetChanged();
+    }
+
+    public void updateItemSelected(int position) {
+        list.get(position).setSelected(!list.get(position).isSelected());
+        notifyItemChanged(position);
+    }
+
+    public void updateMessageState(String msgId, int newState) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getMsgId().equals(msgId)) {
+                list.get(i).setMessageStatus(newState);
+                notifyItemChanged(i);
+                break;
+            }
+        }
+    }
+
+    public void updatePlaying(int position, boolean playing) {
+        getItem(position).setIsPlaying(playing);
+        notifyItemChanged(position);
     }
 
     @Override

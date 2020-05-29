@@ -28,14 +28,14 @@ public class MessageRecycler extends RecyclerView {
         initView();
     }
 
-    private void initView(){
+    private void initView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setReverseLayout(true);
         setLayoutManager(linearLayoutManager);
         ((SimpleItemAnimator) getItemAnimator()).setSupportsChangeAnimations(false);
-        setOnTouchListener((View view, MotionEvent motionEvent)-> {
+        setOnTouchListener((View view, MotionEvent motionEvent) -> {
             closeSoftInput(view);
-             return true;
+            return false;
         });
     }
 

@@ -17,4 +17,8 @@
     <string name="redownload_file">Redownload file</string>
     <string name="chat_request_download_url">Requesting the URL for downloading...</string>
 
+    <string name="minute_before">min before</string>
+    <string name="hour_before">hour(s) before</string>
+    <string name="yesterday">Yesterday</string>
+
 </resources>

@@ -1,5 +1,6 @@
 package com.xjl.eimui;
 
+import android.content.Context;
 import android.os.Environment;
 
 import java.io.File;
@@ -21,7 +22,14 @@ public enum EIMUI {
     //文件的位置
     private String cacheDirPathFile = saveFilePath + File.separator + "Files";
 
-    public void setSaveFolderPath(String path) {
+    private Context context;
+
+    public void init(Context context, String path) {
+        this.context = context;
+        setSaveFolderPath(path);
+    }
+
+    private void setSaveFolderPath(String path) {
         this.saveFilePath = path;
         new File(takePhotoSavePath).mkdirs();
         new File(takePhotoSavePath).mkdirs();
@@ -52,5 +60,7 @@ public enum EIMUI {
         return takeVideoSavePath;
     }
 
-
+    public Context getContext() {
+        return context;
+    }
 }

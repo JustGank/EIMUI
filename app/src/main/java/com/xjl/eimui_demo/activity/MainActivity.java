@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             requestPermissions(permissions, 1001);
         }
 
-        EIMUI.INSTANCE.setSaveFolderPath("EIMUI");
+
 
         recyclerView = findViewById(R.id.recycler);
 

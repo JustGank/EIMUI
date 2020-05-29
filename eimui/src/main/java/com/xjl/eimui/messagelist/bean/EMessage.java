@@ -37,7 +37,11 @@ public interface EMessage {
 
     boolean isSelected();
 
+    void setSelected(boolean b);
+
     boolean isPlaying();
+
+    void setIsPlaying(boolean b);
 
     HashMap<String, String> getExtras();
 

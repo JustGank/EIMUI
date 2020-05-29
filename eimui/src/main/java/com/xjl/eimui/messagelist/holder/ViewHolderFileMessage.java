@@ -48,6 +48,7 @@ public class ViewHolderFileMessage<MESSAGE extends EMessage> extends MessageView
         filename = container.findViewById(R.id.item_chat_file_name);
         filename.setText(data.getContent());
         download = container.findViewById(R.id.item_chat_file_download);
+        download.setVisibility(data.getProgress()==100?View.GONE:View.VISIBLE);
 
         item_chat_file_container.setOnClickListener(this);
         item_chat_file_container.setOnLongClickListener(this);
@@ -65,7 +66,6 @@ public class ViewHolderFileMessage<MESSAGE extends EMessage> extends MessageView
             item_chat_file_container.setBackgroundResource(R.drawable.chat_blue_right_bg);
             mineContainer.addView(container);
         }
-
 
     }
 

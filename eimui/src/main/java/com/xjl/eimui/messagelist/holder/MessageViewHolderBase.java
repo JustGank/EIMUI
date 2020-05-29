@@ -25,8 +25,8 @@ import com.xjl.eimui.messagelist.widget.SendStateView;
 public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
     Context context;
-    //是否被选中
-    protected boolean mIsSelected;
+    //是否处于选中模式
+    protected boolean isSelectedModel;
 
     public TextView header;
     public ImageView is_select;
@@ -118,24 +118,24 @@ public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends Re
         return true;
     }
 
-    public void bindData(MESSAGE data, boolean mIsSelected, EUser mine, EUser other, int position) {
-        this.mIsSelected = mIsSelected;
+    public void bindData(MESSAGE data, boolean isSelectedModel, int position) {
+        this.isSelectedModel = isSelectedModel;
         this.data = data;
         this.position = position;
 
         //在选择模式下是否被选中
-        setmIsSelected(data, mIsSelected);
+        setmIsSelected(data);
         //初始化聊天人员信息
         if (MessageType.isReceivedMessage(data.getMessageType())) {
             this.mine_container.setVisibility(View.GONE);
             this.other_container.setVisibility(View.VISIBLE);
             this.state_view.setVisibility(View.GONE);
-            setOtheInfo(other);
+            setOtheInfo(data.getOther());
         } else {
             this.mine_container.setVisibility(View.VISIBLE);
             this.other_container.setVisibility(View.GONE);
             setMessageStatus(data.getMessageStatus());
-            setMineInfo(mine);
+            setMineInfo(data.getMine());
         }
         //将容器交给子类实现
         this.mine_content_container.removeAllViews();
@@ -162,8 +162,8 @@ public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends Re
 
     }
 
-    public void setmIsSelected(MESSAGE data, boolean mIsSelected) {
-        is_select.setVisibility(mIsSelected ? View.VISIBLE : View.GONE);
+    public void setmIsSelected(MESSAGE data) {
+        is_select.setVisibility(isSelectedModel ? View.VISIBLE : View.GONE);
         is_select.setBackgroundResource(data.isSelected() ? R.mipmap.item_checked : R.mipmap.item_uncheck);
     }
 

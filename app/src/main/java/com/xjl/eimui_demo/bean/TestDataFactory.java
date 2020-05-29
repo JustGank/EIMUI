@@ -20,6 +20,8 @@ public class TestDataFactory {
     public static IUser mine = new IUser("0001", "Bat Man", mineAvatar);
     public static IUser other = new IUser("0002", "Super Man", otherAvatar);
 
+    public static int messageId = 0;
+
     public static List<EMessage> getTestData(int index) {
         List<EMessage> messages = null;
         switch (index) {
@@ -44,7 +46,7 @@ public class TestDataFactory {
     }
 
     public static List<EMessage> getTextTestData() {
-        int messageId = 0;
+
         List<EMessage> messages = new ArrayList<>();
         //文字短信实例
         IMessage textMessage1 = new IMessage(String.valueOf(++messageId), mine, other, MessageType.RECEIVE_TEXT);
@@ -65,7 +67,6 @@ public class TestDataFactory {
     }
 
     public static List<EMessage> getImageTestData() {
-        int messageId = 0;
         List<EMessage> messages = new ArrayList<>();
         //图片短信实例
         IMessage imageMessage1 = new IMessage(String.valueOf(++messageId), mine, other, MessageType.RECEIVE_IMAGE);
@@ -80,7 +81,6 @@ public class TestDataFactory {
 
 
     public static List<EMessage> getVideoTestData() {
-        int messageId = 0;
         List<EMessage> messages = new ArrayList<>();
         //短视频短信实例
         IMessage videoMessage1 = new IMessage(String.valueOf(++messageId), mine, other, MessageType.RECEIVE_VIDEO);
@@ -94,7 +94,6 @@ public class TestDataFactory {
     }
 
     public static List<EMessage> getVoiceTestData() {
-        int messageId = 0;
         List<EMessage> messages = new ArrayList<>();
         //声音短信实例
         IMessage voiceMessage1 = new IMessage(String.valueOf(++messageId), mine, other, MessageType.RECEIVE_VOICE);
@@ -112,7 +111,6 @@ public class TestDataFactory {
     }
 
     public static List<EMessage> getLocationTestData() {
-        int messageId = 0;
         List<EMessage> messages = new ArrayList<>();
         //位置短信实例
         IMessage locationMessage1 = new IMessage(String.valueOf(++messageId), mine, other, MessageType.RECEIVE_LOCATION);
@@ -129,9 +127,7 @@ public class TestDataFactory {
     }
 
     public static List<EMessage> getFileTestData() {
-        int messageId = 0;
         List<EMessage> messages = new ArrayList<>();
-
         //文件信息
         IMessage fileMessage1 = new IMessage(String.valueOf(++messageId), mine, other, MessageType.RECEIVE_FILE);
         fileMessage1.setContent("Hello World.java");
@@ -146,9 +142,7 @@ public class TestDataFactory {
     }
 
     public static List<EMessage> getErrorTestData() {
-        int messageId = 0;
         List<EMessage> messages = new ArrayList<>();
-
         //异常状态短信
         IMessage errorMessage1 = new IMessage(String.valueOf(++messageId), mine, other, MessageType.RECEIVE_REDOWNLOAD);
         messages.add(errorMessage1);
@@ -161,10 +155,7 @@ public class TestDataFactory {
     }
 
     public static List<EMessage> getMuiltTestData() {
-        int messageId = 0;
-
         List<EMessage> messages = new ArrayList<>();
-
         //文字短信实例
         IMessage textMessage1 = new IMessage(String.valueOf(++messageId), mine, other, MessageType.RECEIVE_TEXT);
         textMessage1.setContent("Hello Bat Man");
@@ -244,6 +235,10 @@ public class TestDataFactory {
         messages.add(locationMessage2);
 
         return messages;
+    }
+
+    public static IMessage getIMessage(int type) {
+        return new IMessage(String.valueOf(++messageId), mine, other, type);
     }
 
 }

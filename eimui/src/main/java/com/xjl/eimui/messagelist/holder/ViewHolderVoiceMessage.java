@@ -29,6 +29,12 @@ public class ViewHolderVoiceMessage<MESSAGE extends EMessage> extends MessageVie
         chatAudioView.setOnClickListener(this);
         chatAudioView.setOnLongClickListener(this);
 
+        if (data.isPlaying()) {
+            chatAudioView.startAnim();
+        } else {
+            chatAudioView.endAnim();
+        }
+
         if (isReceived) {
             chatAudioView.setBackgroundResource(R.drawable.chat_gray_left_bg);
             otherContainer.addView(chatAudioView);
