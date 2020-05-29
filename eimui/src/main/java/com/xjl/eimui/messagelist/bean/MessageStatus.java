@@ -1,15 +1,15 @@
 package com.xjl.eimui.messagelist.bean;
 
-public enum MessageStatus {
-    CREATED,
+public interface MessageStatus {
+    int CREATED = 1;
 
-    SEND_GOING,
-    SEND_SUCCEED,
-    SEND_FAILED,
-    SEND_DRAFT,
+    int SEND_GOING = 2;
 
-    RECEIVE_GOING,
-    RECEIVE_SUCCEED,
-    RECEIVE_FAILED
+    int SEND_SUCCEED = 3;
+    int SEND_FAILED = 4;
+    int SEND_DRAFT = 5;
 
+    int RECEIVE_GOING = 6;
+    int RECEIVE_SUCCEED = 7;
+    int RECEIVE_FAILED = 8;
 }

@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.xjl.eimui.R;
 import com.xjl.eimui.messagelist.bean.EMessage;
 import com.xjl.eimui.messagelist.bean.EUser;
@@ -17,9 +20,6 @@ import com.xjl.eimui.messagelist.util.HolderClassManager;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adapter<MessageViewHolderBase> {
 
     private static final String TAG = "MessageAdapter";
@@ -28,17 +28,17 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
     private LayoutInflater inflater;
     private boolean isSelectedMode = false;
     private int mSelectedItemCount;
-    private List<EMessage> list;
+    private List<MESSAGE> list;
     private EUser mine, other;
     private OperationListener<EMessage> operationListener;
 
-    public EMessageAdapter(Context context, List<EMessage> list) {
+    public EMessageAdapter(Context context, List<MESSAGE> list) {
         this.context = context;
         this.list = list;
         this.inflater = LayoutInflater.from(context);
     }
 
-    public EMessageAdapter(Context context, List<EMessage> list, EUser mine, EUser other) {
+    public EMessageAdapter(Context context, List<MESSAGE> list, EUser mine, EUser other) {
         this.context = context;
         this.list = list;
         this.inflater = LayoutInflater.from(context);
@@ -62,10 +62,34 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolderBase holder, int position) {
+        MESSAGE data= list.get(position);
+        //由于头部信息和上下两条数据可能有关系
+        if(position==0){
+            if(getItemCount()>1){
+                holder.setHeader(data,null,list.get(1));
+            }else
+            {
+                holder.setHeader(data,null,null);
+            }
+        }else
+        {
+            if(getItemCount()>2){
+                holder.setHeader(data,list.get(position-1),null);
+            }else
+            {
+                if(list.get(position+1)!=null){
+                    holder.setHeader(data,list.get(position-1),list.get(position+1));
+                }else
+                {
+                    holder.setHeader(data,list.get(position-1),null);
+                }
+            }
+        }
+
         holder.bindData(list.get(position), isSelectedMode, mine, other, position);
     }
 
-    public void setList(List<EMessage> list) {
+    public void setList(List<MESSAGE> list) {
         this.list = list;
         notifyDataSetChanged();
     }
@@ -73,6 +97,10 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
     public void addItem(MESSAGE message) {
         this.list.add(message);
         notifyDataSetChanged();
+    }
+
+    public void insertItem(MESSAGE message){
+
     }
 
     public void setSelectedMode(boolean isSelectedMode) {

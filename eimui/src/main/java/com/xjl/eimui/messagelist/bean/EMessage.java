@@ -31,9 +31,9 @@ public interface EMessage {
 
     void setProgress(int progress);
 
-    MessageStatus getMessageStatus();
+    int getMessageStatus();
 
-    void setMessageStatus(MessageStatus status);
+    void setMessageStatus(int status);
 
     boolean isSelected();
 

@@ -10,6 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.xjl.eimui.R;
 import com.xjl.eimui.messagelist.bean.EMessage;
@@ -18,9 +21,6 @@ import com.xjl.eimui.messagelist.bean.MessageStatus;
 import com.xjl.eimui.messagelist.bean.MessageType;
 import com.xjl.eimui.messagelist.listener.OperationListener;
 import com.xjl.eimui.messagelist.widget.SendStateView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
@@ -122,10 +122,9 @@ public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends Re
         this.mIsSelected = mIsSelected;
         this.data = data;
         this.position = position;
-        //初始化头部分 一般用于显示时间或者提示性信息
-        setHeader(data);
+
         //在选择模式下是否被选中
-        setmIsSelected(data,mIsSelected);
+        setmIsSelected(data, mIsSelected);
         //初始化聊天人员信息
         if (MessageType.isReceivedMessage(data.getMessageType())) {
             this.mine_container.setVisibility(View.GONE);
@@ -147,12 +146,24 @@ public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends Re
     }
 
 
-    public void setHeader(MESSAGE data) {
-        this.header.setText(data.getHeaderString());
+    public void setHeader(MESSAGE data, MESSAGE prevData, MESSAGE nextData) {
+        if (nextData == null) {
+            this.header.setVisibility(View.VISIBLE);
+            this.header.setText(data.getHeaderString());
+        } else {
+            if (data.getHeaderString().equals(nextData.getHeaderString())) {
+                this.header.setVisibility(View.GONE);
+
+            } else {
+                this.header.setVisibility(View.VISIBLE);
+            }
+            this.header.setText(data.getHeaderString());
+        }
+
     }
 
-    public void setmIsSelected(MESSAGE data,boolean mIsSelected) {
-        is_select.setVisibility(mIsSelected?View.VISIBLE:View.GONE);
+    public void setmIsSelected(MESSAGE data, boolean mIsSelected) {
+        is_select.setVisibility(mIsSelected ? View.VISIBLE : View.GONE);
         is_select.setBackgroundResource(data.isSelected() ? R.mipmap.item_checked : R.mipmap.item_uncheck);
     }
 
@@ -203,7 +214,7 @@ public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends Re
         }
     }
 
-    public void setMessageStatus(MessageStatus status) {
+    public void setMessageStatus(int status) {
         if (status == MessageStatus.SEND_SUCCEED) {
             this.state_view.setVisibility(View.GONE);
         } else if (status == MessageStatus.SEND_GOING) {

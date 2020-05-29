@@ -1,6 +1,5 @@
 package com.xjl.eimui_demo.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -8,8 +7,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.xjl.eimui.EIMUI;
 import com.xjl.eimui.inputbar.InputBar;
@@ -27,6 +29,7 @@ import com.xjl.eimui.messagelist.adapter.EMessageAdapter;
 import com.xjl.eimui.messagelist.bean.MessageStatus;
 import com.xjl.eimui.messagelist.bean.MessageType;
 import com.xjl.eimui.messagelist.listener.OperationListener;
+import com.xjl.eimui.messagelist.widget.MessageRecycler;
 import com.xjl.eimui.util.ToastUtils;
 import com.xjl.eimui_demo.R;
 import com.xjl.eimui_demo.bean.IMessage;
@@ -40,19 +43,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
-
 public class ChatActivity extends AppCompatActivity {
 
     private static final String TAG = "InputTestActivity";
 
-    private RecyclerView recycler;
-    public EMessageAdapter adapter;
+    private MessageRecycler recycler;
+    private EMessageAdapter adapter;
     private InputBar inputbar;
     private AudioRecordStateView recordstate_view;
     private RecordTouchListener recordTouchListener;
@@ -71,6 +67,7 @@ public class ChatActivity extends AppCompatActivity {
 
         initRecycler();
         initInputBar();
+
         adapter.setList(TestDataFactory.getTestData(getIntent().getIntExtra("index",1)));
 
         mp3Recorder = new MP3Recorder(currentAudioFile);
@@ -79,14 +76,8 @@ public class ChatActivity extends AppCompatActivity {
         mediaPlayerHepler.setOnCompleteListener(completionListener);
     }
 
-
-
     private void initRecycler() {
-        recycler = (RecyclerView) findViewById(R.id.recycler);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
-        linearLayoutManager.setReverseLayout(true);
-        recycler.setLayoutManager(linearLayoutManager);
-        ((SimpleItemAnimator) recycler.getItemAnimator()).setSupportsChangeAnimations(false);
+        recycler = (MessageRecycler) findViewById(R.id.recycler);
         adapter = new EMessageAdapter(ChatActivity.this, new ArrayList<>(), TestDataFactory.mine, TestDataFactory.other);
         recycler.setAdapter(adapter);
         adapter.setOperationListener(operationListener);
@@ -188,13 +179,17 @@ public class ChatActivity extends AppCompatActivity {
     private int lastPlayPosition = -1;
     RecordStateListener recordStateListener = new RecordStateListener() {
         @Override
-        public void onRecordStateChange(int currentState) throws IOException {
+        public void onRecordStateChange(int currentState) {
             switch (currentState) {
                 case RecordStateListener.START_RECORD:
                     isCancelRecord = false;
                     currentAudioFile = new File(EIMUI.INSTANCE.getRecordVoicePath() + File.separator + System.currentTimeMillis() + ".mp3");
-                    mp3Recorder.setFile(currentAudioFile);
-                    mp3Recorder.start(60 * 1000);
+                    try {
+                        mp3Recorder.setFile(currentAudioFile);
+                        mp3Recorder.start(60 * 1000);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case RecordStateListener.CANCEL_RECORD:
                     isCancelRecord = true;
@@ -203,8 +198,6 @@ public class ChatActivity extends AppCompatActivity {
                 case RecordStateListener.RECORD_FINISH:
                     isCancelRecord = false;
                     mp3Recorder.stop();
-
-
                     break;
             }
         }
@@ -268,7 +261,6 @@ public class ChatActivity extends AppCompatActivity {
             if (mediaPlayerHepler != null) {
                 mediaPlayerHepler.stop();
             }
-
         }
     };
 
@@ -277,14 +269,5 @@ public class ChatActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-    //关闭软键盘
-    public void closeSoftInput(View view) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
 
 }

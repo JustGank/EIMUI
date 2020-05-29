@@ -5,17 +5,17 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.xjl.eimui.EIMUI;
 import com.xjl.eimui_demo.R;
 import com.xjl.eimui_demo.adapter.MainAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         list.add("Location Message Demo");
         list.add("File Message Demo");
         list.add("Error Message Demo");
-        list.add("Input Message Demo");
 
         adapter = new MainAdapter(list, MainActivity.this);
 

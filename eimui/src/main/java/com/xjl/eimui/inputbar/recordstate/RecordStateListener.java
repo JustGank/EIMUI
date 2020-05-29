@@ -1,7 +1,5 @@
 package com.xjl.eimui.inputbar.recordstate;
 
-import java.io.IOException;
-
 public interface RecordStateListener {
     //1是开始录音 2是取消录音 3是发送录音
 
@@ -14,7 +12,7 @@ public interface RecordStateListener {
     /**
      * 当前录音状态的回调
      */
-    void onRecordStateChange(int currentState) throws IOException;
+    void onRecordStateChange(int currentState);
 
     void onFrequenceClick(long downTime, long upTime);
 

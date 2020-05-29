@@ -2,7 +2,6 @@ package com.xjl.eimui_demo.bean;
 
 import com.xjl.eimui.messagelist.bean.EMessage;
 import com.xjl.eimui.messagelist.bean.EUser;
-import com.xjl.eimui.messagelist.bean.MessageStatus;
 
 import java.util.HashMap;
 
@@ -26,7 +25,7 @@ public class IMessage implements EMessage {
 
     private int progress = 0;
 
-    private MessageStatus status;
+    private int status;
 
     private boolean isSelected = false;
 
@@ -105,12 +104,12 @@ public class IMessage implements EMessage {
     }
 
     @Override
-    public MessageStatus getMessageStatus() {
+    public int getMessageStatus() {
         return status;
     }
 
     @Override
-    public void setMessageStatus(MessageStatus status) {
+    public void setMessageStatus(int status) {
         this.status = status;
     }
 
