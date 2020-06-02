@@ -64,12 +64,13 @@ public class ChatActivity extends AppCompatActivity {
     private File currentAudioFile = null;
 
     public int messageId = 0;
+
     private final int MAX_FILE_LENGTH_M = 20;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_input);
+        setContentView(R.layout.activity_chat);
 
         initRecycler();
         initInputBar();

@@ -39,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
             requestPermissions(permissions, 1001);
         }
 
-
-
         recyclerView = findViewById(R.id.recycler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
