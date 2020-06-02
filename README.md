@@ -34,7 +34,44 @@
 
 效果上大家可以放心，以上都是真机截图，所以你看到是什么样拿到的就是什么样。
 
-## 一、Message List的使用
+## 一、框架初始化
+
+```java
+EIMUI.INSTANCE.init(getApplicationContext(),"EIMUI");
+```
+这里面后面的这个参数是缓存所在的文件夹。
+
+```java
+    private String saveFilePath = Environment.getExternalStorageDirectory().getPath();
+    //图片缓存的位置
+    private String takePhotoSavePath = saveFilePath + File.separator + "Images";
+    //视频缓存的位置
+    private String takeVideoSavePath = saveFilePath + File.separator + "Videos";
+    //音频缓存的位置
+    private String cacheDirPathAudio = saveFilePath + File.separator + "Audios";
+    //压缩图片的位置
+    private String cacheDirPathCompress = saveFilePath + File.separator + "CompressedImages";
+    //文件的位置
+    private String cacheDirPathFile = saveFilePath + File.separator + "Files";
+
+    private Context context;
+
+    public void init(Context context, String path) {
+        this.context = context;
+        setSaveFolderPath(path);
+    }
+
+    private void setSaveFolderPath(String path) {
+        this.saveFilePath = path;
+        new File(takePhotoSavePath).mkdirs();
+        new File(takePhotoSavePath).mkdirs();
+        new File(cacheDirPathAudio).mkdirs();
+        new File(cacheDirPathCompress).mkdirs();
+        new File(cacheDirPathFile).mkdirs();
+    }
+```
+
+## 二、Message List的使用
 
 ### 1.1 设计思路
 
@@ -199,7 +236,7 @@ OperationListener是点击事件和长按事件的接口管理类，没有采用
 
 只需要调用 **EMessageAdapter#public void setSelectedMode(boolean isSelectedMode)** 就可以了。
 
-## 二、Input Bar的使用
+## 三、Input Bar的使用
 ### 1.1 设计思路
 这部分的主要设计思想是**面向接口编程**，面向接口编程主要解决的是两个问题一个是更多操作的可自定义性，另一个是滑动录音动画的灵活性。
 
