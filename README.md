@@ -42,8 +42,8 @@ EIMUI.INSTANCE.init(getApplicationContext(),"EIMUI");
 这里面后面的这个参数是缓存所在的文件夹。
 
 ```java
- 	private String saveFilePath = Environment.getExternalStorageDirectory().getPath();
- 	//图片缓存的位置
+    private String saveFilePath = Environment.getExternalStorageDirectory().getPath();
+    //图片缓存的位置
     private String takePhotoSavePath = saveFilePath + File.separator + "Images";
     //视频缓存的位置
     private String takeVideoSavePath = saveFilePath + File.separator + "Videos";
