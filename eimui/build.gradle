@@ -27,8 +27,9 @@ android {
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
     api 'androidx.appcompat:appcompat:1.1.0'
-    api files('libs/emedia20191214.aar')
-    api files('libs/emp3recorder190311.aar')
     api 'androidx.recyclerview:recyclerview:1.1.0'
+    api 'com.github.bumptech.glide:glide:4.11.0'
+    api files('libs/emp3recorder190311.aar')
+    api files('libs/emedia200713.aar')
 
 }

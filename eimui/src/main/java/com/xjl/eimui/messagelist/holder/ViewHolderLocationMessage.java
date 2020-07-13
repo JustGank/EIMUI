@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.xjl.eimui.R;
 import com.xjl.eimui.messagelist.bean.EMessage;
 import com.xjl.eimui.messagelist.bean.MessageType;
+import com.xjl.eimui.util.GlideHelper;
 import com.xjl.emedia.utils.ScreenUtil;
 
 import androidx.annotation.NonNull;
@@ -45,7 +46,7 @@ public class ViewHolderLocationMessage<MESSAGE extends EMessage> extends Message
         }
 
         this.cover = container.findViewById(R.id.cover);
-        Glide.with(context).load(data.getMediaFilePath()).centerCrop().into(this.cover);
+        Glide.with(context).load(data.getMediaFilePath()).apply(GlideHelper.INSTANCE.getOnCenterCrop()).into(this.cover);
 
         container.setOnClickListener(this);
         container.setOnLongClickListener(this);

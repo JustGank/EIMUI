@@ -9,9 +9,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.xjl.eimui.R;
 import com.xjl.eimui.messagelist.bean.EMessage;
 import com.xjl.eimui.messagelist.bean.MessageType;
+import com.xjl.eimui.util.GlideHelper;
 import com.xjl.eimui.util.ImageSizeHelper;
 import com.xjl.emedia.utils.ScreenUtil;
 
@@ -29,7 +31,10 @@ public class ViewHolderImageMessage<MESSAGE extends EMessage> extends MessageVie
 
         layoutParams1 = new RelativeLayout.LayoutParams(slide1, slide2);
         layoutParams2 = new RelativeLayout.LayoutParams(slide2, slide1);
+
     }
+
+
 
     @Override
     public void bindDateToChild(EMessage data, ViewGroup mineContainer, ViewGroup otherContainer) {
@@ -38,7 +43,7 @@ public class ViewHolderImageMessage<MESSAGE extends EMessage> extends MessageVie
 
         Glide.with(context)
                 .load(data.getMediaFilePath())
-                .centerCrop()
+                .apply(GlideHelper.INSTANCE.getOnCenterCrop())
                 .into(imageView);
 
         imageView.setOnClickListener(this);

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.xjl.eimui.R;
 import com.xjl.eimui.inputbar.moreoperateion.bean.ChatMoreBean;
+import com.xjl.eimui.util.GlideHelper;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class InputBarMoreDefaultAdapter extends RecyclerView.Adapter<InputBarMor
         this.list = list;
         this.activity = activity;
         this.layoutInflater = activity.getLayoutInflater();
+
     }
 
     @NonNull
@@ -43,12 +45,13 @@ public class InputBarMoreDefaultAdapter extends RecyclerView.Adapter<InputBarMor
 
         Glide.with(activity)
                 .load(chatMoreBean.resId)
-                .centerCrop().into(holder.img);
+                .apply(GlideHelper.INSTANCE.getOnCenterCrop())
+                .into(holder.img);
 
         holder.img.setImageResource(chatMoreBean.resId);
         holder.title.setText(chatMoreBean.title);
         holder.container.setOnClickListener(v -> {
-            chatMoreBean.operation.operate(v,position,activity);
+            chatMoreBean.operation.operate(v, position, activity);
         });
     }
 

@@ -21,6 +21,7 @@ import com.xjl.eimui.messagelist.bean.MessageStatus;
 import com.xjl.eimui.messagelist.bean.MessageType;
 import com.xjl.eimui.messagelist.listener.OperationListener;
 import com.xjl.eimui.messagelist.widget.SendStateView;
+import com.xjl.eimui.util.GlideHelper;
 
 public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
@@ -73,7 +74,6 @@ public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends Re
         this.other_content_container = (RelativeLayout) itemView.findViewById(R.id.other_content_container);
         this.other_container = (RelativeLayout) itemView.findViewById(R.id.other_container);
         this.chat_container = (RelativeLayout) itemView.findViewById(R.id.chat_container);
-
     }
 
     public void setOperationListener(OperationListener<MESSAGE> operationListener) {
@@ -167,6 +167,9 @@ public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends Re
         is_select.setBackgroundResource(data.isSelected() ? R.mipmap.item_checked : R.mipmap.item_uncheck);
     }
 
+
+
+
     public void setMineInfo(EUser user) {
         if (user == null) {
             this.mine_avater.setVisibility(View.GONE);
@@ -178,7 +181,7 @@ public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends Re
                 this.mine_avater.setVisibility(View.VISIBLE);
                 Glide.with(this.mine_avater.getContext())
                         .load(user.getAvatarPath())
-                        .error(R.mipmap.avatar_spiderman)
+                        .apply(GlideHelper.INSTANCE.getErrorOptions(R.mipmap.avatar_spiderman))
                         .into(this.mine_avater);
             }
             if (TextUtils.isEmpty(user.getNickname())) {
@@ -201,7 +204,7 @@ public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends Re
                 this.other_avater.setVisibility(View.VISIBLE);
                 Glide.with(this.other_avater.getContext())
                         .load(user.getAvatarPath())
-                        .error(R.mipmap.avatar_superman)
+                        .apply(GlideHelper.INSTANCE.getErrorOptions(R.mipmap.avatar_superman))
                         .into(this.other_avater);
             }
 

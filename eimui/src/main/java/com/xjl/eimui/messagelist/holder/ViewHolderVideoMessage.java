@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.xjl.eimui.R;
 import com.xjl.eimui.messagelist.bean.EMessage;
 import com.xjl.eimui.messagelist.bean.MessageType;
+import com.xjl.eimui.util.GlideHelper;
 import com.xjl.emedia.utils.ScreenUtil;
 
 import androidx.annotation.NonNull;
@@ -32,7 +33,7 @@ public class ViewHolderVideoMessage<MESSAGE extends EMessage> extends MessageVie
     public void bindDateToChild(EMessage data, ViewGroup mineContainer, ViewGroup otherContainer) {
         RelativeLayout relativeLayout = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.view_message_video, null);
         item_chat_video_cover = (ImageView) relativeLayout.findViewById(R.id.item_chat_video_cover);
-        Glide.with(context).load(data.getMediaFilePath()).centerCrop().into(item_chat_video_cover);
+        Glide.with(context).load(data.getMediaFilePath()).apply(GlideHelper.INSTANCE.getOnCenterCrop()).into(item_chat_video_cover);
         item_chat_video_player = (ImageView) relativeLayout.findViewById(R.id.item_chat_video_player);
 
         item_chat_video_cover.setOnClickListener(this);

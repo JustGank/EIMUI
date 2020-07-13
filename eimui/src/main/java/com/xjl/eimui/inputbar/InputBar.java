@@ -11,11 +11,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.xjl.eimui.R;
 import com.xjl.eimui.inputbar.builder.InputBarBuilder;
 import com.xjl.eimui.util.ToastUtils;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 public class InputBar extends LinearLayout implements View.OnClickListener {
 
@@ -94,11 +94,11 @@ public class InputBar extends LinearLayout implements View.OnClickListener {
             if (currentInputStateIsKey) {
                 editview.setVisibility(VISIBLE);
                 press_talk.setVisibility(GONE);
-                left_img1.setBackgroundResource(R.mipmap.chat_inputbar_voice);
+                left_img1.setBackgroundResource(this.inputBarBuilder.getLeft_img1_voice());
             } else {
                 editview.setVisibility(GONE);
                 press_talk.setVisibility(VISIBLE);
-                left_img1.setBackgroundResource(R.mipmap.chat_inputbar_keyboard);
+                left_img1.setBackgroundResource(this.inputBarBuilder.getLeft_img1_keybord());
             }
             if (onItemClickListener != null) {
                 onItemClickListener.onLeftImg1Clicked(left_img1);
@@ -142,18 +142,20 @@ public class InputBar extends LinearLayout implements View.OnClickListener {
     public void setInputBarBuilder(InputBarBuilder inputBarBuilder) {
         if (inputBarBuilder != null) {
 
-            if (inputBarBuilder.getLeft_img1_keybord() == -1 && inputBarBuilder.getLeft_img1_voice() == -1) {
+            this.inputBarBuilder=inputBarBuilder;
+
+            if (this.inputBarBuilder.getLeft_img1_keybord() == -1 && this.inputBarBuilder.getLeft_img1_voice() == -1) {
                 left_img1.setVisibility(GONE);
             } else {
                 left_img1.setVisibility(VISIBLE);
-                left_img1.setBackgroundResource(inputBarBuilder.getLeft_img1_keybord());
+                left_img1.setBackgroundResource(currentInputStateIsKey?this.inputBarBuilder.getLeft_img1_voice():this.inputBarBuilder.getLeft_img1_keybord());
             }
-            initImageView(inputBarBuilder.getLeft_img2_res(), left_img2);
-            initImageView(inputBarBuilder.getLeft_img3_res(), left_img3);
+            initImageView(this.inputBarBuilder.getLeft_img2_res(), left_img2);
+            initImageView(this.inputBarBuilder.getLeft_img3_res(), left_img3);
 
-            initImageView(inputBarBuilder.getRight_img1_res(), right_img1);
-            initImageView(inputBarBuilder.getRight_img2_res(), right_img2);
-            initImageView(inputBarBuilder.getRight_img3_res(), right_img3);
+            initImageView(this.inputBarBuilder.getRight_img1_res(), right_img1);
+            initImageView(this.inputBarBuilder.getRight_img2_res(), right_img2);
+            initImageView(this.inputBarBuilder.getRight_img3_res(), right_img3);
         }
     }
 
@@ -169,7 +171,7 @@ public class InputBar extends LinearLayout implements View.OnClickListener {
     /**
      * 为长按 语音输出设置 OnFocusChangeListener
      */
-    public void setPressTalkOnTouchListener(View.OnTouchListener onTouchListener) {
+    public void setPressTalkOnTouchListener(OnTouchListener onTouchListener) {
         this.press_talk.setOnTouchListener(onTouchListener);
     }
 
