@@ -175,7 +175,7 @@ public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends Re
             this.mine_avater.setVisibility(View.GONE);
             this.mine_name.setVisibility(View.GONE);
         } else {
-            if (TextUtils.isEmpty(user.getAvatarPath())) {
+            if (TextUtils.isEmpty(user.getAvatarPath())||user.getAvatarPath().equals("NULL")) {
                 this.mine_avater.setVisibility(View.GONE);
             } else {
                 this.mine_avater.setVisibility(View.VISIBLE);
@@ -198,7 +198,7 @@ public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends Re
             this.other_avater.setVisibility(View.GONE);
             this.other_name.setVisibility(View.GONE);
         } else {
-            if (TextUtils.isEmpty(user.getAvatarPath())) {
+            if (TextUtils.isEmpty(user.getAvatarPath())||user.getAvatarPath().equals("NULL")) {
                 this.other_avater.setVisibility(View.GONE);
             } else {
                 this.other_avater.setVisibility(View.VISIBLE);

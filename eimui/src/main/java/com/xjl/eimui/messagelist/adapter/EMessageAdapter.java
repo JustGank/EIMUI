@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.xjl.eimui.R;
 import com.xjl.eimui.messagelist.bean.EMessage;
-import com.xjl.eimui.messagelist.bean.EUser;
 import com.xjl.eimui.messagelist.holder.MessageViewHolderBase;
 import com.xjl.eimui.messagelist.holder.ViewHolderSendErrorMessage;
 import com.xjl.eimui.messagelist.listener.OperationListener;
@@ -27,10 +26,8 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
     private Context context;
     private LayoutInflater inflater;
     private boolean isSelectedMode = false;
-    private int mSelectedItemCount;
-    private List<MESSAGE> list;
-    private EUser mine, other;
     private OperationListener<EMessage> operationListener;
+    public List<MESSAGE> list;
 
     public EMessageAdapter(Context context, List<MESSAGE> list) {
         this.context = context;
@@ -40,6 +37,10 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
 
     public void setOperationListener(OperationListener<EMessage> operationListener) {
         this.operationListener = operationListener;
+    }
+
+    public OperationListener getOperationListener(){
+        return this.operationListener;
     }
 
     @NonNull
@@ -121,6 +122,10 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
     public void setSelectedMode(boolean isSelectedMode) {
         this.isSelectedMode = isSelectedMode;
         notifyDataSetChanged();
+    }
+
+    public boolean getSelectedMode(){
+        return isSelectedMode;
     }
 
     public void updateItemSelected(int position) {
