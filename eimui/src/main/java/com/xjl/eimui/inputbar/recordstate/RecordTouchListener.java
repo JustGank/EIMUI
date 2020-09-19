@@ -1,7 +1,6 @@
 package com.xjl.eimui.inputbar.recordstate;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -60,8 +59,8 @@ public class RecordTouchListener implements View.OnTouchListener {
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                movedY = (int) event.getY();
-                if (movedY < -stateChangeDistance) {
+                movedY = (int) event.getY()-downY;
+                if (movedY > -stateChangeDistance) {
                     recordState.normalRecord();
                 } else {
                     recordState.cancelRecord();

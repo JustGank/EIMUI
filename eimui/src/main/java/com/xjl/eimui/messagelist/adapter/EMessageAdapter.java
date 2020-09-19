@@ -27,7 +27,7 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
     private LayoutInflater inflater;
     private boolean isSelectedMode = false;
     private OperationListener<EMessage> operationListener;
-    public List<MESSAGE> list;
+    public  List<MESSAGE> list;
 
     public EMessageAdapter(Context context, List<MESSAGE> list) {
         this.context = context;
@@ -39,8 +39,8 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
         this.operationListener = operationListener;
     }
 
-    public OperationListener getOperationListener(){
-        return this.operationListener;
+    public OperationListener<EMessage> getOperationListener(){
+        return operationListener;
     }
 
     @NonNull
@@ -76,6 +76,8 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
         }
 
         holder.bindData(list.get(position), isSelectedMode, position);
+
+        holder.foot.setVisibility(View.GONE);
     }
 
     /**
@@ -124,8 +126,8 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
         notifyDataSetChanged();
     }
 
-    public boolean getSelectedMode(){
-        return isSelectedMode;
+    public boolean isSelectedMode(){
+        return this.isSelectedMode;
     }
 
     public void updateItemSelected(int position) {

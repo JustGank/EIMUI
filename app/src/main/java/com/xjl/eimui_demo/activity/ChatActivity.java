@@ -24,7 +24,7 @@ import com.xjl.eimui.inputbar.moreoperateion.impl.PickFileOperation;
 import com.xjl.eimui.inputbar.moreoperateion.impl.PickPicOperation;
 import com.xjl.eimui.inputbar.moreoperateion.impl.TakePhotoOperation;
 import com.xjl.eimui.inputbar.moreoperateion.impl.TakeVideoOperation;
-import com.xjl.eimui.inputbar.recordstate.AudioRecordStateView;
+import com.xjl.eimui.inputbar.recordstate.AudioReocrdWeChatWaveView;
 import com.xjl.eimui.inputbar.recordstate.RecordStateListener;
 import com.xjl.eimui.inputbar.recordstate.RecordTouchListener;
 import com.xjl.eimui.messagelist.adapter.EMessageAdapter;
@@ -55,7 +55,7 @@ public class ChatActivity extends AppCompatActivity {
     private MessageRecycler recycler;
     private EMessageAdapter adapter;
     private InputBar inputbar;
-    private AudioRecordStateView recordstate_view;
+    private AudioReocrdWeChatWaveView recordstate_view;
     private RecordTouchListener recordTouchListener;
     private InputBarMoreDefaultAdapter inputBarMoreDefaultAdapter;
 
@@ -282,6 +282,11 @@ public class ChatActivity extends AppCompatActivity {
                     });
                 }
             }
+        }
+
+        @Override
+        public void onRecording(int i, int i1) {
+            recordstate_view.refreshCurrenDB(i);
         }
     };
 

@@ -41,6 +41,7 @@ public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends Re
     public RelativeLayout other_content_container;
     public RelativeLayout other_container;
     public RelativeLayout chat_container;
+    public TextView foot;
     public OperationListener<MESSAGE> operationListener;
     public MESSAGE data;
     public int position;
@@ -74,6 +75,7 @@ public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends Re
         this.other_content_container = (RelativeLayout) itemView.findViewById(R.id.other_content_container);
         this.other_container = (RelativeLayout) itemView.findViewById(R.id.other_container);
         this.chat_container = (RelativeLayout) itemView.findViewById(R.id.chat_container);
+        this.foot= (TextView) itemView.findViewById(R.id.foot);
     }
 
     public void setOperationListener(OperationListener<MESSAGE> operationListener) {
@@ -166,8 +168,6 @@ public abstract class MessageViewHolderBase<MESSAGE extends EMessage> extends Re
         is_select.setVisibility(isSelectedModel ? View.VISIBLE : View.GONE);
         is_select.setBackgroundResource(data.isSelected() ? R.mipmap.item_checked : R.mipmap.item_uncheck);
     }
-
-
 
 
     public void setMineInfo(EUser user) {

@@ -29,7 +29,7 @@ dependencies {
     api 'androidx.appcompat:appcompat:1.1.0'
     api 'androidx.recyclerview:recyclerview:1.1.0'
     api 'com.github.bumptech.glide:glide:4.11.0'
-    api files('libs/emp3recorder190311.aar')
     api files('libs/emedia200713.aar')
+    api files('libs/emp3recorder200919.aar')
 
 }

@@ -1,6 +1,7 @@
 package com.xjl.eimui.inputbar.recordstate;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,7 @@ import android.widget.TextView;
 import com.xjl.eimui.R;
 import com.xjl.eimui.inputbar.widget.WaterWaveView;
 
-public class AudioRecordStateView extends RelativeLayout implements RecordStateView {
+public class AudioRecordWaterWaveStateView extends RelativeLayout implements RecordStateView {
 
     public WaterWaveView wave_view;
     public TextView chat_record_state_text;
@@ -21,19 +22,19 @@ public class AudioRecordStateView extends RelativeLayout implements RecordStateV
 
     private int CURRENT_STATE = -1;
 
-    public AudioRecordStateView(Context context) {
+    public AudioRecordWaterWaveStateView(Context context) {
         super(context);
         initView();
     }
 
-    public AudioRecordStateView(Context context, AttributeSet attrs) {
+    public AudioRecordWaterWaveStateView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView();
     }
 
 
     private void initView() {
-        LayoutInflater.from(getContext()).inflate(R.layout.view_voice_record_state, this);
+        LayoutInflater.from(getContext()).inflate(R.layout.view_voice_record_water_wave_state, this);
         wave_view = findViewById(R.id.wave_view);
         wave_view.setColor("#717cfd");
         chat_record_state_text = findViewById(R.id.chat_record_state_text);
@@ -83,5 +84,7 @@ public class AudioRecordStateView extends RelativeLayout implements RecordStateV
             cancelRecord();
         }
     }
+
+
 
 }

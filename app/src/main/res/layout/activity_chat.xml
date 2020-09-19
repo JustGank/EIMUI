@@ -29,10 +29,11 @@
 
     </LinearLayout>
 
-    <com.xjl.eimui.inputbar.recordstate.AudioRecordStateView
+    <com.xjl.eimui.inputbar.recordstate.AudioReocrdWeChatWaveView
         android:id="@+id/recordstate_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_centerInParent="true"
         android:visibility="gone" />
 
 
