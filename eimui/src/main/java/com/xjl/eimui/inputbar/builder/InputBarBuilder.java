@@ -18,6 +18,8 @@ public class InputBarBuilder {
 
     private int right_img3_res = -1;
 
+    private int inputBarBgResColor=R.color.main_color;
+
     private InputBarBuilder(){}
 
     public static InputBarBuilder getNewInstance() {
@@ -86,5 +88,16 @@ public class InputBarBuilder {
         this.right_img3_res = right_img3_res;
         return this;
     }
+
+    public int getInputBarBgResColor() {
+        return inputBarBgResColor;
+    }
+
+    public InputBarBuilder setInputBarBgResColor(int inputBarBgResColor) {
+        this.inputBarBgResColor = inputBarBgResColor;
+        return this;
+    }
+
+
 
 }

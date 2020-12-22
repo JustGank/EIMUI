@@ -5,9 +5,9 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/inputbar_container"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/main_color"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 

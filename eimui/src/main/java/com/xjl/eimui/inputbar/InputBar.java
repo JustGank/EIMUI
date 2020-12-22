@@ -27,6 +27,7 @@ public class InputBar extends LinearLayout implements View.OnClickListener {
     private ImageView right_img1, right_img2, right_img3;
     private RecyclerView more_panel;
     private TextView press_talk;
+    private LinearLayout inputbar_container;
 
     private boolean currentInputStateIsKey = true;
 
@@ -81,6 +82,8 @@ public class InputBar extends LinearLayout implements View.OnClickListener {
         right_img3.setOnClickListener(this);
 
         more_panel = (RecyclerView) this.findViewById(R.id.more_panel);
+
+        inputbar_container=(LinearLayout) this.findViewById(R.id.inputbar_container);
 
         setInputBarBuilder(inputBarBuilder = InputBarBuilder.getNewInstance());
 
@@ -156,6 +159,8 @@ public class InputBar extends LinearLayout implements View.OnClickListener {
             initImageView(this.inputBarBuilder.getRight_img1_res(), right_img1);
             initImageView(this.inputBarBuilder.getRight_img2_res(), right_img2);
             initImageView(this.inputBarBuilder.getRight_img3_res(), right_img3);
+
+            inputbar_container.setBackgroundColor(getResources().getColor(inputBarBuilder.getInputBarBgResColor()));
         }
     }
 

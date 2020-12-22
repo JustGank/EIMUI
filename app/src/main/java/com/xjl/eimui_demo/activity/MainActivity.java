@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.xjl.eimui.EIMUI;
 import com.xjl.eimui_demo.R;
 import com.xjl.eimui_demo.adapter.MainAdapter;
 
@@ -38,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(permissions, 1001);
         }
+
+
+
+
+
 
         recyclerView = findViewById(R.id.recycler);
 

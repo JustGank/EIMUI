@@ -178,7 +178,10 @@ public class ChatActivity extends AppCompatActivity {
         inputbar.getMorePanel().setAdapter(inputBarMoreDefaultAdapter);
 
         //设置InputBar 子控件监听 增加一个自定义控件
-        inputbar.setInputBarBuilder(InputBarBuilder.getNewInstance().setRight_img2_res(R.mipmap.chat_inputbar_template));
+        inputbar.setInputBarBuilder(InputBarBuilder.getNewInstance()
+                .setRight_img2_res(R.mipmap.chat_inputbar_template)
+                .setInputBarBgResColor(R.color.colorPrimary));
+
         inputbar.setOnItemClickListener(onItemClickListener);
 
         //设置长按说话的动画 和回调监听者
