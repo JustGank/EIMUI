@@ -1,11 +1,12 @@
 package com.xjl.eimui.inputbar.moreoperateion.adapter;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,7 +44,7 @@ public class InputBarMoreDefaultAdapter extends RecyclerView.Adapter<InputBarMor
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(layoutInflater.inflate(R.layout.item_inputbar_more, null));
+        return new ViewHolder(layoutInflater.inflate(R.layout.item_inputbar_more, parent,false));
     }
 
     @Override
@@ -55,6 +56,7 @@ public class InputBarMoreDefaultAdapter extends RecyclerView.Adapter<InputBarMor
                .apply(requestOptions)
                 .into(holder.img);
 
+        holder.title.setVisibility(TextUtils.isEmpty(chatMoreBean.title)?View.GONE:View.VISIBLE);
         holder.title.setText(chatMoreBean.title);
         holder.container.setOnClickListener(v -> {
             chatMoreBean.operation.operate(v, position, activity);
@@ -74,14 +76,14 @@ public class InputBarMoreDefaultAdapter extends RecyclerView.Adapter<InputBarMor
 
         public ImageView img;
         public TextView title;
-        public RelativeLayout container;
 
+        public LinearLayout container;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.img = (ImageView) itemView.findViewById(R.id.img);
             this.title = (TextView) itemView.findViewById(R.id.title);
-            this.container = (RelativeLayout) itemView.findViewById(R.id.container);
-        }
+            this.container = (LinearLayout) itemView.findViewById(R.id.container);
+         }
     }
 
 

@@ -28,7 +28,6 @@ public class InputBar extends LinearLayout implements View.OnClickListener {
     private RecyclerView more_panel;
     private TextView press_talk;
     private LinearLayout inputbar_container;
-
     private boolean currentInputStateIsKey = true;
 
     private InputBarBuilder inputBarBuilder;
@@ -125,7 +124,7 @@ public class InputBar extends LinearLayout implements View.OnClickListener {
             }
         } else if (id == R.id.right_img3) {
             if (onItemClickListener != null) {
-                onItemClickListener.onRightImg2Clicked(right_img2);
+                onItemClickListener.onRightImg3Clicked(right_img3);
             }
         }
     }
@@ -136,6 +135,58 @@ public class InputBar extends LinearLayout implements View.OnClickListener {
 
     public EditText getEdittext() {
         return editview;
+    }
+
+    public ImageView getLeft_img1() {
+        return left_img1;
+    }
+
+    public ImageView getLeft_img2() {
+        return left_img2;
+    }
+
+    public ImageView getLeft_img3() {
+        return left_img3;
+    }
+
+    public EditText getEditview() {
+        return editview;
+    }
+
+    public ImageView getRight_img1() {
+        return right_img1;
+    }
+
+    public ImageView getRight_img2() {
+        return right_img2;
+    }
+
+    public ImageView getRight_img3() {
+        return right_img3;
+    }
+
+    public RecyclerView getMore_panel() {
+        return more_panel;
+    }
+
+    public TextView getPress_talk() {
+        return press_talk;
+    }
+
+    public LinearLayout getInputbar_container() {
+        return inputbar_container;
+    }
+
+    public boolean isCurrentInputStateIsKey() {
+        return currentInputStateIsKey;
+    }
+
+    public void setCurrentInputStateIsKey(boolean currentInputStateIsKey) {
+        this.currentInputStateIsKey = currentInputStateIsKey;
+    }
+
+    public OnItemClickListener getOnItemClickListener() {
+        return onItemClickListener;
     }
 
     public InputBarBuilder getInputBarBuilder() {
