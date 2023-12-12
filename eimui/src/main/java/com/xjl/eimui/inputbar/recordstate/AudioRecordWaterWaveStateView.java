@@ -1,7 +1,6 @@
 package com.xjl.eimui.inputbar.recordstate;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xjl.eimui.R;
+import com.xjl.eimui.entry.AudioRecordWaterWaveEntry;
 import com.xjl.eimui.inputbar.widget.WaterWaveView;
 
 public class AudioRecordWaterWaveStateView extends RelativeLayout implements RecordStateView {
@@ -21,6 +21,8 @@ public class AudioRecordWaterWaveStateView extends RelativeLayout implements Rec
     private final int STATE_CANCEL = 2;
 
     private int CURRENT_STATE = -1;
+
+    private AudioRecordWaterWaveEntry audioRecordWaterWaveEntry= null;
 
     public AudioRecordWaterWaveStateView(Context context) {
         super(context);
@@ -38,7 +40,12 @@ public class AudioRecordWaterWaveStateView extends RelativeLayout implements Rec
         wave_view = findViewById(R.id.wave_view);
         wave_view.setColor("#717cfd");
         chat_record_state_text = findViewById(R.id.chat_record_state_text);
-    }
+        if (audioRecordWaterWaveEntry == null) {
+            chat_record_state_text.setText(getContext().getString(R.string.chat_up_move_cancel));
+        } else {
+            chat_record_state_text.setText(audioRecordWaterWaveEntry.chat_up_move_cancel);
+        }
+     }
 
     @Override
     public void Show() {
@@ -52,8 +59,14 @@ public class AudioRecordWaterWaveStateView extends RelativeLayout implements Rec
             return;
         }
         CURRENT_STATE = STATE_NORMAL;
-        chat_record_state_text.setText(getResources().getString(R.string.chat_up_move_cancel));
-    }
+
+        if (audioRecordWaterWaveEntry == null) {
+            chat_record_state_text.setText(getContext().getString(R.string.chat_up_move_cancel));
+        } else {
+            chat_record_state_text.setText(audioRecordWaterWaveEntry.chat_up_move_cancel);
+        }
+
+     }
 
     @Override
     public void cancelRecord() {
@@ -61,7 +74,11 @@ public class AudioRecordWaterWaveStateView extends RelativeLayout implements Rec
             return;
         }
         CURRENT_STATE = STATE_CANCEL;
-        chat_record_state_text.setText(getResources().getString(R.string.chat_up_cancel));
+         if (audioRecordWaterWaveEntry == null) {
+            chat_record_state_text.setText(getContext().getString(R.string.chat_up_cancel));
+        } else {
+            chat_record_state_text.setText(audioRecordWaterWaveEntry.chat_up_cancel);
+        }
     }
 
     @Override
@@ -85,6 +102,13 @@ public class AudioRecordWaterWaveStateView extends RelativeLayout implements Rec
         }
     }
 
-
+    public void setEntry(AudioRecordWaterWaveEntry audioRecordWaterWaveEntry){
+        this.audioRecordWaterWaveEntry =audioRecordWaterWaveEntry;
+        if (CURRENT_STATE == STATE_CANCEL) {
+            chat_record_state_text.setText(audioRecordWaterWaveEntry.chat_up_cancel);
+        } else {
+            chat_record_state_text.setText(audioRecordWaterWaveEntry.chat_up_move_cancel);
+        }
+    }
 
 }

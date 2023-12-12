@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xjl.eimui.R;
+import com.xjl.eimui.entry.AudioRecordWaterWaveEntry;
 
 /**
  * 仿微信录音控件 可以实时显示当前录音的分贝大小
@@ -28,6 +29,8 @@ public class AudioReocrdWeChatWaveView extends RelativeLayout implements RecordS
 
     private int CURRENT_STATE = -1;
 
+    private AudioRecordWaterWaveEntry audioRecordWaterWaveEntry = null;
+
     public AudioReocrdWeChatWaveView(Context context) {
         super(context);
         initView(context);
@@ -42,6 +45,12 @@ public class AudioReocrdWeChatWaveView extends RelativeLayout implements RecordS
         View view = LayoutInflater.from(context).inflate(R.layout.view_voice_record_wechat_wave_state, this);
         iv_voice_ing = view.findViewById(R.id.iv_voice_ing);
         tv_voice_ing = view.findViewById(R.id.tv_voice_ing);
+        if (audioRecordWaterWaveEntry == null) {
+            tv_voice_ing.setText(context.getString(R.string.chat_up_move_cancel));
+        } else {
+            tv_voice_ing.setText(audioRecordWaterWaveEntry.chat_up_move_cancel);
+        }
+
         iv_voice_ing.setBackgroundResource(R.mipmap.ic_voice_ing1);
     }
 
@@ -58,7 +67,12 @@ public class AudioReocrdWeChatWaveView extends RelativeLayout implements RecordS
             return;
         }
         CURRENT_STATE = STATE_NORMAL;
-        tv_voice_ing.setText(getResources().getString(R.string.chat_up_move_cancel));
+        if (audioRecordWaterWaveEntry == null) {
+            tv_voice_ing.setText(getContext().getString(R.string.chat_up_move_cancel));
+        } else {
+            tv_voice_ing.setText(audioRecordWaterWaveEntry.chat_up_move_cancel);
+        }
+
 
     }
 
@@ -69,7 +83,11 @@ public class AudioReocrdWeChatWaveView extends RelativeLayout implements RecordS
         }
         CURRENT_STATE = STATE_CANCEL;
         iv_voice_ing.setBackgroundResource(R.mipmap.ic_voice_cancel);
-        tv_voice_ing.setText(getResources().getString(R.string.chat_up_cancel));
+        if (audioRecordWaterWaveEntry == null) {
+            tv_voice_ing.setText(getContext().getString(R.string.chat_up_cancel));
+        } else {
+            tv_voice_ing.setText(audioRecordWaterWaveEntry.chat_up_cancel);
+        }
 
     }
 
@@ -121,5 +139,12 @@ public class AudioReocrdWeChatWaveView extends RelativeLayout implements RecordS
 
     }
 
-
+    public void setEntry(AudioRecordWaterWaveEntry audioRecordWaterWaveEntry) {
+        this.audioRecordWaterWaveEntry =audioRecordWaterWaveEntry;
+        if (CURRENT_STATE == STATE_CANCEL) {
+            tv_voice_ing.setText(audioRecordWaterWaveEntry.chat_up_cancel);
+        } else {
+            tv_voice_ing.setText(audioRecordWaterWaveEntry.chat_up_move_cancel);
+        }
+    }
 }
