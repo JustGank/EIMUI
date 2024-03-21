@@ -3,15 +3,13 @@
 buildscript {
 
     repositories {
-
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
         google()
-
-
+        maven { url "https://maven.aliyun.com/repository/central" }
+        maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath 'com.android.tools.build:gradle:8.1.1'
 
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -21,9 +19,10 @@ buildscript {
 
 allprojects {
     repositories {
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
         google()
+        maven { url "https://maven.aliyun.com/repository/central" }
+        maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
     }
 }
 

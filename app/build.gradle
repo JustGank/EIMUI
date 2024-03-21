@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 33
+    buildToolsVersion "33.0.3"
 
     defaultConfig {
         applicationId "com.xjl.eimui_demo"
-        minSdkVersion 21
-        targetSdkVersion 29
+        minSdkVersion 23
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
@@ -25,11 +25,14 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+    namespace 'com.xjl.eimui_demo'
 
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ':eimui')
+    api files('../aars/emp3recorder200919.aar')
+    api files('../aars/emedia201020.aar')
 
 }
