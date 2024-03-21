@@ -1,2 +1,36 @@
+import org.gradle.api.initialization.resolve.RepositoriesMode
+
+pluginManagement {
+
+    repositories {
+        gradlePluginPortal()
+        google()
+        maven { url "https://maven.aliyun.com/repository/central" }
+        maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
+        maven { url "https://jitpack.io" }
+        mavenCentral()
+
+    }
+
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        gradlePluginPortal()
+        google()
+        maven { url "https://maven.aliyun.com/repository/central" }
+        maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
+        maven {url "https://jitpack.io"}
+        mavenCentral()
+
+    }
+}
+
+rootProject.name="EIMUI"
+
+
 include ':app'
 include ':eimui'
