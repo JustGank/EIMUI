@@ -15,21 +15,21 @@
             android:id="@+id/left_img1"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:visibility="gone" />
 
         <ImageView
             android:id="@+id/left_img2"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:visibility="gone" />
 
         <ImageView
             android:id="@+id/left_img3"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:visibility="gone" />
 
         <RelativeLayout
@@ -43,12 +43,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/chat_inputbar_bg"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:imeActionLabel="send"
                 android:imeOptions="actionSend"
                 android:maxLength="200"
-                android:paddingLeft="7dp"
-                android:paddingRight="7dp"
+                android:paddingStart="7dp"
+                android:paddingEnd="7dp"
                 android:singleLine="true"
                 android:textSize="22sp" />
 
@@ -69,21 +69,21 @@
             android:id="@+id/right_img1"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:visibility="gone" />
 
         <ImageView
             android:id="@+id/right_img2"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:visibility="gone" />
 
         <ImageView
             android:id="@+id/right_img3"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:visibility="gone" />
 
     </LinearLayout>

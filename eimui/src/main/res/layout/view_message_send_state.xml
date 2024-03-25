@@ -20,8 +20,8 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@+id/item_chat_error_text"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/item_chat_error_text"
         android:src="@mipmap/chat_send_failed"
         android:scaleType="fitCenter"
         android:visibility="visible" />
