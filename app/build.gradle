@@ -35,6 +35,5 @@ dependencies {
     implementation project(path: ':eimui')
     api files('../aars/emp3recorder20240321.aar')
     api files('../aars/emedia20240321.aar')
-    implementation 'androidx.core:core-ktx:+'
 
 }

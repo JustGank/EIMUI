@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/chat_inputbar_bg"
-                android:gravity="center_vertical|start"
+                android:textAlignment="textStart"
                 android:imeActionLabel="send"
                 android:imeOptions="actionSend"
                 android:maxLength="200"
