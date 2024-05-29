@@ -1,117 +1,100 @@
-package com.xjl.eimui.messagelist.widget;
+package com.xjl.eimui.messagelist.widget
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.xjl.eimui.R;
-import com.xjl.emedia.utils.ScreenUtil;
-
-;
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
+import com.xjl.eimui.R
+import com.xjl.emedia.utils.ScreenUtil
 
 /**
  * Created by x33664 on 2019/3/8.
  */
+class ChatAudioView : RelativeLayout {
 
-public class ChatAudioView extends RelativeLayout {
+    private val TAG = "ChatAudioView"
 
-    private static final String TAG = "ChatAudioView";
+    private lateinit var audio_container: RelativeLayout
+    private lateinit var voice_icon: ImageView
+    private lateinit var time: TextView
+    private val minLengthDP = 80
+    private val maxLengthDP = 240
+    private val minRecordTimes = 10
+    private val maxRecordTimes = 60
+    private var minLength = 0
+    private var maxLength = 0
+    private var objectAnimator: ObjectAnimator? = null
+    private var isRight = true
 
-    private RelativeLayout audio_container;
-
-    private ImageView voice_icon;
-
-    private TextView time;
-
-    private int minLengthDP = 80;
-    private int maxLengthDP = 240;
-    private int minRecordTimes = 10;
-    private int maxRecordTimes = 60;
-    private int minLength = 0;
-    private int maxLength = 0;
-    private ObjectAnimator objectAnimator;
-
-    private boolean isRight = true;
-
-    public ChatAudioView(Context context)
-    {
-        super(context);
-        minLength = ScreenUtil.dip2px(getContext(), minLengthDP);
-        maxLength = ScreenUtil.dip2px(getContext(), maxLengthDP);
-        initView(isRight);
+    constructor(context: Context?) : super(context) {
+        minLength = ScreenUtil.dip2px(getContext(), minLengthDP.toFloat())
+        maxLength = ScreenUtil.dip2px(getContext(), maxLengthDP.toFloat())
+        initView(isRight)
     }
 
-    public ChatAudioView(Context context, boolean isRight) {
-        super(context);
-        this.isRight = isRight;
-        minLength = ScreenUtil.dip2px(getContext(), minLengthDP);
-        maxLength = ScreenUtil.dip2px(getContext(), maxLengthDP);
-        initView(this.isRight);
+    constructor(context: Context?, isRight: Boolean) : super(context) {
+        this.isRight = isRight
+        minLength = ScreenUtil.dip2px(getContext(), minLengthDP.toFloat())
+        maxLength = ScreenUtil.dip2px(getContext(), maxLengthDP.toFloat())
+        initView(this.isRight)
     }
 
-    private void initView(boolean mine) {
-        if(mine)
-        {
-            LayoutInflater.from(getContext()).inflate(R.layout.view_message_audio_sender, this);
-        }else
-        {
-            LayoutInflater.from(getContext()).inflate(R.layout.view_message_audio_recepter, this);
+    private fun initView(mine: Boolean) {
+        if (mine) {
+            LayoutInflater.from(context).inflate(R.layout.view_message_audio_sender, this)
+        } else {
+            LayoutInflater.from(context).inflate(R.layout.view_message_audio_recepter, this)
         }
-
-        audio_container = (RelativeLayout) this.findViewById(R.id.audio_container);
-        voice_icon = (ImageView) this.findViewById(R.id.voice_icon);
-        time = (TextView) this.findViewById(R.id.time);
+        audio_container = findViewById(R.id.audio_container)
+        voice_icon = findViewById(R.id.voice_icon)
+        time = findViewById(R.id.time)
     }
 
     /**
      * 设置时间后动态设置item的长度
      */
-    public void setTime(int timeUnitSeconds) {
-        this.time.setText(timeUnitSeconds + "''");
-        RelativeLayout.LayoutParams layoutParams = null;
-        if (timeUnitSeconds < minRecordTimes) {
-            layoutParams = new RelativeLayout.LayoutParams(minLength, LayoutParams.WRAP_CONTENT);
+    fun setTime(timeUnitSeconds: Int) {
+        time.text = "$timeUnitSeconds"
+        val length = if (timeUnitSeconds < minRecordTimes) {
+            minLength
         } else if (timeUnitSeconds < maxRecordTimes) {
-            float scale = (float) (timeUnitSeconds - minRecordTimes) / (float) (maxRecordTimes - minRecordTimes);
-            int tempLength = (int) (minLength + scale * (maxLength - minLength));
-            layoutParams = new RelativeLayout.LayoutParams(tempLength, LayoutParams.WRAP_CONTENT);
+            val scale =
+                (timeUnitSeconds - minRecordTimes) / (maxRecordTimes - minRecordTimes).toFloat()
+            (minLength + scale * (maxLength - minLength)).toInt()
         } else {
-            layoutParams = new RelativeLayout.LayoutParams(maxLength, LayoutParams.WRAP_CONTENT);
+            maxLength
         }
-        audio_container.setLayoutParams(layoutParams);
+        audio_container.layoutParams = LayoutParams(length, LayoutParams.WRAP_CONTENT)
     }
 
-
-    public void startAnim() {
+    fun startAnim() {
         if (objectAnimator == null) {
-            objectAnimator = ObjectAnimator.ofFloat(voice_icon, "alpha", 1f, 0f, 1f);
-            objectAnimator.setRepeatMode(ValueAnimator.RESTART);
-            objectAnimator.setRepeatCount(-1);
-            objectAnimator.setDuration(2000);
+            objectAnimator = ObjectAnimator.ofFloat(voice_icon, "alpha", 1f, 0f, 1f)
+            objectAnimator?.repeatMode = ValueAnimator.RESTART
+            objectAnimator?.repeatCount = -1
+            objectAnimator?.setDuration(2000)
         }
-        if (objectAnimator.isRunning()) {
-            return;
+        if (objectAnimator?.isRunning == true) {
+            return
         }
-        objectAnimator.start();
+        objectAnimator?.start()
     }
 
-    public void endAnim() {
-        if (null != objectAnimator) {
-            objectAnimator.cancel();
-            objectAnimator = null;
-            voice_icon.setBackgroundResource(R.mipmap.item_chat_voice);
+    fun endAnim() {
+        objectAnimator?.let {
+            it.cancel()
+            objectAnimator = null
         }
+        voice_icon.setBackgroundResource(R.mipmap.item_chat_voice)
     }
 
-    public boolean isPlaying() {
-        if (objectAnimator != null) {
-            return objectAnimator.isRunning();
-        }
-        return false;
-    }
+    val isPlaying: Boolean
+        get() = if (objectAnimator != null) {
+            objectAnimator!!.isRunning
+        } else false
 
 }

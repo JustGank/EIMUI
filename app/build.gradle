@@ -4,13 +4,13 @@ plugins{
 }
 
 android {
-    namespace 'com.xjl.eimui_demo'
-    compileSdk 33
+    namespace 'com.xjl.eimui.demo'
+    compileSdk 34
 
     defaultConfig {
-        applicationId "com.xjl.eimui_demo"
+        applicationId "com.xjl.eimui.demo"
         minSdkVersion 23
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
     }
@@ -27,13 +27,29 @@ android {
         targetCompatibility = 1.8
     }
 
+    buildFeatures{
+        dataBinding true
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ':eimui')
-    api files('../aars/emp3recorder20240321.aar')
-    api files('../aars/emedia20240321.aar')
+    api files('../aars/emp3recorder-release.aar')
+    api files('../aars/emedia-release.aar')
+    def camerax_version = "1.2.3"
+    // The following line is optional, as the core library is included indirectly by camera-camera2
+    implementation "androidx.camera:camera-core:${camerax_version}"
+    implementation "androidx.camera:camera-camera2:${camerax_version}"
+    // If you want to additionally use the CameraX Lifecycle library
+    implementation "androidx.camera:camera-lifecycle:${camerax_version}"
+    // If you want to additionally use the CameraX VideoCapture library
+    implementation "androidx.camera:camera-video:${camerax_version}"
+    // If you want to additionally use the CameraX View class
+    implementation "androidx.camera:camera-view:${camerax_version}"
 
 }

@@ -1,27 +1,16 @@
-package com.xjl.eimui.messagelist.listener;
+package com.xjl.eimui.messagelist.listener
 
-import android.view.View;
+import android.view.View
+import com.xjl.eimui.messagelist.bean.EMessage
 
-import com.xjl.eimui.messagelist.bean.EMessage;
-
-public class OperationListener<MESSAGE extends EMessage> {
-
-    public void onHeaderClickListener(int position, View v, MESSAGE data){}
-
-    public void onHeaderLongClickListener(int position, View v, MESSAGE data){}
-
-    public void onOtherInfoClickListener(int position, View v, MESSAGE data){ }
-
-    public void onOtherInfoLongClickListener(int position, View v, MESSAGE data){ }
-
-    public void onMineInfoClickListener(int position, View v, MESSAGE data){}
-
-    public void onMineInfoLongClickListener(int position, View v, MESSAGE data){}
-
-    public void onItemClickListener(int position, View v, MESSAGE data){};
-
-    public void onItemLongClickListener(int position, View v, MESSAGE data){};
-
-    public void onStateViewClickListener(int position, View v, MESSAGE data){};
-
+open class OperationListener<MESSAGE : EMessage> {
+    fun onHeaderClickListener(position: Int, v: View, data: MESSAGE) {}
+    fun onHeaderLongClickListener(position: Int, v: View, data: MESSAGE) {}
+    fun onOtherInfoClickListener(position: Int, v: View, data: MESSAGE) {}
+    fun onOtherInfoLongClickListener(position: Int, v: View, data: MESSAGE) {}
+    fun onMineInfoClickListener(position: Int, v: View, data: MESSAGE) {}
+    fun onMineInfoLongClickListener(position: Int, v: View, data: MESSAGE) {}
+    open fun onItemClickListener(position: Int, v: View, data: MESSAGE) {}
+    fun onItemLongClickListener(position: Int, v: View, data: MESSAGE) {}
+    open fun onStateViewClickListener(position: Int, v: View, data: MESSAGE) {}
 }

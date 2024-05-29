@@ -1,14 +1,8 @@
-package com.xjl.eimui.inputbar.moreoperateion.impl;
+package com.xjl.eimui.inputbar.moreoperateion.impl
 
-import android.app.Activity;
-import android.view.View;
+import android.content.Context
+import android.view.View
 
-public interface Operation {
-
-    public boolean previewOperate();
-
-    public void operate(View v, int position, Activity activity);
-
-    public int getRequestCode();
-
+interface InputBarOperation {
+    fun operate(v: View, position: Int, context: Context)
 }

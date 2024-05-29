@@ -1,48 +1,32 @@
-package com.xjl.eimui.messagelist.bean;
+package com.xjl.eimui.messagelist.bean
 
+interface EMessage {
 
-import java.util.HashMap;
+    val msgID : String
 
-public interface EMessage {
+    var mine: EUser
 
-    String getMsgId();
+    var other: EUser
 
-    void setMine(EUser user);
+    var messageType : Int
 
-    EUser getMine();
+    var header: String
 
-    void setOther(EUser user);
+    var content: String?
 
-    EUser getOther();
+    var subContent: String?
 
-    int getMessageType();
+    var mediaFilePath: String?
 
-    String getHeaderString();
+    var duration: Long
 
-    String getContent();
+    var progress: Int
 
-    String getSubContent();
+    var messageStatus: Int
 
-    String getMediaFilePath();
+     var isSelected: Boolean
 
-    long getDuration();
+    var isPlaying: Boolean
 
-    int getProgress();
-
-    void setProgress(int progress);
-
-    int getMessageStatus();
-
-    void setMessageStatus(int status);
-
-    boolean isSelected();
-
-    void setSelected(boolean b);
-
-    boolean isPlaying();
-
-    void setIsPlaying(boolean b);
-
-    HashMap<String, String> getExtras();
-
+    val extras: HashMap<String, String>
 }

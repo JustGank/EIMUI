@@ -1,98 +1,69 @@
-package com.xjl.eimui.inputbar.recordstate;
+package com.xjl.eimui.inputbar.recordstate
 
-import android.content.Context;
-import android.view.MotionEvent;
-import android.view.View;
+import android.content.Context
+import android.view.MotionEvent
+import android.view.View
+import android.view.View.OnTouchListener
+import com.xjl.eimui.R
+import com.xjl.eimui.util.AudioResourceUtils
+import com.xjl.eimui.util.ToastUtils.showMessage
 
-import com.xjl.eimui.R;
-import com.xjl.eimui.util.AudioResourceUtils;
-import com.xjl.eimui.util.ToastUtils;
+class RecordTouchListener(
+    val context: Context,
+    val recordState: RecordStateView,
+    var recordStateListener: RecordStateListener?
+) : OnTouchListener {
 
-public class RecordTouchListener implements View.OnTouchListener {
+    private val TAG = "RecordTouchListener"
 
-    private static final String TAG = "RecordTouchListener";
+    private var downY = 0
+    private var movedY = 0
+    private var upY = 0
+    private var touchDownTime: Long = 0
+    private var touchUpTime: Long = 0
 
-    private RecordStateView recordState;
-
-    private RecordStateListener recordStateListener;
-
-    private int downY, movedY, upY;
-
-    private long touchDownTime = 0;
-
-    private long touchUpTime = 0;
     //手势上下滑动改变录音状态的距离
-    private int stateChangeDistance=200;
+    var stateChangeDistance = 200
+
     //频繁点击的时间间隙
-    private int frequenceClickInterval=700;
-
-    private Context context;
-
-    public RecordTouchListener(Context context, RecordStateView recordState, RecordStateListener recordStateListener) {
-        this.context = context;
-        this.recordState = recordState;
-        this.recordStateListener = recordStateListener;
-    }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                touchDownTime = System.currentTimeMillis();
-                if (!AudioResourceUtils.validateMicAvailability()) {
-                    ToastUtils.showMessage(context, context.getResources().getString(R.string.cant_record_audio));
-                    return true;
+    var frequenceClickInterval = 700
+    override fun onTouch(v: View, event: MotionEvent): Boolean {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                touchDownTime = System.currentTimeMillis()
+                if (!AudioResourceUtils.validateMicAvailability(v.context)) {
+                    showMessage(context, context.resources.getString(R.string.cant_record_audio))
+                    return true
                 }
                 //最后一次落下和上一次抬起是否间隔大一1秒
-                if (touchUpTime == 0 || touchDownTime - touchUpTime > frequenceClickInterval) {
-                    downY = (int) event.getY();
-
-                    recordState.Show();
-                    recordState.normalRecord();
-
-                    if (null != recordStateListener) {
-                        recordStateListener.onRecordStateChange(1);
-                    }
+                if (touchUpTime == 0L || touchDownTime - touchUpTime > frequenceClickInterval) {
+                    downY = event.y.toInt()
+                    recordState.Show()
+                    recordState.normalRecord()
+                    recordStateListener?.onRecordStateChange(1)
                 } else {
-                    recordStateListener.onFrequenceClick(touchDownTime, touchUpTime);
+                    recordStateListener!!.onFrequenceClick(touchDownTime, touchUpTime)
                 }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                movedY = (int) event.getY()-downY;
+            }
+
+            MotionEvent.ACTION_MOVE -> {
+                movedY = event.y.toInt() - downY
                 if (movedY > -stateChangeDistance) {
-                    recordState.normalRecord();
+                    recordState.normalRecord()
                 } else {
-                    recordState.cancelRecord();
+                    recordState.cancelRecord()
                 }
-                break;
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_UP:
-                touchUpTime = System.currentTimeMillis();
-                upY = (int) event.getY();
-                if (null != recordStateListener) {
-                    recordStateListener.onRecordStateChange(upY < -stateChangeDistance ? 2 : 3);
-                }
-                recordState.dismiss();
-                break;
+            }
+
+            MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
+                touchUpTime = System.currentTimeMillis()
+                upY = event.y.toInt()
+                recordStateListener?.onRecordStateChange(if (upY < -stateChangeDistance) 2 else 3)
+                recordState.dismiss()
+            }
         }
-        return true;
+        return true
     }
 
-    public int getStateChangeDistance() {
-        return stateChangeDistance;
-    }
-
-    public void setStateChangeDistance(int stateChangeDistance) {
-        this.stateChangeDistance = stateChangeDistance;
-    }
-
-    public int getFrequenceClickInterval() {
-        return frequenceClickInterval;
-    }
-
-    public void setFrequenceClickInterval(int frequenceClickInterval) {
-        this.frequenceClickInterval = frequenceClickInterval;
-    }
 
 }

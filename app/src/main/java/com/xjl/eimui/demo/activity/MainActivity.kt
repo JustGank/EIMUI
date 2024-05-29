@@ -1,72 +1,74 @@
-package com.xjl.eimui_demo.activity;
+package com.xjl.eimui.demo.activity
 
-import android.Manifest;
-import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
+import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.xjl.eimui.demo.databinding.ActivityMainBinding
+import com.xjl.eimui.demo.adapter.MainAdapter
+import com.xjl.eimui.demo.adapter.MainAdapter.ClickListener
+import com.xjl.eimui.demo.bean.Constants
+import com.xjl.emedia.logger.Logger
+import com.xjl.emedia.utils.EMediaPermissionUtil
+import java.io.File
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+class MainActivity : AppCompatActivity() {
 
-import com.xjl.eimui_demo.R;
-import com.xjl.eimui_demo.adapter.MainAdapter;
+    private val TAG = "MainActivity"
 
-import java.util.ArrayList;
-import java.util.List;
+    lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
 
-public class MainActivity extends AppCompatActivity {
+    lateinit var adapter: MainAdapter
 
-    private static final String TAG = "MainActivity";
+    lateinit var binding: ActivityMainBinding
 
-    private RecyclerView recyclerView;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-    private MainAdapter adapter;
+        permissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+                val deniedPermissions = permissions.filterNot { it.value }
+                Logger.i("$TAG onCreate deniedPermissions:$deniedPermissions")
+                if (deniedPermissions.isNotEmpty()) {
+                    permissionLauncher.launch(EMediaPermissionUtil.getAllNotGrantedPermissions(this@MainActivity))
+                }
+            }
+        permissionLauncher.launch(EMediaPermissionUtil.getAllNotGrantedPermissions(this@MainActivity))
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        externalCacheDir?.absolutePath?.let { Constants.init(it) }
+        File(Constants.getImgDir()).let { if (!it.exists()) it.mkdirs() }
+        File(Constants.getAudioDir()).let { if (!it.exists()) it.mkdirs() }
+        File(Constants.getAudioDir()).let { if (!it.exists()) it.mkdirs() }
 
-        String[] permissions = {
-                Manifest.permission.CAMERA,
-                Manifest.permission.RECORD_AUDIO,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(permissions, 1001);
+        val list: MutableList<String> = ArrayList()
+        list.add("Muilt Message Demo")
+        list.add("Text Message Demo")
+        list.add("Image Message Demo")
+        list.add("Video Message Demo")
+        list.add("Voice Message Demo")
+        list.add("Location Message Demo")
+        list.add("File Message Demo")
+        list.add("Error Message Demo")
+
+        binding.apply {
+            recycler.setLayoutManager(LinearLayoutManager(this@MainActivity))
+            adapter = MainAdapter(list, this@MainActivity)
+            recycler.setAdapter(adapter)
+            adapter.setClickListener(object : ClickListener {
+                override fun onClicked(v: View?, position: Int) {
+                    val intent = Intent(this@MainActivity, ChatActivity::class.java)
+                    intent.putExtra("index", position)
+                    startActivity(intent)
+                }
+            })
         }
 
-
-
-
-
-
-        recyclerView = findViewById(R.id.recycler);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-
-        List<String> list = new ArrayList<>();
-        list.add("Muilt Message Demo");
-        list.add("Text Message Demo");
-        list.add("Image Message Demo");
-        list.add("Video Message Demo");
-        list.add("Voice Message Demo");
-        list.add("Location Message Demo");
-        list.add("File Message Demo");
-        list.add("Error Message Demo");
-
-        adapter = new MainAdapter(list, MainActivity.this);
-
-        recyclerView.setAdapter(adapter);
-        adapter.setClickListener((v, position) -> {
-
-            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
-            intent.putExtra("index", position);
-            startActivity(intent);
-
-        });
 
     }
 

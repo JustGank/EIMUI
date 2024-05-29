@@ -1,40 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <com.xjl.eimui.messagelist.widget.MessageRecycler
-                android:id="@+id/recycler"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
-        </RelativeLayout>
+                <com.xjl.eimui.messagelist.widget.MessageRecycler
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-        <com.xjl.eimui.inputbar.InputBar
-            android:id="@+id/inputbar"
-            android:layout_width="match_parent"
+            </RelativeLayout>
+
+            <com.xjl.eimui.inputbar.InputBar
+                android:id="@+id/inputbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:keyVoiceSwitchViewId="@+id/left_img2"/>
+
+        </LinearLayout>
+
+        <com.xjl.eimui.inputbar.recordstate.AudioReocrdWeChatWaveView
+            android:id="@+id/recordstate_view"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" />
-
-    </LinearLayout>
-
-    <com.xjl.eimui.inputbar.recordstate.AudioReocrdWeChatWaveView
-        android:id="@+id/recordstate_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
 
 
-</RelativeLayout>
+    </RelativeLayout>
+</layout>

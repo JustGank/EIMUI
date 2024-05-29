@@ -1,119 +1,100 @@
-package com.xjl.eimui.messagelist.adapter;
+package com.xjl.eimui.messagelist.adapter
 
-import android.content.Context;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.xjl.eimui.R
+import com.xjl.eimui.logger.Logger
+import com.xjl.eimui.messagelist.bean.EMessage
+import com.xjl.eimui.messagelist.holder.MessageViewHolderBase
+import com.xjl.eimui.messagelist.holder.ViewHolderSendErrorMessage
+import com.xjl.eimui.messagelist.listener.OperationListener
+import com.xjl.eimui.messagelist.util.HolderClassManager
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+class EMessageAdapter<MESSAGE : EMessage>(
+    val context: Context,
+    var list: MutableList<MESSAGE>,
+    val inflater: LayoutInflater = LayoutInflater.from(context)
+) : RecyclerView.Adapter<MessageViewHolderBase<MESSAGE>>() {
 
-import com.xjl.eimui.R;
-import com.xjl.eimui.messagelist.bean.EMessage;
-import com.xjl.eimui.messagelist.holder.MessageViewHolderBase;
-import com.xjl.eimui.messagelist.holder.ViewHolderSendErrorMessage;
-import com.xjl.eimui.messagelist.listener.OperationListener;
-import com.xjl.eimui.messagelist.util.HolderClassManager;
+    private val TAG = "MessageAdapter"
+    private var isSelectedMode = false
 
-import java.lang.reflect.Constructor;
-import java.util.List;
+    var operationListener: OperationListener<MESSAGE>? = null
 
-public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adapter<MessageViewHolderBase> {
 
-    private static final String TAG = "MessageAdapter";
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): MessageViewHolderBase<MESSAGE> {
+        val holder = getHolder(parent, HolderClassManager.getViewHolderClass(viewType))
+        Logger.i("$TAG onCreateViewHolder class" + holder::class.java.simpleName)
+        operationListener?.let { holder.operationListener = it }
 
-    private Context context;
-    private LayoutInflater inflater;
-    private boolean isSelectedMode = false;
-    private OperationListener<EMessage> operationListener;
-    public  List<MESSAGE> list;
-
-    public EMessageAdapter(Context context, List<MESSAGE> list) {
-        this.context = context;
-        this.list = list;
-        this.inflater = LayoutInflater.from(context);
+        return holder
     }
 
-    public void setOperationListener(OperationListener<EMessage> operationListener) {
-        this.operationListener = operationListener;
-    }
-
-    public OperationListener<EMessage> getOperationListener(){
-        return operationListener;
-    }
-
-    @NonNull
-    @Override
-    public MessageViewHolderBase onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        MessageViewHolderBase holder = getHolder(parent, HolderClassManager.INSTANCE.getViewHolderClass(viewType));
-        Log.e(TAG, "holder class" + holder.getClass());
-        if (this.operationListener != null)
-            holder.setOperationListener(this.operationListener);
-        return holder;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull MessageViewHolderBase holder, int position) {
-        MESSAGE data = list.get(position);
+    override fun onBindViewHolder(holder: MessageViewHolderBase<MESSAGE>, position: Int) {
+        val data = list[position]
         //由于头部信息和上下两条数据可能有关系
         if (position == 0) {
-            if (getItemCount() > 1) {
-                holder.setHeader(data, null, list.get(1));
+            if (itemCount > 1) {
+                holder.setHeader(data, null, list[1])
             } else {
-                holder.setHeader(data, null, null);
+                holder.setHeader(data, null, null)
             }
         } else {
-            if (getItemCount() < 3) {
-                holder.setHeader(data, list.get(position - 1), null);
+            if (itemCount < 3) {
+                holder.setHeader(data, list[position - 1], null)
             } else {
-                if (position + 1 < list.size() && list.get(position + 1) != null) {
-                    holder.setHeader(data, list.get(position - 1), list.get(position + 1));
+                if (position + 1 < list.size && list[position + 1] != null) {
+                    holder.setHeader(data, list[position - 1], list[position + 1])
                 } else {
-                    holder.setHeader(data, list.get(position - 1), null);
+                    holder.setHeader(data, list[position - 1], null)
                 }
             }
         }
-
-        holder.bindData(list.get(position), isSelectedMode, position);
-
-        holder.foot.setVisibility(View.GONE);
+        holder.bindData(list[position], isSelectedMode, position)
+        holder.foot.visibility = View.GONE
     }
 
     /**
      * 数据操作相关方法
      */
-    public void setList(List<MESSAGE> list) {
-        this.list = list;
-        notifyDataSetChanged();
+    fun replaceList(list: List<MESSAGE>) {
+        this.list.clear()
+        this.list.addAll(list)
+        notifyDataSetChanged()
     }
 
-    public void addItem(MESSAGE message) {
-        this.list.add(message);
-        notifyDataSetChanged();
+    fun addItem(message: MESSAGE) {
+        list.add(message)
+        notifyDataSetChanged()
     }
 
-    public void insertItem(MESSAGE message) {
-        list.add(0, message);
-        notifyDataSetChanged();
+    fun insertItem(message: MESSAGE) {
+        list.add(0, message)
+        notifyDataSetChanged()
     }
 
-    public String getMessageId(int position) {
-        return list.get(position).getMsgId();
+    fun getMessageId(position: Int): String {
+        return list[position].msgID
     }
 
-    public void deleteItem(int position) {
-        this.list.remove(position);
-        notifyItemRemoved(position);
+    fun deleteItem(position: Int) {
+        list.removeAt(position)
+        notifyItemRemoved(position)
     }
 
-    public void updataProgress(String msgId, int progress) {
-        for (int i = 0; i < list.size(); i++) {
-            MESSAGE message = list.get(i);
-            if (message.getMsgId().equals(msgId)) {
-                message.setProgress(progress);
-                notifyItemChanged(i);
-                break;
+    fun updataProgress(msgId: String, progress: Int) {
+        for (i in list.indices) {
+            val message = list[i]
+            if (message.msgID == msgId) {
+                message.progress=progress
+                notifyItemChanged(i)
+                break
             }
         }
     }
@@ -121,64 +102,65 @@ public class EMessageAdapter<MESSAGE extends EMessage> extends RecyclerView.Adap
     /**
      * 更改模式
      */
-    public void setSelectedMode(boolean isSelectedMode) {
-        this.isSelectedMode = isSelectedMode;
-        notifyDataSetChanged();
+    fun setSelectedMode(isSelectedMode: Boolean) {
+        this.isSelectedMode = isSelectedMode
+        notifyDataSetChanged()
     }
 
-    public boolean isSelectedMode(){
-        return this.isSelectedMode;
+    fun isSelectedMode(): Boolean {
+        return isSelectedMode
     }
 
-    public void updateItemSelected(int position) {
-        list.get(position).setSelected(!list.get(position).isSelected());
-        notifyItemChanged(position);
+    fun updateItemSelected(position: Int) {
+        list[position].apply { isSelected=!isSelected }
+        notifyItemChanged(position)
     }
 
-    public void updateMessageState(String msgId, int newState) {
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getMsgId().equals(msgId)) {
-                list.get(i).setMessageStatus(newState);
-                notifyItemChanged(i);
-                break;
+    fun updateMessageState(msgId: String?, newState: Int) {
+        for (i in list.indices) {
+            if (list[i].msgID == msgId) {
+                list[i].messageStatus=newState
+                notifyItemChanged(i)
+                break
             }
         }
     }
 
-    public void updatePlaying(int position, boolean playing) {
-        getItem(position).setIsPlaying(playing);
-        notifyItemChanged(position);
+    fun updatePlaying(position: Int, playing: Boolean) {
+        getItem(position).isPlaying=playing
+        notifyItemChanged(position)
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return list.get(position).getMessageType();
+    override fun getItemViewType(position: Int): Int {
+        return list[position].messageType
     }
 
-    @Override
-    public int getItemCount() {
-        return list.size();
+    override fun getItemCount(): Int {
+        return list.size
     }
 
-    public EMessage getItem(int position) {
-        return list.get(position);
+    fun getItem(position: Int): EMessage {
+        return list[position]
     }
 
-    public <HOLDER extends MessageViewHolderBase> MessageViewHolderBase getHolder(ViewGroup parent, Class<HOLDER> holderClass) {
-        View view = inflater.inflate(R.layout.item_messagelist_container, parent, false);
-        MessageViewHolderBase holder = null;
+    fun <HOLDER : MessageViewHolderBase<out EMessage>> getHolder(
+        parent: ViewGroup?,
+        holderClass: Class<HOLDER>
+    ): MessageViewHolderBase<MESSAGE> {
+        val view = inflater.inflate(R.layout.item_messagelist_container, parent, false)
+        var holder: MessageViewHolderBase<MESSAGE>? = null
         try {
-            Constructor<HOLDER> constructor = holderClass.getDeclaredConstructor(Context.class, View.class);
-            holder = constructor.newInstance(context, view);
-
-        } catch (Exception e) {
-            Log.e(TAG, "getHolder Exception=" + e.getMessage());
-
+            val constructor = holderClass.getDeclaredConstructor(
+                Context::class.java, View::class.java
+            )
+            holder = constructor.newInstance(context, view) as MessageViewHolderBase<MESSAGE>
+        } catch (e: Exception) {
+            Logger.e("$TAG getHolder Exception=" + e.message)
         }
         if (holder == null) {
-            holder = new ViewHolderSendErrorMessage(context, view);
+            holder = ViewHolderSendErrorMessage<MESSAGE>(context, view)
         }
-
-        return holder;
+        return holder
     }
+
 }

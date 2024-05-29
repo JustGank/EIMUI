@@ -1,17 +1,20 @@
-package com.xjl.eimui.entry;
+package com.xjl.eimui.entry
 
-public class AudioRecordWaterWaveEntry {
+import android.content.Context
+import com.xjl.eimui.R
 
-    public String chat_up_move_cancel;
-    public String chat_up_cancel;
+class AudioRecordWaterWaveEntry {
 
-    public AudioRecordWaterWaveEntry(){
-        chat_up_move_cancel="Slide up to cancel";
-        chat_up_cancel="chat_up_cancel";
+    var chatUpMoveCancel: String
+    var chatUpCancel: String
+
+    constructor(context: Context) {
+        chatUpMoveCancel = context.resources.getString(R.string.chat_up_move_cancel)
+        chatUpCancel = context.resources.getString(R.string.chat_up_cancel)
     }
 
-    public AudioRecordWaterWaveEntry(String chat_up_move_cancel, String chat_up_cancel) {
-        this.chat_up_move_cancel = chat_up_move_cancel;
-        this.chat_up_cancel = chat_up_cancel;
+    constructor(chatUpMoveCancel: String, chatUpCancel: String) {
+        this.chatUpMoveCancel = chatUpMoveCancel
+        this.chatUpCancel = chatUpCancel
     }
 }

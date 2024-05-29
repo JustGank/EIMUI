@@ -1,15 +1,12 @@
-package com.xjl.eimui.messagelist.bean;
+package com.xjl.eimui.messagelist.bean
 
-public interface MessageStatus {
-    int CREATED = 1;
-
-    int SEND_GOING = 2;
-
-    int SEND_SUCCEED = 3;
-    int SEND_FAILED = 4;
-    int SEND_DRAFT = 5;
-
-    int RECEIVE_GOING = 6;
-    int RECEIVE_SUCCEED = 7;
-    int RECEIVE_FAILED = 8;
+object MessageStatus {
+    const val CREATED = 1
+    const val SEND_GOING = 2
+    const val SEND_SUCCEED = 3
+    const val SEND_FAILED = 4
+    const val SEND_DRAFT = 5
+    const val RECEIVE_GOING = 6
+    const val RECEIVE_SUCCEED = 7
+    const val RECEIVE_FAILED = 8
 }

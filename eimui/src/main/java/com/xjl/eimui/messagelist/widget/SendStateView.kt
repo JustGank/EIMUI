@@ -1,93 +1,74 @@
-package com.xjl.eimui.messagelist.widget;
+package com.xjl.eimui.messagelist.widget
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.xjl.eimui.R;
-
-;
-
+import android.content.Context
+import android.util.AttributeSet
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.RelativeLayout
+import com.xjl.eimui.databinding.ViewMessageSendStateBinding
 
 /**
  * Created by x33664 on 2019/1/8.
  */
+class SendStateView : RelativeLayout {
 
-public class SendStateView extends RelativeLayout {
-
-    private ImageView error_img;
-    private TextView error_text;
-    private ProgressBar progress_bar;
+    lateinit var binding:ViewMessageSendStateBinding
 
     //0状态代表发送成功过 1代表发送中 2代表发送失败，2状态可点击 可重新发送
-    private int currentState = 1;
+    private var currentState = 1
 
-    public SendStateView(Context context) {
-        super(context);
-        initView();
+    constructor(context: Context?) : super(context) {
+        initView()
     }
 
-    public SendStateView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initView();
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
+        initView()
     }
 
-    private void initView() {
-        LayoutInflater.from(getContext()).inflate(R.layout.view_message_send_state, this);
-        error_img = (ImageView) findViewById(R.id.error_img);
-        error_text = (TextView) findViewById(R.id.item_chat_error_text);
-        progress_bar = (ProgressBar) findViewById(R.id.progress_bar);
+    private fun initView() {
+        binding= ViewMessageSendStateBinding.inflate(LayoutInflater.from(context))
     }
 
-    public void showProgressBar() {
-        currentState = 1;
-        this.setVisibility(VISIBLE);
-        this.error_text.setVisibility(GONE);
-        this.error_img.setVisibility(GONE);
-        progress_bar.setVisibility(VISIBLE);
-    }
-
-    public void showError() {
-        currentState = 2;
-        this.setVisibility(VISIBLE);
-        this.error_text.setVisibility(VISIBLE);
-        this.error_img.setVisibility(VISIBLE);
-        progress_bar.setVisibility(GONE);
-    }
-
-    public void dismiss() {
-        currentState = 0;
-        this.error_text.setVisibility(GONE);
-        this.error_img.setVisibility(GONE);
-        progress_bar.setVisibility(GONE);
-        this.setVisibility(GONE);
-
-    }
-
-
-    public int getCurrentState() {
-        return currentState;
-    }
-
-
-    public void setCurrentState(int stage) {
-        this.currentState = stage;
-        switch (stage) {
-            case 0:
-                dismiss();
-                break;
-            case 1:
-                showProgressBar();
-                break;
-            case 2:
-                showError();
-                break;
+    fun showProgressBar() {
+        currentState = 1
+        this.visibility = VISIBLE
+        binding.apply {
+           itemChatErrorText.visibility= View.GONE
+            errorImg.visibility=View.GONE
+            progressBar.visibility=View.VISIBLE
         }
     }
 
+    fun showError() {
+        currentState = 2
+        this.visibility = VISIBLE
+        binding.apply {
+            itemChatErrorText.visibility= View.VISIBLE
+            errorImg.visibility=View.VISIBLE
+            progressBar.visibility=View.GONE
+        }
+    }
 
+    fun dismiss() {
+        currentState = 0
+        this.visibility = GONE
+        binding.apply {
+            itemChatErrorText.visibility= View.GONE
+            errorImg.visibility=View.GONE
+            progressBar.visibility=View.GONE
+        }
+    }
+
+    fun getCurrentState(): Int {
+        return currentState
+    }
+
+    fun setCurrentState(stage: Int) {
+        currentState = stage
+        when (stage) {
+            0 -> dismiss()
+            1 -> showProgressBar()
+            2 -> showError()
+        }
+    }
 }

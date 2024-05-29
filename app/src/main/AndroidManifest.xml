@@ -10,10 +10,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".AppApplication"
         android:theme="@style/AppTheme">
-        <activity android:name="com.xjl.eimui_demo.activity.MainActivity"
-            android:exported="true">
+        <activity android:name="com.xjl.eimui.demo.activity.MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +21,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.ChatActivity" />
+        <activity android:name="com.xjl.eimui.demo.activity.ChatActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>

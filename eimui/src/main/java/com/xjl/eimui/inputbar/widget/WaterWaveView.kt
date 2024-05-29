@@ -1,179 +1,179 @@
-package com.xjl.eimui.inputbar.widget;
+package com.xjl.eimui.inputbar.widget
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.util.AttributeSet;
-import android.util.TypedValue;
-import android.view.View;
+import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.util.AttributeSet
+import android.util.TypedValue
+import android.view.View
 
-import androidx.annotation.Nullable;
-
-public class WaterWaveView extends View {
-
-    private static final String TAG = "WaterWaveView";
+class WaterWaveView : View {
+    private val TAG = "WaterWaveView"
 
     /**
      * 数值参数类型
      */
     //水波纹的数量
-    private final int WAVE_COUNT = 5;
+    private val WAVE_COUNT = 5
+
     //整个控件的宽高
-    private int width, height;
+    private var width = 0
+    private var height = 0
+
     //圆心
-    private int xCenter, yCenter;
+    private var xCenter = 0
+    private var yCenter = 0
+
     //最大半径
-    private float radius;
+    private var radius = 0f
+
     //最小半径
-    private int unitR;
+    private var unitR = 0
+
     //递增的圆半径长度
-    private Integer rStep[] = new Integer[WAVE_COUNT];
+    private val rStep = arrayOfNulls<Int>(WAVE_COUNT)
+
     /**
      * 颜色类型参数
      */
     //同心圆颜色
-    private int circleColor;
+    private var circleColor = 0
+
     /**
      * 工具类参数
      */
-    private Paint paint;
+    private lateinit var paint: Paint
+
     /**
      * 播放类参数
      */
     //代表一秒25帧
-    private int frame = 25;
+    private val frame = 25
+
     //帧间隙
-    private int interval = 1000 / frame;
+    private val interval = 1000 / frame
+
     //周期即一个圆从内测到外侧的运动时间
-    private int until = 2;
+    private val until = 2
+
     //每帧运动
-    private int distance;
+    private var distance = 0
+    private var isRuning = false
+    private var isShowCenterCircle = true
+    private var startAlaph = 255
 
-    private boolean isRuning = false;
-
-    private boolean isShowCenterCircle = true;
-
-    private int startAlaph = 255;
-
-    public WaterWaveView(Context context) {
-        super(context);
-        init();
+    constructor(context: Context?) : super(context) {
+        init()
     }
 
-    public WaterWaveView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        init();
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
+        init()
     }
 
     //仅初始化画笔 未设置画笔颜色
-    private void init() {
-        paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.FILL);
+    private fun init() {
+        paint = Paint()
+        paint.isAntiAlias = true
+        paint.style = Paint.Style.FILL
     }
 
-    public void setColor(String color) {
-        this.circleColor = Color.parseColor(color);
-        paint.setColor(circleColor);
+    fun setColor(color: String?) {
+        circleColor = Color.parseColor(color)
+        paint.color = circleColor
         if (!isRuning) {
-            invalidate();
+            invalidate()
         }
     }
 
-    public void setShowCenterCircle(boolean b) {
-        this.isShowCenterCircle = b;
+    fun setShowCenterCircle(b: Boolean) {
+        isShowCenterCircle = b
     }
 
-    public void setStartAlaph(int startAlaph) {
-        if (startAlaph > 255)
-            this.startAlaph = 255;
-        if (startAlaph < 0)
-            this.startAlaph = 0;
-        else
-            this.startAlaph = startAlaph;
+    fun setStartAlaph(startAlaph: Int) {
+        if (startAlaph > 255) this.startAlaph = 255
+        if (startAlaph < 0) this.startAlaph = 0 else this.startAlaph = startAlaph
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        width = w;
-        height = h;
-        xCenter = width / 2;
-        yCenter = height / 2;
-        radius = width / 2.0f;
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        width = w
+        height = h
+        xCenter = width / 2
+        yCenter = height / 2
+        radius = width / 2.0f
         //最小圆的半径
-        unitR = width / WAVE_COUNT / 2;
-        for (int i = 0; i < WAVE_COUNT; i++) {
-            rStep[i] = unitR * (i + 1);
+        unitR = width / WAVE_COUNT / 2
+        for (i in 0 until WAVE_COUNT) {
+            rStep[i] = unitR * (i + 1)
         }
-        distance = (int) (radius / frame / until);
+        distance = (radius / frame / until).toInt()
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        var widthMeasureSpec = widthMeasureSpec
+        var heightMeasureSpec = heightMeasureSpec
+        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
+        val heightMode = MeasureSpec.getMode(heightMeasureSpec)
         if (widthMode == MeasureSpec.UNSPECIFIED || widthMode == MeasureSpec.AT_MOST) {
-            widthMeasureSpec = MeasureSpec.makeMeasureSpec(dp2Px(240), MeasureSpec.EXACTLY);
+            widthMeasureSpec = MeasureSpec.makeMeasureSpec(dp2Px(240), MeasureSpec.EXACTLY)
         }
-
         if (heightMode == MeasureSpec.UNSPECIFIED || heightMode == MeasureSpec.AT_MOST) {
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(dp2Px(240), MeasureSpec.EXACTLY);
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(dp2Px(240), MeasureSpec.EXACTLY)
         }
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
         if (circleColor != 0) {
-            drawWave(canvas);
+            drawWave(canvas)
             if (isShowCenterCircle) {
-                drawCenterCircle(canvas);
+                drawCenterCircle(canvas)
             }
         }
     }
 
-    private void drawWave(Canvas canvas) {
-        for (int i = 0; i < WAVE_COUNT; i++) {
-            paint.setAlpha((int) (startAlaph * (1.1 - rStep[i] / radius)));
-            canvas.drawCircle(xCenter, yCenter, rStep[i], paint);
+    private fun drawWave(canvas: Canvas) {
+        for (i in 0 until WAVE_COUNT) {
+            paint.alpha = (startAlaph * (1.1 - rStep[i]!! / radius)).toInt()
+            canvas.drawCircle(xCenter.toFloat(), yCenter.toFloat(), rStep[i]!!.toFloat(), paint)
         }
-
-        for (int i = 0; i < rStep.length; i++) {
+        for (i in rStep.indices) {
             //逐渐扩大 半径向前推进
-            rStep[i] = rStep[i] + distance;
-            if (rStep[i] > radius) {
-                rStep[i] = unitR;
+            rStep[i] = rStep[i]!! + distance
+            if (rStep[i]!! > radius) {
+                rStep[i] = unitR
             }
         }
-
         if (isRuning) {
-            postInvalidateDelayed(interval);
+            postInvalidateDelayed(interval.toLong())
         }
     }
 
-    private void drawCenterCircle(Canvas canvas) {
-        paint.setAlpha(255);
-        canvas.drawCircle(xCenter, yCenter, unitR * 2, paint);
+    private fun drawCenterCircle(canvas: Canvas) {
+        paint.alpha = 255
+        canvas.drawCircle(xCenter.toFloat(), yCenter.toFloat(), (unitR * 2).toFloat(), paint)
     }
 
-
-    public void start() {
+    fun start() {
         if (!isRuning) {
-            invalidate();
-            isRuning = true;
+            invalidate()
+            isRuning = true
         }
     }
 
-    public void stop() {
-        isRuning = false;
+    fun stop() {
+        isRuning = false
     }
 
-    private int dp2Px(int dpValue) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, getResources().getDisplayMetrics());
+    private fun dp2Px(dpValue: Int): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dpValue.toFloat(),
+            resources.displayMetrics
+        ).toInt()
     }
+
 
 }

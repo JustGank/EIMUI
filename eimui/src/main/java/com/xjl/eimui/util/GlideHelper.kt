@@ -1,37 +1,30 @@
-package com.xjl.eimui.util;
+package com.xjl.eimui.util
 
-import com.bumptech.glide.request.RequestOptions;
-import com.xjl.eimui.R;
+import com.bumptech.glide.request.RequestOptions
+import com.xjl.eimui.R
 
-import java.util.HashMap;
-
-public enum GlideHelper {
-
+enum class GlideHelper {
     INSTANCE;
 
-    private RequestOptions onlyCenterCrop = null;
-
-    public RequestOptions getOnCenterCrop() {
-        if (onlyCenterCrop == null) {
-            onlyCenterCrop = new RequestOptions();
-            this.onlyCenterCrop.skipMemoryCache(false);
-            this.onlyCenterCrop.centerCrop();
+    private var onlyCenterCrop: RequestOptions? = null
+    val onCenterCrop: RequestOptions
+        get() {
+            if (onlyCenterCrop == null) {
+                onlyCenterCrop = RequestOptions().apply{
+                    skipMemoryCache(false)
+                    centerCrop()
+                }
+            }
+            return onlyCenterCrop!!
         }
-
-        return onlyCenterCrop;
-    }
-
-    HashMap<Integer, RequestOptions> hashMap = new HashMap<>();
-
-    public RequestOptions getErrorOptions(int res) {
-        if (hashMap.get(res) == null) {
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.skipMemoryCache(false);
-            requestOptions.error(R.mipmap.avatar_spiderman);
-            hashMap.put(res, requestOptions);
+    var hashMap = HashMap<Int, RequestOptions?>()
+    fun getErrorOptions(res: Int): RequestOptions? {
+        if (hashMap[res] == null) {
+            val requestOptions = RequestOptions()
+            requestOptions.skipMemoryCache(false)
+            requestOptions.error(R.mipmap.avatar_spiderman)
+            hashMap[res] = requestOptions
         }
-        return hashMap.get(res);
+        return hashMap[res]
     }
-
-
 }

@@ -1,103 +1,63 @@
-package com.xjl.eimui.inputbar.builder;
+package com.xjl.eimui.inputbar.builder
 
-import com.xjl.eimui.R;
+import android.os.Parcel
+import android.os.Parcelable
+import com.xjl.eimui.R
 
-public class InputBarBuilder {
+class InputBarConfig() :Parcelable {
+    var keybord_img_res = R.mipmap.chat_inputbar_keyboard
 
-    private int left_img1_keybord = R.mipmap.chat_inputbar_keyboard;
+    var voice_img_res = R.mipmap.chat_inputbar_voice
 
-    private int left_img1_voice = R.mipmap.chat_inputbar_voice;
+    var left_img1_res=-1
 
-    private int left_img2_res = -1;
+    var left_img2_res = -1
 
-    private int left_img3_res = -1;
+    var left_img3_res = -1
 
-    private int right_img1_res = R.mipmap.chat_inputbar_more;
+    var right_img1_res = R.mipmap.chat_inputbar_more
 
-    private int right_img2_res = -1;
+    var right_img2_res = -1
 
-    private int right_img3_res = -1;
+    var right_img3_res = -1
 
-    private int inputBarBgResColor=R.color.main_color;
+    var inputBarBgResColor = R.color.main_color
 
-    private InputBarBuilder(){}
-
-    public static InputBarBuilder getNewInstance() {
-        return new InputBarBuilder();
+    constructor(parcel: Parcel) : this() {
+        keybord_img_res = parcel.readInt()
+        voice_img_res = parcel.readInt()
+        left_img1_res = parcel.readInt()
+        left_img2_res = parcel.readInt()
+        left_img3_res = parcel.readInt()
+        right_img1_res = parcel.readInt()
+        right_img2_res = parcel.readInt()
+        right_img3_res = parcel.readInt()
+        inputBarBgResColor = parcel.readInt()
     }
 
-    public int getLeft_img1_keybord() {
-        return left_img1_keybord;
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(keybord_img_res)
+        parcel.writeInt(voice_img_res)
+        parcel.writeInt(left_img1_res)
+        parcel.writeInt(left_img2_res)
+        parcel.writeInt(left_img3_res)
+        parcel.writeInt(right_img1_res)
+        parcel.writeInt(right_img2_res)
+        parcel.writeInt(right_img3_res)
+        parcel.writeInt(inputBarBgResColor)
     }
 
-    public InputBarBuilder setLeft_img1_keybord(int left_img1_keybord) {
-        this.left_img1_keybord = left_img1_keybord;
-        return this;
+    override fun describeContents(): Int {
+        return 0
     }
 
-    public int getLeft_img1_voice() {
-        return left_img1_voice;
+    companion object CREATOR : Parcelable.Creator<InputBarConfig> {
+        override fun createFromParcel(parcel: Parcel): InputBarConfig {
+            return InputBarConfig(parcel)
+        }
+
+        override fun newArray(size: Int): Array<InputBarConfig?> {
+            return arrayOfNulls(size)
+        }
     }
-
-    public InputBarBuilder setLeft_img1_voice(int left_img1_voice) {
-        this.left_img1_voice = left_img1_voice;
-        return this;
-    }
-
-    public int getLeft_img2_res() {
-        return left_img2_res;
-    }
-
-    public InputBarBuilder setLeft_img2_res(int left_img2_res) {
-        this.left_img2_res = left_img2_res;
-        return this;
-    }
-
-    public int getLeft_img3_res() {
-        return left_img3_res;
-    }
-
-    public InputBarBuilder setLeft_img3_res(int left_img3_res) {
-        this.left_img3_res = left_img3_res;
-        return this;
-    }
-
-    public int getRight_img1_res() {
-        return right_img1_res;
-    }
-
-    public InputBarBuilder setRight_img1_res(int right_img1_res) {
-        this.right_img1_res = right_img1_res;
-        return this;
-    }
-
-    public int getRight_img2_res() {
-        return right_img2_res;
-    }
-
-    public InputBarBuilder setRight_img2_res(int right_img2_res) {
-        this.right_img2_res = right_img2_res;
-        return this;
-    }
-
-    public int getRight_img3_res() {
-        return right_img3_res;
-    }
-
-    public InputBarBuilder setRight_img3_res(int right_img3_res) {
-        this.right_img3_res = right_img3_res;
-        return this;
-    }
-
-    public int getInputBarBgResColor() {
-        return inputBarBgResColor;
-    }
-
-    public InputBarBuilder setInputBarBgResColor(int inputBarBgResColor) {
-        this.inputBarBgResColor = inputBarBgResColor;
-        return this;
-    }
-
-
-
 }

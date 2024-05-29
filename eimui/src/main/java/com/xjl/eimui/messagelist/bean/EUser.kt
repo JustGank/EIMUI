@@ -1,24 +1,22 @@
-package com.xjl.eimui.messagelist.bean;
+package com.xjl.eimui.messagelist.bean
 
-
-public interface EUser {
-
+interface EUser {
     /**
      * User id.
      * @return user id, unique
      */
-    String getId();
+    val  id: String
 
     /**
      * Display name of user
      * @return display name
      */
-    String getNickname();
+    var nickname: String?
 
     /**
      * Get user avatar file path.
      * @return avatar file path
      */
-    String getAvatarPath();
 
+    var avatar: String?
 }

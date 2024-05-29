@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ChatUIDemo</string>
+    <string name="app_name">EIMUI</string>
 
     <string name="chat_pick_pic">Photo</string>
     <string name="chat_take_photo">Camera</string>

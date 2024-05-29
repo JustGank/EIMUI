@@ -1,273 +1,185 @@
-package com.xjl.eimui.inputbar;
+package com.xjl.eimui.inputbar
 
-import android.content.Context;
-import android.text.TextUtils;
-import android.util.AttributeSet;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.content.Context
+import android.text.TextUtils
+import android.util.AttributeSet
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.OnKeyListener
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.recyclerview.widget.RecyclerView
+import com.xjl.eimui.R
+import com.xjl.eimui.databinding.ViewMessageInputbarBinding
+import com.xjl.eimui.entry.InputBarEntry
+import com.xjl.eimui.inputbar.builder.InputBarConfig
+import com.xjl.eimui.util.ToastUtils.showMessage
 
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.xjl.eimui.R;
-import com.xjl.eimui.inputbar.builder.InputBarBuilder;
-import com.xjl.eimui.util.ToastUtils;
+open class InputBar : LinearLayout, View.OnClickListener {
 
-public class InputBar extends LinearLayout implements View.OnClickListener {
+    var isCurrentInputStateIsKey = true
+    lateinit var binding: ViewMessageInputbarBinding
+    lateinit var inputBarEntry: InputBarEntry
+    var inputBarConfig: InputBarConfig = InputBarConfig()
+        set(inputBarConfig) {
+            field = inputBarConfig
+            binding.apply {
+                initImageView(field.left_img1_res, leftImg1)
+                initImageView(field.left_img2_res, leftImg2)
+                initImageView(field.left_img3_res, leftImg3)
+                initImageView(field.right_img1_res, rightImg1)
+                initImageView(field.right_img2_res, rightImg2)
+                initImageView(field.right_img3_res, rightImg3)
+                inputbarContainer.setBackgroundColor(resources.getColor(inputBarConfig.inputBarBgResColor))
+            }
+        }
+
+    constructor(context: Context?) : super(context) {}
+
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
+        context?.let {
+            initView(it, attrs, 0, 0)
+        }
+    }
+
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
+            : super(context, attrs, defStyleAttr) {
+        context?.let {
+            initView(it, attrs, defStyleAttr, 0)
+        }
+    }
+
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int)
+            : super(context, attrs, defStyleAttr, defStyleRes) {
+        context?.let {
+            initView(it, attrs, defStyleAttr, defStyleRes)
+        }
+    }
+
+    private var KeyVoiceSwitchViewId = R.id.left_img1
 
     /**
      * LeftImg1作为预留逻辑项，默认实现切换 键盘输入/语音输入
      */
-    private ImageView left_img1, left_img2, left_img3;
-    private EditText editview;
-    private ImageView right_img1, right_img2, right_img3;
-    private RecyclerView more_panel;
-    private TextView press_talk;
-    private LinearLayout inputbar_container;
-    private boolean currentInputStateIsKey = true;
+    private fun initView(
+        context: Context,
+        attrs: AttributeSet?,
+        defStyleAttr: Int,
+        defStyleRes: Int
+    ) {
+        val a = context.obtainStyledAttributes(attrs, R.styleable.InputBar, defStyleAttr, defStyleRes)
+        KeyVoiceSwitchViewId =
+            a.getResourceId(R.styleable.InputBar_keyVoiceSwitchViewId, R.id.left_img1)
+        a.recycle()
 
-    private InputBarBuilder inputBarBuilder;
-
-    public InputBar(Context context) {
-        super(context);
-        initView();
-    }
-
-    public InputBar(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initView();
-    }
-
-    private void initView() {
-        LayoutInflater.from(getContext()).inflate(R.layout.view_message_inputbar, this);
-        left_img1 = (ImageView) this.findViewById(R.id.left_img1);
-        left_img1.setOnClickListener(this);
-
-        left_img2 = (ImageView) this.findViewById(R.id.left_img2);
-        left_img2.setOnClickListener(this);
-
-        left_img3 = (ImageView) this.findViewById(R.id.left_img3);
-        left_img3.setOnClickListener(this);
-
-        editview = (EditText) this.findViewById(R.id.editview);
-        editview.setOnKeyListener(new OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == 66 && event.getAction() == 1) {
-                    String content = editview.getText().toString();
-                    if (TextUtils.isEmpty(content.trim())) {
-                        ToastUtils.showMessage(getContext(), getResources().getString(R.string.cant_empty_text));
-                        return false;
+        inputBarEntry = InputBarEntry(context)
+        binding = ViewMessageInputbarBinding.inflate(LayoutInflater.from(context),this,true)
+        binding.apply {
+            leftImg1.setOnClickListener(this@InputBar)
+            leftImg2.setOnClickListener(this@InputBar)
+            leftImg3.setOnClickListener(this@InputBar)
+            editview.setOnKeyListener(OnKeyListener { v, keyCode, event ->
+                if (keyCode == 66 && event.action == 1) {
+                    val content = editview.text.toString()
+                    if (TextUtils.isEmpty(content.trim { it <= ' ' })) {
+                        showMessage(context, inputBarEntry.cantEmptyText)
+                        return@OnKeyListener false
                     }
                     if (onItemClickListener != null) {
-                        onItemClickListener.onSendClicked(content);
+                        onItemClickListener!!.onSendClicked(content)
                     }
                 }
-                return false;
-            }
-        });
-
-        press_talk = (TextView) this.findViewById(R.id.press_talk);
-
-        right_img1 = (ImageView) this.findViewById(R.id.right_img1);
-        right_img1.setOnClickListener(this);
-        right_img2 = (ImageView) this.findViewById(R.id.right_img2);
-        right_img2.setOnClickListener(this);
-        right_img3 = (ImageView) this.findViewById(R.id.right_img3);
-        right_img3.setOnClickListener(this);
-
-        more_panel = (RecyclerView) this.findViewById(R.id.more_panel);
-
-        inputbar_container=(LinearLayout) this.findViewById(R.id.inputbar_container);
-
-        setInputBarBuilder(inputBarBuilder = InputBarBuilder.getNewInstance());
-
+                false
+            })
+            rightImg1.setOnClickListener(this@InputBar)
+            rightImg2.setOnClickListener(this@InputBar)
+            rightImg3.setOnClickListener(this@InputBar)
+        }
     }
 
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
+    override fun onClick(v: View) {
+        val id = v.id
+        if (id == KeyVoiceSwitchViewId) {
+            switchKeyVoiceState(v)
+        }
         if (id == R.id.left_img1) {
-            currentInputStateIsKey = !currentInputStateIsKey;
-            if (currentInputStateIsKey) {
-                editview.setVisibility(VISIBLE);
-                press_talk.setVisibility(GONE);
-                left_img1.setBackgroundResource(this.inputBarBuilder.getLeft_img1_voice());
-            } else {
-                editview.setVisibility(GONE);
-                press_talk.setVisibility(VISIBLE);
-                left_img1.setBackgroundResource(this.inputBarBuilder.getLeft_img1_keybord());
-            }
-            if (onItemClickListener != null) {
-                onItemClickListener.onLeftImg1Clicked(left_img1);
-            }
+            onItemClickListener?.onLeftImg1Clicked(binding.leftImg1)
         } else if (id == R.id.left_img2) {
-            if (onItemClickListener != null) {
-                onItemClickListener.onLeftImg2Clicked(left_img2);
-            }
+            onItemClickListener?.onLeftImg2Clicked(binding.leftImg2)
         } else if (id == R.id.left_img3) {
-            if (onItemClickListener != null) {
-                onItemClickListener.onLeftImg3Clicked(left_img3);
-            }
+            onItemClickListener?.onLeftImg3Clicked(binding.leftImg3)
         } else if (id == R.id.right_img1) {
-            more_panel.setVisibility(more_panel.getVisibility() == View.VISIBLE ? GONE : VISIBLE);
-            if (onItemClickListener != null) {
-                onItemClickListener.onRightImg1Clicked(right_img1);
-            }
+            onItemClickListener?.onRightImg1Clicked(binding.rightImg1)
         } else if (id == R.id.right_img2) {
-            if (onItemClickListener != null) {
-                onItemClickListener.onRightImg2Clicked(right_img2);
-            }
+            onItemClickListener?.onRightImg2Clicked(binding.rightImg2)
         } else if (id == R.id.right_img3) {
-            if (onItemClickListener != null) {
-                onItemClickListener.onRightImg3Clicked(right_img3);
-            }
+            onItemClickListener?.onRightImg3Clicked(binding.rightImg3)
         }
     }
 
-    public RecyclerView getMorePanel() {
-        return more_panel;
-    }
-
-    public EditText getEdittext() {
-        return editview;
-    }
-
-    public ImageView getLeft_img1() {
-        return left_img1;
-    }
-
-    public ImageView getLeft_img2() {
-        return left_img2;
-    }
-
-    public ImageView getLeft_img3() {
-        return left_img3;
-    }
-
-    public EditText getEditview() {
-        return editview;
-    }
-
-    public ImageView getRight_img1() {
-        return right_img1;
-    }
-
-    public ImageView getRight_img2() {
-        return right_img2;
-    }
-
-    public ImageView getRight_img3() {
-        return right_img3;
-    }
-
-    public RecyclerView getMore_panel() {
-        return more_panel;
-    }
-
-    public TextView getPress_talk() {
-        return press_talk;
-    }
-
-    public LinearLayout getInputbar_container() {
-        return inputbar_container;
-    }
-
-    public boolean isCurrentInputStateIsKey() {
-        return currentInputStateIsKey;
-    }
-
-    public void setCurrentInputStateIsKey(boolean currentInputStateIsKey) {
-        this.currentInputStateIsKey = currentInputStateIsKey;
-    }
-
-    public OnItemClickListener getOnItemClickListener() {
-        return onItemClickListener;
-    }
-
-    public InputBarBuilder getInputBarBuilder() {
-        return inputBarBuilder;
-    }
-
-    public void setInputBarBuilder(InputBarBuilder inputBarBuilder) {
-        if (inputBarBuilder != null) {
-
-            this.inputBarBuilder=inputBarBuilder;
-
-            if (this.inputBarBuilder.getLeft_img1_keybord() == -1 && this.inputBarBuilder.getLeft_img1_voice() == -1) {
-                left_img1.setVisibility(GONE);
-            } else {
-                left_img1.setVisibility(VISIBLE);
-                left_img1.setBackgroundResource(currentInputStateIsKey?this.inputBarBuilder.getLeft_img1_voice():this.inputBarBuilder.getLeft_img1_keybord());
-            }
-            initImageView(this.inputBarBuilder.getLeft_img2_res(), left_img2);
-            initImageView(this.inputBarBuilder.getLeft_img3_res(), left_img3);
-
-            initImageView(this.inputBarBuilder.getRight_img1_res(), right_img1);
-            initImageView(this.inputBarBuilder.getRight_img2_res(), right_img2);
-            initImageView(this.inputBarBuilder.getRight_img3_res(), right_img3);
-
-            inputbar_container.setBackgroundColor(getResources().getColor(inputBarBuilder.getInputBarBgResColor()));
-        }
-    }
-
-    private void initImageView(int res, ImageView imageView) {
-        if (res == -1) {
-            imageView.setVisibility(GONE);
+    fun switchKeyVoiceState(view: View) {
+        isCurrentInputStateIsKey = !isCurrentInputStateIsKey
+        if (isCurrentInputStateIsKey) {
+            binding.editview.visibility = View.VISIBLE
+            binding.pressTalk.visibility = View.GONE
+            view.setBackgroundResource(inputBarConfig.voice_img_res)
         } else {
-            imageView.setVisibility(VISIBLE);
-            imageView.setBackgroundResource(res);
+            binding.editview.visibility = View.GONE
+            binding.pressTalk.visibility = View.VISIBLE
+            view.setBackgroundResource(inputBarConfig.keybord_img_res)
+        }
+        view.visibility = View.VISIBLE
+    }
+
+
+    private fun initImageView(res: Int, imageView: ImageView) {
+        if (res == -1) {
+            imageView.visibility = GONE
+        } else {
+            imageView.visibility = VISIBLE
+            imageView.setBackgroundResource(res)
+        }
+
+        if (imageView.id == KeyVoiceSwitchViewId) {
+            if (inputBarConfig.keybord_img_res == -1 && inputBarConfig.voice_img_res == -1) {
+                imageView.visibility = View.GONE
+            } else {
+                imageView.visibility = View.VISIBLE
+                imageView.setBackgroundResource(if (isCurrentInputStateIsKey) inputBarConfig.voice_img_res else inputBarConfig.keybord_img_res)
+            }
         }
     }
 
-    /**
-     * 为长按 语音输出设置 OnFocusChangeListener
-     */
-    public void setPressTalkOnTouchListener(OnTouchListener onTouchListener) {
-        this.press_talk.setOnTouchListener(onTouchListener);
+    fun getMorePanel():RecyclerView{
+        return binding.morePanel
     }
 
-    public void setEditviewFocusListener(OnFocusChangeListener onFocusChangeListener) {
-        if (null != editview) {
-            editview.setOnFocusChangeListener(onFocusChangeListener);
-        }
+    fun getEdittext():EditText{
+        return binding.editview
+    }
+
+    fun setPressTalkOnTouchListener(onTouchListener: OnTouchListener?) {
+        binding.pressTalk.setOnTouchListener(onTouchListener)
+    }
+
+    fun setEditviewFocusListener(onFocusChangeListener: OnFocusChangeListener?) {
+        binding.editview.onFocusChangeListener = onFocusChangeListener
     }
 
     /**
      * 由于控件较多 采用类的形式 减少因使用接口而暴露所有方法
      */
-    private OnItemClickListener onItemClickListener;
+    var onItemClickListener: OnItemClickListener? = null
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
-
-    public static class OnItemClickListener {
-
-        public void onSendClicked(String content) {
-
-        }
-
-        public void onLeftImg1Clicked(ImageView img) {
-        }
-
-        public void onLeftImg2Clicked(ImageView img) {
-        }
-
-        public void onLeftImg3Clicked(ImageView img) {
-        }
-
-        public void onRightImg1Clicked(ImageView img) {
-        }
-
-        public void onRightImg2Clicked(ImageView img) {
-        }
-
-        public void onRightImg3Clicked(ImageView img) {
-        }
+    open class OnItemClickListener {
+        open fun onSendClicked(content: String?) {}
+        open fun onLeftImg1Clicked(img: ImageView?) {}
+        open fun onLeftImg2Clicked(img: ImageView?) {}
+        open fun onLeftImg3Clicked(img: ImageView?) {}
+        open fun onRightImg1Clicked(img: ImageView?) {}
+        open fun onRightImg2Clicked(img: ImageView?) {}
+        open fun onRightImg3Clicked(img: ImageView?) {}
     }
 }

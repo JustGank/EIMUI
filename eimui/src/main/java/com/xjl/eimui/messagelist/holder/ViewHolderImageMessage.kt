@@ -1,59 +1,51 @@
-package com.xjl.eimui.messagelist.holder;
+package com.xjl.eimui.messagelist.holder
 
-import android.content.Context;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import com.bumptech.glide.Glide
+import com.xjl.eimui.R
+import com.xjl.eimui.databinding.ViewMessageImageBinding
+import com.xjl.eimui.messagelist.bean.EMessage
+import com.xjl.eimui.messagelist.bean.MessageType
+import com.xjl.eimui.util.GlideHelper
+import com.xjl.emedia.utils.ScreenUtil
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.xjl.eimui.R;
-import com.xjl.eimui.messagelist.bean.EMessage;
-import com.xjl.eimui.messagelist.bean.MessageType;
-import com.xjl.eimui.util.GlideHelper;
-import com.xjl.eimui.util.ImageSizeHelper;
-import com.xjl.emedia.utils.ScreenUtil;
+class ViewHolderImageMessage<MESSAGE : EMessage>(context: Context, itemView: View) :
+    MessageViewHolderBase<MESSAGE>(context, itemView) {
+    private val slide1: Int
+    private val slide2: Int
+    var layoutParams1: RelativeLayout.LayoutParams
+    var layoutParams2: RelativeLayout.LayoutParams
 
-import androidx.annotation.NonNull;
-
-public class ViewHolderImageMessage<MESSAGE extends EMessage> extends MessageViewHolderBase {
-
-    private int slide1, slide2;
-    RelativeLayout.LayoutParams layoutParams1, layoutParams2;
-
-    public ViewHolderImageMessage(Context context, @NonNull View itemView) {
-        super(context, itemView);
-        slide1 = ScreenUtil.dip2px(context, 120);
-        slide2 = ScreenUtil.dip2px(context, 180);
-
-        layoutParams1 = new RelativeLayout.LayoutParams(slide1, slide2);
-        layoutParams2 = new RelativeLayout.LayoutParams(slide2, slide1);
-
+    init {
+        slide1 = ScreenUtil.dip2px(context, 120f)
+        slide2 = ScreenUtil.dip2px(context, 180f)
+        layoutParams1 = RelativeLayout.LayoutParams(slide1, slide2)
+        layoutParams2 = RelativeLayout.LayoutParams(slide2, slide1)
     }
 
-
-
-    @Override
-    public void bindDateToChild(EMessage data, ViewGroup mineContainer, ViewGroup otherContainer) {
-        ImageView imageView = (ImageView) LayoutInflater.from(context).inflate(R.layout.view_message_image, null);
-
-
-        Glide.with(context)
-                .load(data.getMediaFilePath())
-                .apply(GlideHelper.INSTANCE.getOnCenterCrop())
-                .into(imageView);
-
-        imageView.setOnClickListener(this);
-        imageView.setOnLongClickListener(this);
-
-        if (MessageType.isReceivedMessage(data.getMessageType())) {
-            otherContainer.addView(imageView, layoutParams1);
-        } else {
-            mineContainer.addView(imageView, layoutParams2);
+    override fun bindDateToChild(
+        data: MESSAGE,
+        mineContainer: ViewGroup,
+        otherContainer: ViewGroup
+    ) {
+        val binding = ViewMessageImageBinding.inflate(LayoutInflater.from(context))
+        binding.apply {
+            Glide.with(context)
+                .load(data.mediaFilePath)
+                .apply(GlideHelper.INSTANCE.onCenterCrop)
+                .into(binding.itemChatImageview)
+            itemChatImageview.setOnClickListener(this@ViewHolderImageMessage)
+            itemChatImageview.setOnLongClickListener(this@ViewHolderImageMessage)
+            if (MessageType.isReceivedMessage(data.messageType)) {
+                otherContainer.addView(itemChatImageview, layoutParams1)
+            } else {
+                mineContainer.addView(itemChatImageview, layoutParams2)
+            }
         }
-
     }
 }

@@ -1,54 +1,51 @@
-package com.xjl.eimui.messagelist.holder;
+package com.xjl.eimui.messagelist.holder
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import com.bumptech.glide.Glide
+import com.xjl.eimui.R
+import com.xjl.eimui.databinding.ViewMessageVideoBinding
+import com.xjl.eimui.messagelist.bean.EMessage
+import com.xjl.eimui.messagelist.bean.MessageType
+import com.xjl.eimui.util.GlideHelper
+import com.xjl.emedia.utils.ScreenUtil
 
-import com.bumptech.glide.Glide;
-import com.xjl.eimui.R;
-import com.xjl.eimui.messagelist.bean.EMessage;
-import com.xjl.eimui.messagelist.bean.MessageType;
-import com.xjl.eimui.util.GlideHelper;
-import com.xjl.emedia.utils.ScreenUtil;
+class ViewHolderVideoMessage<MESSAGE : EMessage>(context: Context, itemView: View) :
+    MessageViewHolderBase<MESSAGE>(context, itemView) {
 
-import androidx.annotation.NonNull;
+    private val imageWidth: Int
+    private val imageHeight: Int
 
-public class ViewHolderVideoMessage<MESSAGE extends EMessage> extends MessageViewHolderBase {
-
-    public ImageView item_chat_video_cover;
-    public ImageView item_chat_video_player;
-
-    private int imageWidth, imageHeight;
-
-    public ViewHolderVideoMessage(Context context, @NonNull View itemView) {
-        super(context, itemView);
-        imageWidth = ScreenUtil.dip2px(context, 120);
-        imageHeight = ScreenUtil.dip2px(context, 180);
+    init {
+        imageWidth = ScreenUtil.dip2px(context, 120f)
+        imageHeight = ScreenUtil.dip2px(context, 180f)
     }
 
-    @Override
-    public void bindDateToChild(EMessage data, ViewGroup mineContainer, ViewGroup otherContainer) {
-        RelativeLayout relativeLayout = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.view_message_video, null);
-        item_chat_video_cover = (ImageView) relativeLayout.findViewById(R.id.item_chat_video_cover);
-        Glide.with(context).load(data.getMediaFilePath()).apply(GlideHelper.INSTANCE.getOnCenterCrop()).into(item_chat_video_cover);
-        item_chat_video_player = (ImageView) relativeLayout.findViewById(R.id.item_chat_video_player);
+    override fun bindDateToChild(
+        data: MESSAGE,
+        mineContainer: ViewGroup,
+        otherContainer: ViewGroup
+    ) {
+        val binding = ViewMessageVideoBinding.inflate(LayoutInflater.from(context))
+        binding.apply {
+            Glide.with(context).load(data.mediaFilePath)
+                .apply(GlideHelper.INSTANCE.onCenterCrop).into(itemChatVideoCover)
 
-        item_chat_video_cover.setOnClickListener(this);
-        item_chat_video_cover.setOnLongClickListener(this);
-
-        item_chat_video_player.setOnClickListener(this);
-        item_chat_video_player.setOnLongClickListener(this);
-
-        if (MessageType.isReceivedMessage(data.getMessageType())) {
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(imageWidth, imageHeight);
-            otherContainer.addView(relativeLayout, layoutParams);
-        } else {
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(imageHeight, imageWidth);
-            mineContainer.addView(relativeLayout, layoutParams);
+            itemChatVideoCover.setOnClickListener(this@ViewHolderVideoMessage)
+            itemChatVideoCover.setOnLongClickListener(this@ViewHolderVideoMessage)
+            itemChatVideoPlayer.setOnClickListener(this@ViewHolderVideoMessage)
+            itemChatVideoPlayer.setOnLongClickListener(this@ViewHolderVideoMessage)
+            if (MessageType.isReceivedMessage(data.messageType)) {
+                val layoutParams = RelativeLayout.LayoutParams(imageWidth, imageHeight)
+                otherContainer.addView(root, layoutParams)
+            } else {
+                val layoutParams = RelativeLayout.LayoutParams(imageHeight, imageWidth)
+                mineContainer.addView(root, layoutParams)
+            }
         }
-
     }
 }
