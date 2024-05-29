@@ -5,18 +5,18 @@ interface EUser {
      * User id.
      * @return user id, unique
      */
-    val  id: String
+    fun  getID(): String
 
     /**
      * Display name of user
      * @return display name
      */
-    var nickname: String?
+    fun getNickname(): String?
 
     /**
      * Get user avatar file path.
      * @return avatar file path
      */
 
-    var avatar: String?
+    fun getAvatar(): String?
 }

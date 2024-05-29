@@ -30,14 +30,14 @@ class ViewHolderLocationMessage<MESSAGE : EMessage>(context: Context, itemView: 
         val binding = ViewMessageLocationBinding.inflate(LayoutInflater.from(context))
 
         binding.apply {
-            title.text = data.content
-            if (TextUtils.isEmpty(data.subContent)) {
+            title.text = data.getContent()
+            if (TextUtils.isEmpty(data.getSubContent())) {
                 subTitle.visibility = View.GONE
             } else {
                 subTitle.visibility = View.VISIBLE
-                subTitle.text = data.subContent
+                subTitle.text = data.getSubContent()
             }
-            Glide.with(context).load(data.mediaFilePath)
+            Glide.with(context).load(data.getMediaFilePath())
                 .apply(GlideHelper.INSTANCE.onCenterCrop)
                 .into(cover)
             root.setOnClickListener(this@ViewHolderLocationMessage)
@@ -46,7 +46,7 @@ class ViewHolderLocationMessage<MESSAGE : EMessage>(context: Context, itemView: 
                 ScreenUtil.dip2px(context, 220f),
                 RelativeLayout.LayoutParams.WRAP_CONTENT
             )
-            if (MessageType.isReceivedMessage(data.messageType)) {
+            if (MessageType.isReceivedMessage(data.getMessageType())) {
                 otherContainer.addView(root, layoutParams)
             } else {
                 mineContainer.addView(root, layoutParams)

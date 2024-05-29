@@ -9,6 +9,7 @@ import android.view.View.OnKeyListener
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.xjl.eimui.R
 import com.xjl.eimui.databinding.ViewMessageInputbarBinding
@@ -152,12 +153,41 @@ open class InputBar : LinearLayout, View.OnClickListener {
         }
     }
 
-    fun getMorePanel():RecyclerView{
-        return binding.morePanel
+    fun getLeftImg1():ImageView{
+        return binding.leftImg1
+    }
+
+    fun getLeftImg2():ImageView{
+        return binding.leftImg2
+    }
+
+    fun getLeftImg3():ImageView{
+        return binding.leftImg3
     }
 
     fun getEdittext():EditText{
         return binding.editview
+    }
+
+    fun getPressTalk():TextView{
+        return binding.pressTalk
+    }
+
+
+    fun getRightImg1():ImageView{
+        return binding.rightImg1
+    }
+
+    fun getRightImg2():ImageView{
+        return binding.rightImg2
+    }
+
+    fun getRightImg3():ImageView{
+        return binding.rightImg3
+    }
+
+    fun getMorePanel():RecyclerView{
+        return binding.morePanel
     }
 
     fun setPressTalkOnTouchListener(onTouchListener: OnTouchListener?) {
@@ -174,12 +204,12 @@ open class InputBar : LinearLayout, View.OnClickListener {
     var onItemClickListener: OnItemClickListener? = null
 
     open class OnItemClickListener {
-        open fun onSendClicked(content: String?) {}
-        open fun onLeftImg1Clicked(img: ImageView?) {}
-        open fun onLeftImg2Clicked(img: ImageView?) {}
-        open fun onLeftImg3Clicked(img: ImageView?) {}
-        open fun onRightImg1Clicked(img: ImageView?) {}
-        open fun onRightImg2Clicked(img: ImageView?) {}
-        open fun onRightImg3Clicked(img: ImageView?) {}
+        open fun onSendClicked(content: String) {}
+        open fun onLeftImg1Clicked(img: ImageView) {}
+        open fun onLeftImg2Clicked(img: ImageView) {}
+        open fun onLeftImg3Clicked(img: ImageView) {}
+        open fun onRightImg1Clicked(img: ImageView) {}
+        open fun onRightImg2Clicked(img: ImageView) {}
+        open fun onRightImg3Clicked(img: ImageView) {}
     }
 }

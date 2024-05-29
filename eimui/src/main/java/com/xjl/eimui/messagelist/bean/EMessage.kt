@@ -2,31 +2,43 @@ package com.xjl.eimui.messagelist.bean
 
 interface EMessage {
 
-    val msgID : String
+    fun getMsgId(): String
 
-    var mine: EUser
+    fun setMine(user: EUser)
 
-    var other: EUser
+    fun getMine(): EUser
 
-    var messageType : Int
+    fun setOther(user: EUser)
 
-    var header: String
+    fun getOther(): EUser
 
-    var content: String?
+    fun getMessageType(): Int
 
-    var subContent: String?
+    fun getHeaderString(): String?
 
-    var mediaFilePath: String?
+    fun getContent(): String?
 
-    var duration: Long
+    fun getSubContent(): String?
 
-    var progress: Int
+    fun getMediaFilePath(): String?
 
-    var messageStatus: Int
+    fun getDuration(): Long
 
-     var isSelected: Boolean
+    fun getProgress(): Int
 
-    var isPlaying: Boolean
+    fun setProgress(progress: Int)
 
-    val extras: HashMap<String, String>
+    fun getMessageStatus(): Int
+
+    fun setMessageStatus(status: Int)
+
+    fun isSelected(): Boolean
+
+    fun setSelected(b: Boolean);
+
+    fun isPlaying(): Boolean
+
+    fun setIsPlaying(b: Boolean)
+
+    fun getExtras(): HashMap<String, String>
 }

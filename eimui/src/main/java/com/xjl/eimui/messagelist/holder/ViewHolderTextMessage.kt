@@ -19,10 +19,10 @@ class ViewHolderTextMessage<MESSAGE : EMessage>(context: Context, itemView: View
     ) {
         val binding = ViewMessageTextBinding.inflate(LayoutInflater.from(context))
         binding.itemChatTextview.apply {
-            text = data.content
+            text = data.getContent()
             setOnClickListener(this@ViewHolderTextMessage)
             setOnLongClickListener(this@ViewHolderTextMessage)
-            if (data.messageType == MessageType.SEND_TEXT) {
+            if (data.getMessageType() == MessageType.SEND_TEXT) {
                 setBackgroundResource(R.drawable.chat_gray_left_bg)
                 mineContainer.addView(this)
             } else {

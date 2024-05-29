@@ -16,14 +16,14 @@ class ViewHolderVoiceMessage<MESSAGE : EMessage>(context: Context, itemView: Vie
         mineContainer: ViewGroup,
         otherContainer: ViewGroup
     ) {
-        val isReceived = MessageType.isReceivedMessage(data.messageType)
+        val isReceived = MessageType.isReceivedMessage(data.getMessageType())
         val chatAudioView = ChatAudioView(context, !isReceived)
-        chatAudioView.setTime(data.duration.toInt())
+        chatAudioView.setTime(data.getDuration().toInt())
         val padding = ScreenUtil.dip2px(context, 5f)
         chatAudioView.setPadding(padding, padding, padding, padding)
         chatAudioView.setOnClickListener(this)
         chatAudioView.setOnLongClickListener(this)
-        if (data.isPlaying) {
+        if (data.isPlaying()) {
             chatAudioView.startAnim()
         } else {
             chatAudioView.endAnim()

@@ -190,6 +190,7 @@ class ChatActivity : AppCompatActivity() {
                 //设置InputBar 子控件监听 增加一个自定义控件
                 inputBarConfig = InputBarConfig().apply {
                     left_img1_res=R.mipmap.chat_hi
+                    right_img1_res=R.mipmap.chat_inputbar_more
                     right_img2_res = R.mipmap.chat_inputbar_template
                     inputBarBgResColor = R.color.colorPrimary
                 }
@@ -234,12 +235,12 @@ class ChatActivity : AppCompatActivity() {
                 } else {
 
                     if (lastPlayPosition == position) {
-                        if (adapter.getItem(position).isPlaying) {
+                        if (adapter.getItem(position).isPlaying()) {
                             adapter.updatePlaying(position, false)
                             mediaPlayerHepler.stop()
                         } else {
                             adapter.updatePlaying(position, true)
-                            mediaPlayerHepler.start(adapter.getItem(position).mediaFilePath)
+                            mediaPlayerHepler.start(adapter.getItem(position).getMediaFilePath())
                         }
                     } else {
                         if (lastPlayPosition > -1) {
@@ -248,7 +249,7 @@ class ChatActivity : AppCompatActivity() {
                         }
                         lastPlayPosition = position
                         adapter.updatePlaying(position, true)
-                        mediaPlayerHepler.start(adapter.getItem(position).mediaFilePath)
+                        mediaPlayerHepler.start(adapter.getItem(position).getMediaFilePath())
                     }
                 }
 
@@ -258,7 +259,7 @@ class ChatActivity : AppCompatActivity() {
                 )
 
                 MessageType.RECEIVE_FILE, MessageType.SEND_FILE -> if (v.id == R.id.item_chat_file_download) {
-                    adapter.getItem(position).progress += 5
+                    adapter.getItem(position).setProgress(adapter.getItem(position).getProgress()+5)
                     adapter.notifyItemChanged(position)
                 } else if (v.id == R.id.item_chat_file_container) {
                     Log.e(
@@ -280,7 +281,7 @@ class ChatActivity : AppCompatActivity() {
 
     private val onItemClickListener: InputBar.OnItemClickListener =
         object : InputBar.OnItemClickListener() {
-            override fun onSendClicked(content: String?) {
+            override fun onSendClicked(content: String) {
                 super.onSendClicked(content)
                 val iMessage = IMessage(
                     (messageId++).toString(),
@@ -294,18 +295,18 @@ class ChatActivity : AppCompatActivity() {
                 binding.inputbar.getEdittext().setText("")
             }
 
-            override fun onLeftImg1Clicked(img: ImageView?) {
+            override fun onLeftImg1Clicked(img: ImageView) {
                 super.onLeftImg1Clicked(img)
                 showMessage(this@ChatActivity, "您点击了Hi")
             }
 
 
-            override fun onRightImg1Clicked(img: ImageView?) {
+            override fun onRightImg1Clicked(img: ImageView) {
                 super.onRightImg1Clicked(img)
                 binding.inputbar.getMorePanel().visibility=View.VISIBLE
             }
 
-            override fun onRightImg2Clicked(img: ImageView?) {
+            override fun onRightImg2Clicked(img: ImageView) {
                 super.onRightImg2Clicked(img)
                 showMessage(this@ChatActivity, "您点击了自定义控件按钮")
             }

@@ -32,14 +32,14 @@ class ViewHolderVideoMessage<MESSAGE : EMessage>(context: Context, itemView: Vie
     ) {
         val binding = ViewMessageVideoBinding.inflate(LayoutInflater.from(context))
         binding.apply {
-            Glide.with(context).load(data.mediaFilePath)
+            Glide.with(context).load(data.getMediaFilePath())
                 .apply(GlideHelper.INSTANCE.onCenterCrop).into(itemChatVideoCover)
 
             itemChatVideoCover.setOnClickListener(this@ViewHolderVideoMessage)
             itemChatVideoCover.setOnLongClickListener(this@ViewHolderVideoMessage)
             itemChatVideoPlayer.setOnClickListener(this@ViewHolderVideoMessage)
             itemChatVideoPlayer.setOnLongClickListener(this@ViewHolderVideoMessage)
-            if (MessageType.isReceivedMessage(data.messageType)) {
+            if (MessageType.isReceivedMessage(data.getMessageType())) {
                 val layoutParams = RelativeLayout.LayoutParams(imageWidth, imageHeight)
                 otherContainer.addView(root, layoutParams)
             } else {

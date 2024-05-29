@@ -15,7 +15,7 @@ class InputBarConfig() :Parcelable {
 
     var left_img3_res = -1
 
-    var right_img1_res = R.mipmap.chat_inputbar_more
+    var right_img1_res = -1
 
     var right_img2_res = -1
 

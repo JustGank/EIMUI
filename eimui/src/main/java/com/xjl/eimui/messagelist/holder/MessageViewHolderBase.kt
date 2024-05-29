@@ -76,7 +76,7 @@ abstract class MessageViewHolderBase<MESSAGE : EMessage>(val context: Context, i
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.header -> {
+            R.id.header-> {
                 operationListener?.onHeaderClickListener(itemPosition, v, data)
             }
 
@@ -127,16 +127,16 @@ abstract class MessageViewHolderBase<MESSAGE : EMessage>(val context: Context, i
         //在选择模式下是否被选中
         setmIsSelected(data)
         //初始化聊天人员信息
-        if (MessageType.isReceivedMessage(data.messageType)) {
+        if (MessageType.isReceivedMessage(data.getMessageType())) {
             mine_container.visibility = View.GONE
             other_container.visibility = View.VISIBLE
             state_view.visibility = View.GONE
-            setOtheInfo(data.other)
+            setOtheInfo(data.getOther())
         } else {
             mine_container.visibility = View.VISIBLE
             other_container.visibility = View.GONE
-            setMessageStatus(data.messageStatus)
-            setMineInfo(data.mine)
+            setMessageStatus(data.getMessageStatus())
+            setMineInfo(data.getMine())
         }
         //将容器交给子类实现
         mine_content_container.removeAllViews()
@@ -147,21 +147,21 @@ abstract class MessageViewHolderBase<MESSAGE : EMessage>(val context: Context, i
     fun setHeader(data: MESSAGE, prevData: MESSAGE?, nextData: MESSAGE?) {
         if (nextData == null) {
             header.visibility = View.VISIBLE
-            header.text = data.header
+            header.text = data.getHeaderString()
         } else {
-            if (data.header == nextData.header) {
+            if (data.getHeaderString() == nextData.getHeaderString()) {
                 header.visibility = View.GONE
             } else {
                 header.visibility = View.VISIBLE
             }
-            header.text = data.header
+            header.text = data.getHeaderString()
         }
     }
 
     fun setmIsSelected(data: MESSAGE) {
         is_select.visibility =
             if (isSelectedModel) View.VISIBLE else View.GONE
-        is_select.setBackgroundResource(if (data.isSelected) R.mipmap.item_checked else R.mipmap.item_uncheck)
+        is_select.setBackgroundResource(if (data.isSelected()) R.mipmap.item_checked else R.mipmap.item_uncheck)
     }
 
     fun setMineInfo(user: EUser?) {
@@ -169,22 +169,22 @@ abstract class MessageViewHolderBase<MESSAGE : EMessage>(val context: Context, i
             mine_avater.visibility = View.GONE
             mine_name.visibility = View.GONE
         } else {
-            if (TextUtils.isEmpty(user.avatar) || user.avatar == "NULL") {
+            if (TextUtils.isEmpty(user.getAvatar()) || user.getAvatar() == "NULL") {
                 mine_avater.visibility = View.GONE
             } else {
                 mine_avater.visibility = View.VISIBLE
                 GlideHelper.INSTANCE.getErrorOptions(R.mipmap.avatar_spiderman)?.let {
                     Glide.with(mine_avater.context)
-                        .load(user.avatar)
+                        .load(user.getAvatar())
                         .apply(it)
                         .into(mine_avater)
                 }
             }
-            if (TextUtils.isEmpty(user.nickname)) {
+            if (TextUtils.isEmpty(user.getNickname())) {
                 mine_name.visibility = View.GONE
             } else {
                 mine_name.visibility = View.VISIBLE
-                mine_name.text = user.nickname
+                mine_name.text = user.getNickname()
             }
         }
     }
@@ -194,22 +194,22 @@ abstract class MessageViewHolderBase<MESSAGE : EMessage>(val context: Context, i
             other_avater.visibility = View.GONE
             other_name.visibility = View.GONE
         } else {
-            if (TextUtils.isEmpty(user.avatar) || user.avatar.equals("NULL")) {
+            if (TextUtils.isEmpty(user.getAvatar()) || user.getAvatar().equals("NULL")) {
                 other_avater.visibility = View.GONE
             } else {
                 other_avater.visibility = View.VISIBLE
                 GlideHelper.INSTANCE.getErrorOptions(R.mipmap.avatar_superman)?.let {
                     Glide.with(other_avater.context)
-                        .load(user.avatar)
+                        .load(user.getAvatar())
                         .apply(it)
                         .into(other_avater)
                 }
             }
-            if (TextUtils.isEmpty(user.nickname)) {
+            if (TextUtils.isEmpty(user.getNickname())) {
                 other_name.visibility = View.GONE
             } else {
                 other_name.visibility = View.VISIBLE
-                other_name.text = user.nickname
+                other_name.text = user.getNickname()
             }
         }
     }

@@ -36,12 +36,12 @@ class ViewHolderImageMessage<MESSAGE : EMessage>(context: Context, itemView: Vie
         val binding = ViewMessageImageBinding.inflate(LayoutInflater.from(context))
         binding.apply {
             Glide.with(context)
-                .load(data.mediaFilePath)
+                .load(data.getMediaFilePath())
                 .apply(GlideHelper.INSTANCE.onCenterCrop)
                 .into(binding.itemChatImageview)
             itemChatImageview.setOnClickListener(this@ViewHolderImageMessage)
             itemChatImageview.setOnLongClickListener(this@ViewHolderImageMessage)
-            if (MessageType.isReceivedMessage(data.messageType)) {
+            if (MessageType.isReceivedMessage(data.getMessageType())) {
                 otherContainer.addView(itemChatImageview, layoutParams1)
             } else {
                 mineContainer.addView(itemChatImageview, layoutParams2)

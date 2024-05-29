@@ -80,7 +80,7 @@ class EMessageAdapter<MESSAGE : EMessage>(
     }
 
     fun getMessageId(position: Int): String {
-        return list[position].msgID
+        return list[position].getMsgId()
     }
 
     fun deleteItem(position: Int) {
@@ -91,8 +91,8 @@ class EMessageAdapter<MESSAGE : EMessage>(
     fun updataProgress(msgId: String, progress: Int) {
         for (i in list.indices) {
             val message = list[i]
-            if (message.msgID == msgId) {
-                message.progress=progress
+            if (message.getMsgId() == msgId) {
+                message.setProgress(progress)
                 notifyItemChanged(i)
                 break
             }
@@ -112,14 +112,14 @@ class EMessageAdapter<MESSAGE : EMessage>(
     }
 
     fun updateItemSelected(position: Int) {
-        list[position].apply { isSelected=!isSelected }
+        list[position].setSelected(!list[position].isSelected())
         notifyItemChanged(position)
     }
 
     fun updateMessageState(msgId: String?, newState: Int) {
         for (i in list.indices) {
-            if (list[i].msgID == msgId) {
-                list[i].messageStatus=newState
+            if (list[i].getMsgId() == msgId) {
+                list[i].setMessageStatus(newState)
                 notifyItemChanged(i)
                 break
             }
@@ -127,12 +127,12 @@ class EMessageAdapter<MESSAGE : EMessage>(
     }
 
     fun updatePlaying(position: Int, playing: Boolean) {
-        getItem(position).isPlaying=playing
+        getItem(position).setIsPlaying(playing)
         notifyItemChanged(position)
     }
 
     override fun getItemViewType(position: Int): Int {
-        return list[position].messageType
+        return list[position].getMessageType()
     }
 
     override fun getItemCount(): Int {
