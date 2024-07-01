@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
 }
 
 android {
@@ -37,7 +38,20 @@ dependencies {
     api 'androidx.appcompat:appcompat:1.6.1'
     api 'androidx.recyclerview:recyclerview:1.3.2'
     api 'com.github.bumptech.glide:glide:4.14.2'
-    compileOnly files('../aars/emp3recorder-release.aar')
-    compileOnly files('../aars/emedia-release.aar')
+    api 'com.github.JustGank:EMedia:2.0.1'
+    api 'com.github.JustGank:EMp3Record:2.0.1'
 
+}
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.JustGank'
+                artifactId = 'EIMUI'
+                version = '2.0.0'
+            }
+        }
+    }
 }

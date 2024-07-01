@@ -3,14 +3,12 @@ import org.gradle.api.initialization.resolve.RepositoriesMode
 pluginManagement {
 
     repositories {
-        gradlePluginPortal()
         google()
-        maven { url "https://maven.aliyun.com/repository/central" }
-        maven { url "https://maven.aliyun.com/repository/public" }
-        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
-        maven { url "https://jitpack.io" }
+        maven {url "https://jitpack.io"}
+         maven { url "https://maven.aliyun.com/repository/public/" }
+        maven { url "https://maven.aliyun.com/nexus/content/repositories/jcenter" }
+        gradlePluginPortal()
         mavenCentral()
-
     }
 
 }
@@ -18,12 +16,11 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        gradlePluginPortal()
         google()
-        maven { url "https://maven.aliyun.com/repository/central" }
-        maven { url "https://maven.aliyun.com/repository/public" }
-        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
         maven {url "https://jitpack.io"}
+        maven { url "https://maven.aliyun.com/repository/public/" }
+        maven { url "https://maven.aliyun.com/nexus/content/repositories/jcenter" }
+        gradlePluginPortal()
         mavenCentral()
 
     }
